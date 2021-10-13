@@ -144,11 +144,11 @@
   <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\TheQDeviceConnect.Core\TheQDeviceConnect.Core.csproj">
-      <Project>{2D66E2F4-1CA1-4EA4-BB2D-426F89D52DA0}</Project>
+      <Project>{1545EEA2-C046-4B52-AF54-2AB776CF2395}</Project>
       <Name>TheQDeviceConnect.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\TheQDeviceConnect.UI\TheQDeviceConnect.UI.csproj">
-      <Project>{BE96AA24-C2C8-416C-9578-5A05A59BF01D}</Project>
+      <Project>{458D02D4-4245-415D-855C-98CEEE12579B}</Project>
       <Name>TheQDeviceConnect.UI</Name>
     </ProjectReference>
   </ItemGroup>
