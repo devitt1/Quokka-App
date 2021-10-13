@@ -28,7 +28,11 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
 
         public void ConnectToWifiNetwork(string ssid, string password)
         {
-            ConnectWpa(ssid, password);
+            var t = Task<bool>.Run(() =>
+            {
+                return ConnectWpa(ssid, password);
+            }
+          );
         }
 
         public async Task<bool> ConnectWpa(string ssid, string password)
@@ -61,7 +65,7 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
 
 
                 if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.Q)
-                { // if Android Version < 10
+                { // if Android Version >= 10
                     WifiNetworkSpecifier wifiSpecifier = new WifiNetworkSpecifier
                    .Builder()
                    .SetSsid(ssid)
@@ -78,11 +82,11 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
                     _connectivityManager.RequestNetwork(request, _networkCallback);
 
                 }
-                else // if Android Version >= 10
+                else // if Android Version < 10
                 {
-                    #pragma warning disable CS0612 // Type or member is obsolete
+#pragma warning disable CS0612 // Type or member is obsolete
                     handleConnectionOlderVersion(_wifiManager, ssid, password);
-                    #pragma warning restore CS0612 // Type or member is obsolete
+#pragma warning restore CS0612 // Type or member is obsolete
                 }
                 return true;
             }
@@ -129,7 +133,7 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
             {
                 DebugHelper.Error(this, exception, MethodBase.GetCurrentMethod().Name);
             }
-           
+
 
 
         }

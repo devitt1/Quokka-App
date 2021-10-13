@@ -7,12 +7,22 @@
     xmlns:local="clr-namespace:TheQDeviceConnect.UI.Pages"
     x:Class="TheQDeviceConnect.UI.Pages.HomePage"
     xmlns:viewModels="clr-namespace:TheQDeviceConnect.Core.ViewModels.Home;assembly=TheQDeviceConnect.Core"
-                      Title="Main page">
+                      Title="TheQ Device Connect">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome!!&#10;App scaffolded with MvxScaffolding"
+            <Label Text="Welcome to The Q Device Connection!!!"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
+            <Grid RowDefinitions="*">
+
+            </Grid>
+            <views:MvxListView>
+
+            </views:MvxListView>
+            <Label
+                Text="Turn on ngrok"></Label>
+            <Switch></Switch>
+
         </StackLayout>
     </ContentPage.Content>
 </views:MvxContentPage>

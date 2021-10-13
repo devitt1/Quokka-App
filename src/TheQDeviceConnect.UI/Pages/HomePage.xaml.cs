@@ -27,9 +27,6 @@ namespace TheQDeviceConnect.UI.Pages
         {
             base.OnAppearing();
 
-            //DeviceOrientation orientation = DependencyService.Get<IDeviceOrientationService>().GetOrientation();
-            //DebugHelper.Info(this, "printing ... " + orientation.ToString(), MethodBase.GetCurrentMethod().Name);
-
             DependencyService.Get<IDeviceConnectionService>().ConnectToWifiNetwork("WiFi-CE47_EXT", "23084780");
 
 
