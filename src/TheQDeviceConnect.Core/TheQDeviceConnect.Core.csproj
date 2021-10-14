@@ -13,6 +13,8 @@
     <None Remove="Services\" />
     <None Remove="Services\Interfaces\" />
     <None Remove="Services\Implementations\" />
+    <None Remove="ViewModels\Connection\" />
+    <None Remove="ViewModels\Connection\Hotspot\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MvvmCross" Version="8.0.2" />
@@ -24,5 +26,7 @@
     <Folder Include="Services\" />
     <Folder Include="Services\Interfaces\" />
     <Folder Include="Services\Implementations\" />
+    <Folder Include="ViewModels\Connection\" />
+    <Folder Include="ViewModels\Connection\Hotspot\" />
   </ItemGroup>
 </Project>

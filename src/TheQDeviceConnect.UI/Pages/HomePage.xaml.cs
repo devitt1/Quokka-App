@@ -21,14 +21,13 @@ namespace TheQDeviceConnect.UI.Pages
         public HomePage()
         {
             InitializeComponent();
+            NavigationPage.SetHasNavigationBar(this, false);
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
-
-            DependencyService.Get<IDeviceConnectionService>().ConnectToWifiNetwork("WiFi-CE47_EXT", "23084780");
-
+       
 
             if (Application.Current.MainPage is NavigationPage navigationPage)
             {

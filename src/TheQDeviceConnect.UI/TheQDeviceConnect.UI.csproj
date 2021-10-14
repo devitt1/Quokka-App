@@ -28,6 +28,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="RepeaterView\" />
+    <None Remove="Cells\" />
+    <None Remove="TemplateSelector\" />
+  </ItemGroup>
+  <ItemGroup>
     <None Update="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
@@ -39,4 +44,9 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="RepeaterView\" />
+    <Folder Include="Cells\" />
+    <Folder Include="TemplateSelector\" />
+  </ItemGroup>
 </Project>

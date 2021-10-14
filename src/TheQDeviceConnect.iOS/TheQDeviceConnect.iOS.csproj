@@ -94,6 +94,10 @@
     </ImageAsset>
     <Compile Include="Services\Implementations\DeviceConnectionService.cs" />
     <Compile Include="Services\Implementations\DeviceOrientationService.cs" />
+    <ImageAsset Include="Resources\Media.xcassets\AppLogo.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Media.xcassets\AppLogo.imageset\quokka.png" />
+    <ImageAsset Include="Resources\Media.xcassets\AppLogo.imageset\quokka-1.png" />
+    <ImageAsset Include="Resources\Media.xcassets\AppLogo.imageset\quokka-2.png" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard">
@@ -229,6 +233,7 @@
   <ItemGroup>
     <Folder Include="Services\" />
     <Folder Include="Services\Implementations\" />
+    <Folder Include="Resources\Media.xcassets\AppLogo.imageset\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -7,6 +7,7 @@ namespace TheQDeviceConnect.Core.ViewModels
 {
     public class BaseNavigationViewModel : MvxNavigationViewModel 
     {
+        
         public BaseNavigationViewModel(ILoggerFactory loggerFactory, IMvxNavigationService navigationService) : base(loggerFactory, navigationService)
         {
         }
