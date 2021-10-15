@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<views:MvxContentPage
+    x:TypeArguments="viewModels:HotspotConnectionViewModel"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+    xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+    xmlns:views="clr-namespace:MvvmCross.Forms.Views;assembly=MvvmCross.Forms"
+    xmlns:mvx="clr-namespace:MvvmCross.Forms.Bindings;assembly=MvvmCross.Forms"
+    xmlns:viewModels="clr-namespace:TheQDeviceConnect.Core.ViewModels.Connection.Hotspot;assembly=TheQDeviceConnect.Core"
+    xmlns:selector="clr-namespace:TheQDeviceConnect.UI.TemplateSelector"
+    xmlns:repeaterView="clr-namespace:TheQDeviceConnect.UI.RepeaterView"
+    x:Class="TheQDeviceConnect.UI.Pages.HotspotConnectionPage">
+    <views:MvxContentPage.BackgroundColor>
+        <OnPlatform x:TypeArguments="Color">
+            <OnPlatform.Platforms>
+                <On Platform="iOS" Value="#B3ffffff" />
+                <On Platform="Android" Value="#4Dffffff" />
+            </OnPlatform.Platforms>
+        </OnPlatform>
+    </views:MvxContentPage.BackgroundColor>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <DataTemplate
+                x:Key="defaultWifiNetworksTemplate">
+                <views:MvxViewCell>
+                    <StackLayout
+                        Orientation="Horizontal"
+                        >
+                        <Label
+                            Text="SSID">
+                        </Label>
+                    </StackLayout>
+
+                </views:MvxViewCell>
+            </DataTemplate>
+            <selector:WifiNetworksTemplateSelector
+                x:Key="WifiNetworksTemplateSelector"
+                DefaultWifiNetworksTemplate="{StaticResource defaultWifiNetworksTemplate}">
+            </selector:WifiNetworksTemplateSelector>
+               
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <StackLayout
+            Orientation="Vertical">
+            <Label
+                Margin="0, 53, 0, 0"
+                Text="Connect to The Q’s&#10;temporary Wi-Fi hotspot"
+                TextColor="#222225"
+                FontSize="27"
+                VerticalOptions="Start" 
+                HorizontalOptions="CenterAndExpand"/>
+            
+            <Label
+                Text="STEP 1"
+                TextColor="#222225"
+                FontAttributes="Bold"
+                Margin="0, 10, 0, 10"
+                FontSize="16"
+                VerticalOptions="Start" 
+                HorizontalOptions="CenterAndExpand"/>
+
+             <Label
+                Text="In Wi-Fi settings, connect to The Q’s&#10;hotspot. It’ll have the device name&#10;‘The Q Hotspot’."
+                TextColor="#222225"
+                FontSize="16"
+                Margin="0, 0, 0, 20"
+                VerticalOptions="Start" 
+                HorizontalOptions="CenterAndExpand"/>
+
+             <Image
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="Start"
+                Source="example_wifi_settings_img"
+                HeightRequest="248"
+                WidthRequest="333"
+                 >
+
+             </Image>
+
+
+              <repeaterView:RepeaterView
+                    IsVisible="false"
+                    x:Name="devicesList"
+                    HorizontalOptions="CenterAndExpand"
+                    VerticalOptions="Start"
+                    ItemTemplate="{StaticResource WifiNetworksTemplateSelector}"
+                    ItemsSource="{mvx:MvxBind WifiNetworkVMs}">
+             </repeaterView:RepeaterView>
+
+            <Button
+                Text="Go to settings"
+                TextColor="White"
+                FontSize="16"
+                HeightRequest="50"
+                IsEnabled="True"
+                WidthRequest="200"
+                HorizontalOptions="Center"
+                VerticalOptions="EndAndExpand"
+                Margin="0, 0, 0 ,40"
+                Command="{mvx:MvxBind GoToHotspotViewModelCommand}"
+                >
+                <Button.Background>
+                    <LinearGradientBrush
+                        StartPoint="0,0"
+                        EndPoint="1,1">
+                        <GradientStop Color="#2B2B2B" Offset="0.0" />
+                        <GradientStop Color="#1E2023" Offset="0.5" />
+                        <GradientStop Color="#1F2E4D" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+
+            </Button>
+
+        </StackLayout>
+    </ContentPage.Content>
+</views:MvxContentPage>

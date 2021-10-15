@@ -26,6 +26,7 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
 
         }
 
+
         public void ConnectToWifiNetwork(string ssid, string password)
         {
             var t = Task<bool>.Run(() =>

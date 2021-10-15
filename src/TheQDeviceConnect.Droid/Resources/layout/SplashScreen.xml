@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+	<ImageView
+		android:layout_width="match_parent"
+		android:layout_height="251.76dp"
+		android:layout_gravity="center_horizontal"
+		android:src="@drawable/quokka"
+		android:layout_marginTop="123.65dp"
+		android:layout_marginRight="0.0dp"
+		android:layout_marginLeft="0.0dp" />
+</LinearLayout>

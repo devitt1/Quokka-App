@@ -14,10 +14,13 @@ namespace TheQDeviceConnect.Droid.Views
        RoundIcon = "@mipmap/ic_launcher_round")]
     public class SplashActivity : MvxFormsSplashScreenActivity<Setup, Core.App, UI.App>
     {
+        public SplashActivity() : base(Resource.Layout.SplashScreen)
+        {
+        }
         protected override Task RunAppStartAsync(Bundle bundle)
         {
-            StartActivity(typeof(MainActivity));
-            return Task.CompletedTask;
+            StartActivity(typeof(RootViewActivity));
+            return base.RunAppStartAsync(bundle);
         }
     }
 }

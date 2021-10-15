@@ -26,11 +26,10 @@
     <ContentPage.Content>
         <StackLayout>
              <Label
-                    Grid.Column="0"
-                    Grid.Row="0"
+                    Margin="0, 53, 0, 0"
                     Text="Welcome to The Q"
                     TextColor="#222225"
-                    FontSize="36"
+                    FontSize="27"
                     VerticalOptions="Start" 
                     HorizontalOptions="CenterAndExpand"/>
              <Image
@@ -43,31 +42,67 @@
              </Image>
 
             <Label
-                Text="Connect The Q device to your mobile to get started"
-                TextColor="#222225"
-                FontSize="24"
+                Text="Connect The Q device to&#10;your mobile to get started"
+                TextColor="#000000"
+                FontSize="17"
                 HorizontalOptions="CenterAndExpand"
-                VerticalOptions="Start"
-                
-                >
-
-
+                Margin="0, 0, 0, 0"
+                VerticalOptions="Start">
             </Label>
+
             <Button
-                Text="Next"
+                Text="NEXT"
                 TextColor="White"
                 FontSize="16"
-                BackgroundColor="#2B2B2B"
                 HeightRequest="50"
                 WidthRequest="200"
                 HorizontalOptions="Center"
-                VerticalOptions="Center"
-
+                VerticalOptions="EndAndExpand"
+                Margin="0, 0, 0 ,40"
+                IsEnabled="True"
                 Command="{mvx:MvxBind GoToHotspotConnectionViewModelCommand}"
                 >
+                <Button.Background>
+                    <LinearGradientBrush
+                        StartPoint="0,0"
+                        EndPoint="1,1">
+                        <GradientStop Color="#2B2B2B" Offset="0.0" />
+                        <GradientStop Color="#1E2023" Offset="0.5" />
+                        <GradientStop Color="#1F2E4D" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
 
             </Button>
-            <Grid RowDefinitions="*,*,*"
+            <!--<Grid ColumnDefinitions="*"
+                  RowDefinitions="*"
+                  HorizontalOptions="Center"
+                  HeightRequest="50"
+                  WidthRequest="-1"
+                  VerticalOptions="EndAndExpand"
+                  Margin="0, 0, 0, 40">
+                <ImageButton
+                    Grid.Column="0"
+                    Grid.Row="0"
+                    Source="button_bkg"
+                    Command="{mvx:MvxBind GoToHotspotConnectionViewModelCommand}">
+                </ImageButton>
+                <Label
+                    Grid.Column="0"
+                    Grid.Row="0"
+                    Text="NEXT"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    TextColor="White"
+                    FontSize="16">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Command="{mvx:MvxBind GoToHotspotConnectionViewModelCommand}">
+                        </TapGestureRecognizer>
+                    </Label.GestureRecognizers>
+                </Label>
+            </Grid>-->
+           
+            <!--<Grid RowDefinitions="*,*,*"
                   ColumnDefinitions="*">
                
                 <StackLayout
@@ -81,7 +116,8 @@
                     <Switch/>
                 </StackLayout>
               
-            </Grid>
+            </Grid>-->
+
         </StackLayout>
     </ContentPage.Content>
 </views:MvxContentPage>
