@@ -22,10 +22,37 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
 
         public DeviceConnectionService()
         {
+            DebugHelper.Info(this, "called!");
+        }
+
+        public void Initialize()
+        {
+            DebugHelper.Info(this, "called");
+            _wifiManager = AndroidAplication
+                  .Context
+                  .GetSystemService
+                  (AndroidContext.WifiService)
+                  as WifiManager;
+
+            _connectivityManager = AndroidAplication
+                .Context
+                .GetSystemService(AndroidContext.ConnectivityService)
+                as ConnectivityManager;
+
+            _networkCallback = new NetworkCallback(_connectivityManager)
+            {
+                NetworkAvailable = network =>
+                {
+                    DebugHelper.Info(this, "Connected!", MethodBase.GetCurrentMethod().Name);
+                },
+                NetworkUnavailable = () =>
+                {
+                    DebugHelper.Info(this, "Unconnected!", MethodBase.GetCurrentMethod().Name);
+                }
+            };
 
 
         }
-
 
         public void ConnectToWifiNetwork(string ssid, string password)
         {
@@ -40,31 +67,6 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
         {
             try
             {
-                _wifiManager = AndroidAplication
-                    .Context
-                    .GetSystemService
-                    (AndroidContext.WifiService)
-                    as WifiManager;
-
-                _connectivityManager = AndroidAplication
-                    .Context
-                    .GetSystemService(AndroidContext.ConnectivityService)
-                    as ConnectivityManager;
-
-                _networkCallback = new NetworkCallback(_connectivityManager)
-                {
-                    NetworkAvailable = network =>
-                    {
-                        DebugHelper.Info(this, "Connected!", MethodBase.GetCurrentMethod().Name);
-                    },
-                    NetworkUnavailable = () =>
-                    {
-                        DebugHelper.Info(this, "Unconnected!", MethodBase.GetCurrentMethod().Name);
-                    }
-                };
-
-
-
                 if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.Q)
                 { // if Android Version >= 10
                     WifiNetworkSpecifier wifiSpecifier = new WifiNetworkSpecifier
@@ -85,9 +87,9 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
                 }
                 else // if Android Version < 10
                 {
-#pragma warning disable CS0612 // Type or member is obsolete
+                    #pragma warning disable CS0612 // Type or member is obsolete
                     handleConnectionOlderVersion(_wifiManager, ssid, password);
-#pragma warning restore CS0612 // Type or member is obsolete
+                    #pragma warning restore CS0612 // Type or member is obsolete
                 }
                 return true;
             }
@@ -149,6 +151,13 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
             }
         }
 
+        public void GetCurrentNetwork()
+        {
+            var wifiInfo = _wifiManager.ConnectionInfo;
+            string ssid = wifiInfo.SSID;
+            DebugHelper.Info(this, "Get Current Network");
+        }
+
         private class NetworkCallback : ConnectivityManager.NetworkCallback
         {
             private ConnectivityManager _conn;
@@ -177,9 +186,5 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
                 NetworkUnavailable?.Invoke();
             }
         }
-
-
     }
-
-
 }

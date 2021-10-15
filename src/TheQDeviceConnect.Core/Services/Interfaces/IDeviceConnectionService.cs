@@ -4,6 +4,8 @@ namespace TheQDeviceConnect.Core.Services.Interfaces
     public interface IDeviceConnectionService
     {
         void ConnectToWifiNetwork(string ssid, string password);
+        void Initialize();
+        void GetCurrentNetwork();
     }
 
 

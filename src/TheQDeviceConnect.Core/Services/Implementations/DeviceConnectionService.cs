@@ -15,5 +15,15 @@ namespace TheQDeviceConnect.Core.Services.Implementations
         {
             DebugHelper.Info(this, "called!");
         }
+
+        public void GetCurrentNetwork()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Initialize()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

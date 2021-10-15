@@ -12,13 +12,29 @@ namespace TheQDeviceConnect.iOS.Services.Implementations
 {
     public class DeviceConnectionService : IDeviceConnectionService
     {
+
+        NEHotspotHelper _wifiHelper;
+        NEHotspotConfiguration _wifiConfig;
+        NEHotspotConfigurationManager _wifiConfigManager;
         public DeviceConnectionService()
         {
             
         }
 
+        public void Initialize()
+        {
+            _wifiHelper = new NEHotspotHelper();
+            _wifiConfigManager = new NEHotspotConfigurationManager();
+
+        }
+
         public void ConnectToWifiNetwork(string ssid, string password)
         {
+            _wifiConfig = new NEHotspotConfiguration(ssid, password, false)
+            {
+                JoinOnce = true
+            };
+
             var t = Task<bool>.Run(() =>
             {
                 return ConnectWpa(ssid, password);
@@ -30,19 +46,10 @@ namespace TheQDeviceConnect.iOS.Services.Implementations
         {
             try
             {
-                var wifiHelper = new NEHotspotHelper();
 
-                var configManager = new NEHotspotConfigurationManager();
-                var wifiConfig = new NEHotspotConfiguration(ssid, password, false)
-                {
-                    JoinOnce = true
-                };
+                _wifiConfigManager.RemoveConfiguration("Kogan_9EE1_5G");
 
-
-
-                configManager.RemoveConfiguration("Kogan_9EE1_5G");
-
-                configManager.ApplyConfiguration(wifiConfig, (error) =>
+                _wifiConfigManager.ApplyConfiguration(_wifiConfig, (error) =>
                 {
                     if (error != null)
                     {
@@ -58,6 +65,11 @@ namespace TheQDeviceConnect.iOS.Services.Implementations
                 DebugHelper.Error(this, e, MethodBase.GetCurrentMethod().Name);
                 return false;
             }
+        }
+
+        public void GetCurrentNetwork()
+        {
+            throw new NotImplementedException();
         }
     }
 }

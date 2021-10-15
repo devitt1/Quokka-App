@@ -1,19 +1,30 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 using TheQDeviceConnect.Core.Helpers;
 using TheQDeviceConnect.Core.Services.Interfaces;
+using Xamarin.Essentials;
 
 namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
 {
     public class HotspotConnectionViewModel : BaseNavigationViewModel
     {
-        public bool IsConnected;
-        //Service declaration
-        private IDeviceConnectionService _deviceConnectionService;
-
-
+        public bool IsTheQHotspotConnected;
+        private bool _networkChanged;
+        public bool NetworkChanged
+        {
+            get
+            {
+                return _networkChanged;
+            }
+            set
+            {
+                _networkChanged = value;
+                RaisePropertyChanged(() => NetworkChanged);
+            }
+        }
 
         private MvxObservableCollection<IWifiNetworkViewModel> _wifiNetworkVMs = new MvxObservableCollection<IWifiNetworkViewModel>();
         public MvxObservableCollection<IWifiNetworkViewModel> WifiNetworkVMs
@@ -26,11 +37,10 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
             }
         }
 
-        public HotspotConnectionViewModel(ILoggerFactory logProvider, IMvxNavigationService navigationService, IDeviceConnectionService deviceConnectionService) : base(logProvider, navigationService)
+        public HotspotConnectionViewModel(ILoggerFactory logProvider, IMvxNavigationService navigationService) : base(logProvider, navigationService)
         {
-            _deviceConnectionService = deviceConnectionService;
             addMockedData();
-        }
+        }  
 
         private void addMockedData()
         {
@@ -42,6 +52,17 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
             {
                 ssid = "Kogan"
             });
+        }
+
+        public override Task Initialize()
+        {
+            Connectivity.ConnectivityChanged += HandleConnectivityChanged;
+            return base.Initialize();
+        }
+
+        void HandleConnectivityChanged(object sender, ConnectivityChangedEventArgs eventArgs)
+        {
+            NetworkChanged = true;
         }
 
         public override void ViewAppeared()
