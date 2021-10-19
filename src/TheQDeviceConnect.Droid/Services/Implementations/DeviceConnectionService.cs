@@ -19,6 +19,7 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
         private WifiManager _wifiManager;
         private NetworkCallback _networkCallback;
         private ConnectivityManager _connectivityManager;
+        public event EventHandler OnWifiNetworkChanged;
 
         public DeviceConnectionService()
         {
@@ -39,18 +40,28 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
                 .GetSystemService(AndroidContext.ConnectivityService)
                 as ConnectivityManager;
 
+
+
             _networkCallback = new NetworkCallback(_connectivityManager)
             {
                 NetworkAvailable = network =>
                 {
-                    DebugHelper.Info(this, "Connected!", MethodBase.GetCurrentMethod().Name);
+                    DebugHelper.Info(this, "Connected to  " + GetConnectedNetworkSSID(), MethodBase.GetCurrentMethod().Name);
+                    OnWifiNetworkChanged.Invoke(this, EventArgs.Empty);
                 },
                 NetworkUnavailable = () =>
                 {
-                    DebugHelper.Info(this, "Unconnected!", MethodBase.GetCurrentMethod().Name);
+                    DebugHelper.Info(this, "Unconnected!" + GetConnectedNetworkSSID(), MethodBase.GetCurrentMethod().Name);
+                    OnWifiNetworkChanged.Invoke(this, EventArgs.Empty);
                 }
             };
 
+            _connectivityManager.RegisterDefaultNetworkCallback(_networkCallback);
+
+        }
+
+        private void handleNetworkChanged(object sender, EventArgs e)
+        {
 
         }
 
@@ -151,13 +162,27 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
             }
         }
 
-        public void GetCurrentNetwork()
+        public bool IsConnectedToHotspot()
         {
-            var wifiInfo = _wifiManager.ConnectionInfo;
-            string ssid = wifiInfo.SSID;
-            DebugHelper.Info(this, "Get Current Network");
+            if (GetConnectedNetworkSSID() == "\"The Q Hotspot\"")
+            {
+                DebugHelper.Info(this, "Connected to the Q hotspot");
+                return true;
+            }
+            else
+            {
+                DebugHelper.Info(this, "Not connected to the Q hotspot");
+                return false;
+            }
+        }
+        public string GetConnectedNetworkSSID()
+        {
+            var ssid = _wifiManager.ConnectionInfo.SSID;
+            DebugHelper.Info(this, "Current connected network SSID is " + ssid);
+            return ssid;
         }
 
+       
         private class NetworkCallback : ConnectivityManager.NetworkCallback
         {
             private ConnectivityManager _conn;
@@ -184,6 +209,11 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
                 base.OnUnavailable();
 
                 NetworkUnavailable?.Invoke();
+            }
+
+            public override void OnLost(Network network)
+            {
+                base.OnLost(network);
             }
         }
     }
