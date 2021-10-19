@@ -10,6 +10,7 @@
     xmlns:viewModels="clr-namespace:TheQDeviceConnect.Core.ViewModels.Connection.Hotspot;assembly=TheQDeviceConnect.Core"
     xmlns:selector="clr-namespace:TheQDeviceConnect.UI.TemplateSelector"
     xmlns:repeaterView="clr-namespace:TheQDeviceConnect.UI.RepeaterView"
+    xmlns:converters="clr-namespace:TheQDeviceConnect.UI.Converters"
     x:Class="TheQDeviceConnect.UI.Pages.HotspotConnectionPage">
     <views:MvxContentPage.BackgroundColor>
         <OnPlatform x:TypeArguments="Color">
@@ -38,70 +39,224 @@
                 x:Key="WifiNetworksTemplateSelector"
                 DefaultWifiNetworksTemplate="{StaticResource defaultWifiNetworksTemplate}">
             </selector:WifiNetworksTemplateSelector>
+            <converters:ConnectionStateConverter x:Key="connectionStateConverter"/>
+            <converters:BoolConverter x:Key="boolConverter"/>
                
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout
+            x:Name="ParentHotspotConnectionPage"
             Orientation="Vertical">
-            <Label
-                Margin="0, 53, 0, 0"
-                Text="Connect to The Q’s&#10;temporary Wi-Fi hotspot"
-                TextColor="#222225"
-                FontSize="27"
-                VerticalOptions="Start" 
-                HorizontalOptions="CenterAndExpand"/>
+
+            <StackLayout
+                x:Name="HotspotConnectionInstructionPage"
+                Orientation="Vertical"
+                VerticalOptions="FillAndExpand"
+                HorizontalOptions="FillAndExpand"
+                IsVisible="{Binding WifiConnectionState, Mode=OneWay,
+                Converter={StaticResource connectionStateConverter}}">
+                <Label
+                    Margin="0, 53, 0, 0"
+                    Text="Connect to The Q’s&#10;temporary Wi-Fi hotspot"
+                    HorizontalTextAlignment="Center"
+                    TextColor="#222225"
+                    FontSize="20"
+                    VerticalOptions="Start"
+                    HorizontalOptions="CenterAndExpand"/>
             
-            <Label
-                Text="STEP 1"
-                TextColor="#222225"
-                FontAttributes="Bold"
-                Margin="0, 10, 0, 10"
-                FontSize="16"
-                VerticalOptions="Start" 
-                HorizontalOptions="CenterAndExpand"/>
+                <Label
+                    Text="STEP 1"
+                    TextColor="#222225"
+                    FontAttributes="Bold"
+                    HorizontalTextAlignment="Center"
+                    Margin="0, 10, 0, 10"
+                    FontSize="15"
+                    VerticalOptions="Start" 
+                    HorizontalOptions="CenterAndExpand"/>
 
-             <Label
-                Text="In Wi-Fi settings, connect to The Q’s&#10;hotspot. It’ll have the device name&#10;‘The Q Hotspot’."
-                TextColor="#222225"
-                FontSize="16"
-                Margin="0, 0, 0, 20"
-                VerticalOptions="Start" 
-                HorizontalOptions="CenterAndExpand"/>
+                 <Label
+                    Text="In Wi-Fi settings, connect to The Q’s&#10;hotspot. It’ll have the device name&#10;‘The Q Hotspot’."
+                    HorizontalTextAlignment="Center"
+                    TextColor="#42404A"
+                    FontSize="16"
+                    Margin="0, 0, 0, 20"
+                    VerticalOptions="Start" 
+                    HorizontalOptions="CenterAndExpand"/>
 
-             <Image
-                HorizontalOptions="CenterAndExpand"
-                VerticalOptions="Start"
-                Source="example_wifi_settings_img"
-                HeightRequest="248"
-                WidthRequest="333"
-                 >
-
-             </Image>
-
-
-              <repeaterView:RepeaterView
-                    IsVisible="false"
-                    x:Name="devicesList"
+                 <Image
                     HorizontalOptions="CenterAndExpand"
                     VerticalOptions="Start"
-                    ItemTemplate="{StaticResource WifiNetworksTemplateSelector}"
-                    ItemsSource="{mvx:MvxBind WifiNetworkVMs}">
-             </repeaterView:RepeaterView>
+                    Source="example_wifi_settings_img"
+                    HeightRequest="248"
+                    WidthRequest="333">
 
-            <Button
-                Text="Go to settings"
-                TextColor="White"
-                FontSize="16"
-                HeightRequest="50"
-                IsEnabled="True"
-                WidthRequest="200"
-                HorizontalOptions="Center"
-                VerticalOptions="EndAndExpand"
-                Margin="0, 0, 0 ,40"
-                Command="{mvx:MvxBind GoToHotspotViewModelCommand}"
-                >
-                <Button.Background>
+                 </Image>
+                
+
+                  <!--<repeaterView:RepeaterView
+                        IsVisible="false"
+                        x:Name="devicesList"
+                        HorizontalOptions="CenterAndExpand"
+                        VerticalOptions="Start"
+                        ItemTemplate="{StaticResource WifiNetworksTemplateSelector}"
+                        ItemsSource="{mvx:MvxBind WifiNetworkVMs}">
+                 </repeaterView:RepeaterView>-->
+              
+                <Button
+                    Text="Go to settings"
+                    TextColor="White"
+                    FontAttributes="Bold"
+                    FontSize="16"
+                    HeightRequest="50"
+                    IsEnabled="True"
+                    WidthRequest="200"
+                    HorizontalOptions="Center"
+                    VerticalOptions="EndAndExpand"
+                    Margin="0, 0, 0,20"
+                    Command="{mvx:MvxBind GoToHotspotViewModelCommand}"
+                    >
+                    <Button.Background>
+                        <LinearGradientBrush
+                            StartPoint="0,0"
+                            EndPoint="1,1">
+                            <GradientStop Color="#2B2B2B" Offset="0.0" />
+                            <GradientStop Color="#1E2023" Offset="0.5" />
+                            <GradientStop Color="#1F2E4D" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
+
+                </Button>
+            </StackLayout>
+         
+            <StackLayout
+                Orientation="Vertical"
+                x:Name="HotspotConnectingPage"
+                VerticalOptions="FillAndExpand"
+                HorizontalOptions="FillAndExpand"
+                IsVisible="{Binding ShouldDisplayConnectingPage}">
+                <Label
+                    Margin="0, 53, 0, 0"
+                    Text="Connecting to The Q"
+                    FontAttributes="Bold"
+                    HorizontalTextAlignment="Center"
+                    TextColor="#222225"
+                    FontSize="20"
+                    VerticalOptions="Start"
+                    HorizontalOptions="CenterAndExpand"/>
+
+                 <Label
+                    Margin="0, 49, 0, 0"
+                    Text="Please wait ..."
+                    HorizontalTextAlignment="Center"
+                    TextColor="#42404A"
+                    FontSize="15"
+                    VerticalOptions="Start"
+                    HorizontalOptions="CenterAndExpand"/>
+
+               <ActivityIndicator
+                    VerticalOptions="Start"
+                    HorizontalOptions="Center"
+                    Color="#7BAADC"
+                    Margin="0, 30, 0, 0"
+                    HeightRequest="60"
+                    WidthRequest="60"
+                    IsRunning="True">
+                    <ActivityIndicator.Scale>
+                        <OnPlatform
+                            x:TypeArguments="x:Double"
+                            iOS="1"
+                            Android="1">
+                        </OnPlatform>
+                    </ActivityIndicator.Scale>
+              </ActivityIndicator>
+
+                <Button
+                    Text="Cancel"
+                    BackgroundColor="Transparent"
+                    TextColor="#1F2E4D"
+                    FontAttributes="Bold"
+                    FontSize="16"
+                    HeightRequest="50"
+                    IsEnabled="True"
+                    WidthRequest="200"
+                    HorizontalOptions="Center"
+                    VerticalOptions="EndAndExpand"
+                    Margin="0, 0, 0,20"
+                    Command="{mvx:MvxBind GoToHotspotViewModelCommand}"
+                    >
+                </Button>
+            </StackLayout>
+
+            <StackLayout
+                Orientation="Vertical"
+                x:Name="HotspotConfirmConnectedPage"
+                VerticalOptions="FillAndExpand"
+                HorizontalOptions="FillAndExpand"
+                IsVisible="{Binding ShouldDisplayConfirmConnectedPage}">
+                <Label
+                    Margin="0, 53, 0, 0"
+                    Text="Confirm you have&#10;connected to the correct&#10;The Q device"
+                    FontAttributes="Bold"
+                    HorizontalTextAlignment="Center"
+                    TextColor="#222225"
+                    FontSize="20"
+                    VerticalOptions="Start"
+                    HorizontalOptions="CenterAndExpand"/>
+
+                 <Label
+                    Text="STEP 2"
+                    TextColor="#222225"
+                    FontAttributes="Bold"
+                    HorizontalTextAlignment="Center"
+                    Margin="0, 10, 0, 10"
+                    FontSize="15"
+                    VerticalOptions="Start" 
+                    HorizontalOptions="CenterAndExpand"/>
+
+                 <Label
+                    Text="The Q device you have connected to will&#10;flash its lights. If the correct device is&#10;flashing, tap next to confirm and continue&#10;the setup process."
+                    HorizontalTextAlignment="Center"
+                    TextColor="#42404A"
+                    FontSize="16"
+                    Margin="0, 0, 0, 20"
+                    VerticalOptions="Start" 
+                    HorizontalOptions="CenterAndExpand"/>
+
+                 <!--<Image
+                    HorizontalOptions="CenterAndExpand"
+                    VerticalOptions="Start"
+                    Source="example_wifi_settings_img"
+                    HeightRequest="248"
+                    WidthRequest="333">
+
+                 </Image>-->
+
+                 <Label
+                    Text="IT'S NOT FLASHING, START AGAIN"
+                    TextColor="#222225"
+                    FontAttributes="Bold"
+                    HorizontalTextAlignment="Center"
+                    Margin="0, 0, 0, 10"
+                    FontSize="16"
+                    VerticalOptions="EndAndExpand" 
+                    HorizontalOptions="CenterAndExpand"/>
+
+                <Button
+                    Text="NEXT"
+                    BackgroundColor="Transparent"
+                    TextColor="#1F2E4D"
+                    FontAttributes="Bold"
+                    FontSize="16"
+                    HeightRequest="50"
+                    IsEnabled="True"
+                    WidthRequest="200"
+                    HorizontalOptions="Center"
+                    VerticalOptions="End"
+                    Margin="0, 0, 0, 20"
+                    Command="{mvx:MvxBind GoToHotspotViewModelCommand}"
+                    >
+                    <Button.Background>
                     <LinearGradientBrush
                         StartPoint="0,0"
                         EndPoint="1,1">
@@ -110,9 +265,12 @@
                         <GradientStop Color="#1F2E4D" Offset="1"/>
                     </LinearGradientBrush>
                 </Button.Background>
-
-            </Button>
+                </Button>
+            </StackLayout>
 
         </StackLayout>
+
+       
+
     </ContentPage.Content>
 </views:MvxContentPage>

@@ -31,6 +31,7 @@
     <None Remove="RepeaterView\" />
     <None Remove="Cells\" />
     <None Remove="TemplateSelector\" />
+    <None Remove="Converters\" />
   </ItemGroup>
   <ItemGroup>
     <None Update="App.xaml">
@@ -48,5 +49,6 @@
     <Folder Include="RepeaterView\" />
     <Folder Include="Cells\" />
     <Folder Include="TemplateSelector\" />
+    <Folder Include="Converters\" />
   </ItemGroup>
 </Project>
