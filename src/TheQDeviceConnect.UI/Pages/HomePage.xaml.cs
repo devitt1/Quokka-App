@@ -34,8 +34,11 @@ namespace TheQDeviceConnect.UI.Pages
                 navigationPage.BarTextColor = Color.White;
                 navigationPage.BarBackgroundColor = (Color)Application.Current.Resources["PrimaryColor"];
             }
+        }
 
-
+        protected override void OnViewModelSet()
+        {
+            base.OnViewModelSet();
         }
     }
 }

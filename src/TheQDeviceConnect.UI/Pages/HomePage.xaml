@@ -28,6 +28,7 @@
              <Label
                     Margin="0, 53, 0, 0"
                     Text="Welcome to The Q"
+                    HorizontalTextAlignment="Center"
                     TextColor="#222225"
                     FontSize="27"
                     VerticalOptions="Start" 
@@ -43,8 +44,9 @@
 
             <Label
                 Text="Connect The Q device to&#10;your mobile to get started"
-                TextColor="#000000"
-                FontSize="17"
+                TextColor="#222225"
+                FontSize="20"
+                HorizontalTextAlignment="Center"
                 HorizontalOptions="CenterAndExpand"
                 Margin="0, 0, 0, 0"
                 VerticalOptions="Start">
@@ -53,6 +55,7 @@
             <Button
                 Text="NEXT"
                 TextColor="White"
+                FontAttributes="Bold"
                 FontSize="16"
                 HeightRequest="50"
                 WidthRequest="200"
