@@ -11,17 +11,24 @@ namespace TheQDeviceConnect.Core.Services.Implementations
             DebugHelper.Info(this, "created!");
         }
 
+        public event EventHandler OnWifiNetworkChanged;
+
         public void ConnectToWifiNetwork(string ssid, string password)
         {
             DebugHelper.Info(this, "called!");
         }
 
-        public void GetCurrentNetwork()
+        public string GetConnectedNetworkSSID()
         {
             throw new NotImplementedException();
         }
 
         public void Initialize()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsConnectedToHotspot()
         {
             throw new NotImplementedException();
         }

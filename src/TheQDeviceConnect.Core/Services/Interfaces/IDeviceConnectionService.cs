@@ -3,9 +3,11 @@ namespace TheQDeviceConnect.Core.Services.Interfaces
 {
     public interface IDeviceConnectionService
     {
+        event EventHandler OnWifiNetworkChanged;
         void ConnectToWifiNetwork(string ssid, string password);
         void Initialize();
-        void GetCurrentNetwork();
+        string GetConnectedNetworkSSID();
+        bool IsConnectedToHotspot();
     }
 
 
