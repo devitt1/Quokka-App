@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using MvvmCross.Commands;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 using TheQDeviceConnect.Core.Helpers;
@@ -15,6 +16,19 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
             DEFAULT, // Initial connection, no configuration made
             CONNECTING,// User made configuration, waiting for connection
             HOTSPOT_CONNECTED,
+        }
+
+        public MvxAsyncCommand GoToWifiConnectionViewModelCommand { get; private set; }
+
+        public HotspotConnectionViewModel(ILoggerFactory logProvider, IMvxNavigationService navigationService) : base(logProvider, navigationService)
+        {
+            addMockedData();
+            GoToWifiConnectionViewModelCommand = new MvxAsyncCommand(GoToWifiConnectionVMAsync);
+        }
+        
+        private async Task GoToWifiConnectionVMAsync()
+        {
+            await NavigationService.Navigate<WifiConnectionViewModel>();
         }
 
         private WifiNetworkConnectionState _wifiConnectionState;
@@ -71,11 +85,6 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
                 RaisePropertyChanged(() => WifiNetworkVMs);
             }
         }
-
-        public HotspotConnectionViewModel(ILoggerFactory logProvider, IMvxNavigationService navigationService) : base(logProvider, navigationService)
-        {
-            addMockedData();
-        }  
 
         private void addMockedData()
         {

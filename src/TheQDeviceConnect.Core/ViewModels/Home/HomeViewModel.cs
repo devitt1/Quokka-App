@@ -13,7 +13,6 @@ namespace TheQDeviceConnect.Core.ViewModels.Home
         public HomeViewModel(ILoggerFactory logProvider, IMvxNavigationService navigationService) : base(logProvider, navigationService)
         {
             GoToHotspotConnectionViewModelCommand = new MvxAsyncCommand(GoToHotspotConnectionVMAsync);
-
         }
 
         public MvxAsyncCommand GoToHotspotConnectionViewModelCommand { get; private set; }

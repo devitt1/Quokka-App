@@ -183,7 +183,6 @@
                     HorizontalOptions="Center"
                     VerticalOptions="EndAndExpand"
                     Margin="0, 0, 0,20"
-                    Command="{mvx:MvxBind GoToHotspotViewModelCommand}"
                     >
                 </Button>
             </StackLayout>
@@ -244,8 +243,7 @@
 
                 <Button
                     Text="NEXT"
-                    BackgroundColor="Transparent"
-                    TextColor="#1F2E4D"
+                    TextColor="White"
                     FontAttributes="Bold"
                     FontSize="16"
                     HeightRequest="50"
@@ -254,17 +252,17 @@
                     HorizontalOptions="Center"
                     VerticalOptions="End"
                     Margin="0, 0, 0, 20"
-                    Command="{mvx:MvxBind GoToHotspotViewModelCommand}"
+                    Command="{mvx:MvxBind GoToWifiConnectionViewModelCommand}"
                     >
                     <Button.Background>
-                    <LinearGradientBrush
-                        StartPoint="0,0"
-                        EndPoint="1,1">
-                        <GradientStop Color="#2B2B2B" Offset="0.0" />
-                        <GradientStop Color="#1E2023" Offset="0.5" />
-                        <GradientStop Color="#1F2E4D" Offset="1"/>
-                    </LinearGradientBrush>
-                </Button.Background>
+                        <LinearGradientBrush
+                            StartPoint="0,0"
+                            EndPoint="1,1">
+                            <GradientStop Color="#2B2B2B" Offset="0.0" />
+                            <GradientStop Color="#1E2023" Offset="0.5" />
+                            <GradientStop Color="#1F2E4D" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
                 </Button>
             </StackLayout>
 
