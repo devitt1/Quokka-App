@@ -9,6 +9,7 @@
     x:Class="TheQDeviceConnect.UI.Pages.WifiConnectionPage"
     xmlns:converters="clr-namespace:TheQDeviceConnect.UI.Converters"
     xmlns:selector="clr-namespace:TheQDeviceConnect.UI.TemplateSelector"
+    xmlns:locals="clr-namespace:TheQDeviceConnect.UI.CustomUI"    
     xmlns:repeaterView="clr-namespace:TheQDeviceConnect.UI.RepeaterView"
     xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
     xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
@@ -27,34 +28,47 @@
                 x:Key="defaultWifiNetworksTemplate">
                 <views:MvxViewCell>
                     <StackLayout
+                        x:Name="WifiNetworkRowItem"
                         Orientation="Vertical"
                         HorizontalOptions="FillAndExpand"
                         VerticalOptions="FillAndExpand"
-                        Margin="0, 5, 0, 5"
-                        >
+                        Margin="0, 0, 0, 0"
+                        BackgroundColor="{Binding IsSelected, Mode=OneWay,
+                        Converter={StaticResource itemSelectedBackgroundColourConverter}}">
+                        
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer
+                                Command="{mvx:MvxBind WifiNetworkRowItemClickedCommand}">
+                            </TapGestureRecognizer>
+
+                        </StackLayout.GestureRecognizers>
+                        <BoxView
+                            Margin="5,0,5,0"
+                            BackgroundColor="#DDE0E5" HeightRequest="1"/>
                         <StackLayout
+                            Margin="0, 10, 0, 10"
                             Orientation="Horizontal"
                             HorizontalOptions="FillAndExpand"
                             VerticalOptions="FillAndExpand">
 
                              <Label
+                                Margin="32, 0, 0, 0"
                                 Grid.Column="0"
                                 Grid.Row="0"
                                 HorizontalOptions="StartAndExpand"
                                 VerticalOptions="CenterAndExpand"
-                                Text="SSID">
+                                Text="{mvx:MvxBind ssid}">
                             </Label>
-
                            
                             <Image
-                                Margin="0, 0, 5, 0"
+                                Margin="0, 0, 32, 0"
                                 WidthRequest="24"
                                 HeightRequest="17"
                                 HorizontalOptions="Start"
                                 VerticalOptions="CenterAndExpand"
                                 Source="wifi_icon">
                             </Image>
-                            <Image
+                            <!--<Image
                                 Grid.Column="0"
                                 Grid.Row="0"
                                 WidthRequest="21"
@@ -62,9 +76,11 @@
                                 HorizontalOptions="Start"
                                 VerticalOptions="CenterAndExpand"
                                 Source="info_icon">
-                            </Image>
+                            </Image>-->
                         </StackLayout>
-                        <BoxView BackgroundColor="#DDE0E5" HeightRequest="1"/>
+                        <BoxView
+                            Margin="5,0,5,0"
+                            BackgroundColor="#DDE0E5" HeightRequest="1"/>
                     </StackLayout>
                 </views:MvxViewCell>
             </DataTemplate>
@@ -74,6 +90,7 @@
             </selector:WifiNetworksTemplateSelector>
             <converters:ConnectionStateConverter x:Key="connectionStateConverter"/>
             <converters:BoolConverter x:Key="boolConverter"/>
+            <converters:ItemSelectedBackgroundColourConverter x:Key="itemSelectedBackgroundColourConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
@@ -81,11 +98,12 @@
             x:Name="ParentWifiConnectionPage"
             Orientation="Vertical">
 
-            <StackLayout
+            <!--<StackLayout
                 x:Name="WifiConnectionSelectPage"
                 Orientation="Vertical"
                 VerticalOptions="FillAndExpand"
-                HorizontalOptions="FillAndExpand">
+                HorizontalOptions="FillAndExpand"
+                IsVisible="false">
 
                 <Label
                     Margin="0, 53, 0, 0"
@@ -112,24 +130,144 @@
                     TextColor="#42404A"
                     FontSize="16"
                     Margin="0, 0, 0, 20"
-                    VerticalOptions="Start" 
+                    VerticalOptions="Start"
                     HorizontalOptions="CenterAndExpand"/>
-                <BoxView Margin="12, 0, 12, 0" BackgroundColor="#DDE0E5" HeightRequest="1"/>
+
                 <repeaterView:RepeaterView
-                        Margin="32, 0, 32, 0"
-                        x:Name="devicesList"
+                        x:Name="WifiNetworksRepeaterView"
                         BackgroundColor="Transparent"
                         HorizontalOptions="FillAndExpand"
                         VerticalOptions="Start"
                         ItemTemplate="{StaticResource WifiNetworksTemplateSelector}"
                         ItemsSource="{mvx:MvxBind WifiNetworkVMs}">
                  </repeaterView:RepeaterView>
-                 <BoxView Margin="12, 0, 12, 0" BackgroundColor="#DDE0E5" HeightRequest="1"/>
+                 <BoxView
+                     Margin="5, 0, 5, 10"
+                     HorizontalOptions="FillAndExpand"
+                     VerticalOptions="EndAndExpand"
+                     BackgroundColor="#DDE0E5"
+                     HeightRequest="1"/>
 
-            </StackLayout>
+                 <views:MvxListView
+                     x:Name="WifiNetworksListView"
+                     ItemsSource="{mvx:MvxBind WifiNetworkVMs}"
+                     ItemTemplate="{StaticResource WifiNetworksTemplateSelector}"
+                     SelectionMode="Single"
+                     ItemClick="{mvx:MvxBind HandleWifiNetworkSelectedCommand}"
+                     SeparatorVisibility="Default"
+                     Margin="32, 0, 32, 0"
+                     BackgroundColor="Transparent"
+                     HorizontalOptions="FillAndExpand"
+                     VerticalOptions="Start"
+                     IsVisible="true">
+                     
+                     <ListView.ItemTemplate>
+                         <DataTemplate>
+                             <ViewCell>
+                                 <ViewCell.View>
 
-            <Button
-                    Text="Cancel"
+                                 </ViewCell.View>
+                             </ViewCell>
+                         </DataTemplate>
+                     </ListView.ItemTemplate>
+                 </views:MvxListView>
+                <BoxView Margin="5, 0, 5, 0" BackgroundColor="#DDE0E5" HeightRequest="1"/>
+                    <Button
+                        Text="Cancel"
+                        BackgroundColor="Transparent"
+                        TextColor="#1F2E4D"
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        HeightRequest="50"
+                        IsEnabled="True"
+                        WidthRequest="200"
+                        HorizontalOptions="Center"
+                        VerticalOptions="End"
+                        Margin="0, 0, 0, 10">
+                    </Button>
+
+                    <Button
+                        x:Name="nextToWifiNetworkPasswordInsertPage"
+                        Text="NEXT"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        HeightRequest="50"
+                        IsEnabled="True"
+                        WidthRequest="200"
+                        HorizontalOptions="Center"
+                        VerticalOptions="End"
+                        Margin="0, 0, 0, 20"
+                        Command="{mvx:MvxBind GoToWifiConnectionViewModelCommand}">
+                        <Button.Background>
+                            <LinearGradientBrush
+                                StartPoint="0,0"
+                                EndPoint="1,1">
+                                <GradientStop Color="#2B2B2B" Offset="0.0" />
+                                <GradientStop Color="#1E2023" Offset="0.5" />
+                                <GradientStop Color="#1F2E4D" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+            </StackLayout>-->
+
+            <StackLayout
+                x:Name="WifiNetworkPasswordInsertPage"
+                Orientation="Vertical"
+                VerticalOptions="FillAndExpand"
+                HorizontalOptions="FillAndExpand"
+                IsVisible="false">
+
+                <Label
+                    Margin="0, 53, 0, 0"
+                    Text="Connect The Q to the same&#10;Wi-Fi network as your&#10;mobile"
+                    HorizontalTextAlignment="Center"
+                    TextColor="#222225"
+                    FontSize="20"
+                    VerticalOptions="Start"
+                    HorizontalOptions="CenterAndExpand"/>
+
+                <Label
+                    Text="STEP 4"
+                    TextColor="#222225"
+                    FontAttributes="Bold"
+                    HorizontalTextAlignment="Center"
+                    Margin="0, 10, 0, 10"
+                    FontSize="15"
+                    VerticalOptions="Start" 
+                    HorizontalOptions="CenterAndExpand"/>
+
+                <Label
+                    Text="Enter password for ‘Wifi name 1’"
+                    HorizontalTextAlignment="Center"
+                    TextColor="#42404A"
+                    FontSize="16"
+                    Margin="0, 0, 0, 20"
+                    VerticalOptions="Start"
+                    HorizontalOptions="CenterAndExpand"/>
+
+                <!--<Entry
+                    BackgroundColor="White"
+                    IsPassword="True"
+                    IsEnabled="True"
+                    HorizontalOptions="CenterAndExpand"
+                    Text="Should be displayed somewhere here..."
+                    VerticalOptions="Start"
+                    x:Name="PasswordEntry">
+                </Entry>-->
+
+                <locals:CustomEntry
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="Start"
+                    Margin="24, 0, 24, 0"
+                    HeightRequest="70"
+                    >
+
+                </locals:CustomEntry>
+
+
+                <Button
+                    Text="Back"
                     BackgroundColor="Transparent"
                     TextColor="#1F2E4D"
                     FontAttributes="Bold"
@@ -140,9 +278,10 @@
                     HorizontalOptions="Center"
                     VerticalOptions="EndAndExpand"
                     Margin="0, 0, 0, 10">
-            </Button>
+                </Button>
 
-             <Button
+                <Button
+                    x:Name="nextToConnectingToWifiPage"
                     Text="NEXT"
                     TextColor="White"
                     FontAttributes="Bold"
@@ -153,8 +292,7 @@
                     HorizontalOptions="Center"
                     VerticalOptions="End"
                     Margin="0, 0, 0, 20"
-                    Command="{mvx:MvxBind GoToWifiConnectionViewModelCommand}"
-                    >
+                    Command="{mvx:MvxBind GoToWifiConnectionViewModelCommand}">
                     <Button.Background>
                         <LinearGradientBrush
                             StartPoint="0,0"
@@ -164,7 +302,124 @@
                             <GradientStop Color="#1F2E4D" Offset="1"/>
                         </LinearGradientBrush>
                     </Button.Background>
-            </Button>
+                </Button>
+            </StackLayout>
+
+            <StackLayout
+                Orientation="Vertical"
+                x:Name="WifiConnectingPage"
+                VerticalOptions="FillAndExpand"
+                HorizontalOptions="FillAndExpand"
+                IsVisible="false">
+                <Label
+                    Margin="0, 53, 0, 0"
+                    Text="Connecting to Wi-Fi"
+                    FontAttributes="Bold"
+                    HorizontalTextAlignment="Center"
+                    TextColor="#222225"
+                    FontSize="20"
+                    VerticalOptions="Start"
+                    HorizontalOptions="CenterAndExpand"/>
+
+                 <Label
+                    Margin="0, 49, 0, 0"
+                    Text="Please wait ..."
+                    HorizontalTextAlignment="Center"
+                    TextColor="#42404A"
+                    FontSize="15"
+                    VerticalOptions="Start"
+                    HorizontalOptions="CenterAndExpand"/>
+
+               <ActivityIndicator
+                    VerticalOptions="Start"
+                    HorizontalOptions="Center"
+                    Color="#7BAADC"
+                    Margin="0, 30, 0, 0"
+                    HeightRequest="60"
+                    WidthRequest="60"
+                    IsRunning="True">
+                    <ActivityIndicator.Scale>
+                        <OnPlatform
+                            x:TypeArguments="x:Double"
+                            iOS="1"
+                            Android="1">
+                        </OnPlatform>
+                    </ActivityIndicator.Scale>
+              </ActivityIndicator>
+
+                <!--<Button
+                    Text="Cancel"
+                    BackgroundColor="Transparent"
+                    TextColor="#1F2E4D"
+                    FontAttributes="Bold"
+                    FontSize="16"
+                    HeightRequest="50"
+                    IsEnabled="True"
+                    WidthRequest="200"
+                    HorizontalOptions="Center"
+                    VerticalOptions="EndAndExpand"
+                    Margin="0, 0, 0,20"
+                    >
+                </Button>-->
+            </StackLayout>
+
+              <StackLayout
+                x:Name="WifiNetworkConnectedPage"
+                Orientation="Vertical"
+                VerticalOptions="FillAndExpand"
+                HorizontalOptions="FillAndExpand">
+
+                <Label
+                    Margin="0, 53, 0, 0"
+                    Text="Connect The Q to the same&#10;Wi-Fi network as your&#10;mobile"
+                    HorizontalTextAlignment="Center"
+                    TextColor="#222225"
+                    FontSize="20"
+                    VerticalOptions="Start"
+                    HorizontalOptions="CenterAndExpand"/>
+
+                <Label
+                    Text="STEP 4"
+                    TextColor="#222225"
+                    FontAttributes="Bold"
+                    HorizontalTextAlignment="Center"
+                    Margin="0, 10, 0, 10"
+                    FontSize="15"
+                    VerticalOptions="Start" 
+                    HorizontalOptions="CenterAndExpand"/>
+
+                <Label
+                    Text="The Q is now connected to the same&#10;Wi-Fi network as your mobile and the two&#10;devices are linked.&#10;&#10;Tap the button below to open the app."
+                    HorizontalTextAlignment="Center"
+                    TextColor="#42404A"
+                    FontSize="16"
+                    Margin="0, 0, 0, 20"
+                    VerticalOptions="Start"
+                    HorizontalOptions="CenterAndExpand"/>
+
+                <Button
+                    x:Name="openTheQButton"
+                    Text="OPEN THE Q"
+                    TextColor="White"
+                    FontAttributes="Bold"
+                    FontSize="16"
+                    HeightRequest="50"
+                    IsEnabled="True"
+                    WidthRequest="200"
+                    HorizontalOptions="Center"
+                    VerticalOptions="EndAndExpand"
+                    Margin="0, 0, 0, 20">
+                    <Button.Background>
+                        <LinearGradientBrush
+                            StartPoint="0,0"
+                            EndPoint="1,1">
+                            <GradientStop Color="#2B2B2B" Offset="0.0" />
+                            <GradientStop Color="#1E2023" Offset="0.5" />
+                            <GradientStop Color="#1F2E4D" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+            </StackLayout>
 
         </StackLayout>
     </ContentPage.Content>

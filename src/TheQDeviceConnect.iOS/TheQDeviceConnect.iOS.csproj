@@ -248,6 +248,7 @@
     <Folder Include="Resources\Media.xcassets\quokka.imageset\" />
     <Folder Include="Resources\Media.xcassets\wifi_icon.imageset\" />
     <Folder Include="Resources\Media.xcassets\button_bkg.imageset\" />
+    <Folder Include="CustomRenderer\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

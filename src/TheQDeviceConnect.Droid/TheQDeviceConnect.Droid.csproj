@@ -75,6 +75,7 @@
     <Compile Include="Views\SplashActivity.cs" />
     <Compile Include="Services\Implementations\DeviceConnectionService.cs" />
     <Compile Include="Views\RootViewActivity.cs" />
+    <Compile Include="CustomRenderer\CustomEntryRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProguardConfiguration Include="proguard.cfg" />
@@ -222,6 +223,7 @@
   <ItemGroup>
     <Folder Include="Services\" />
     <Folder Include="Services\Implementations\" />
+    <Folder Include="CustomRenderer\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

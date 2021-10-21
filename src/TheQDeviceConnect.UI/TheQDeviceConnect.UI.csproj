@@ -32,6 +32,7 @@
     <None Remove="Cells\" />
     <None Remove="TemplateSelector\" />
     <None Remove="Converters\" />
+    <None Remove="CustomUI\" />
   </ItemGroup>
   <ItemGroup>
     <None Update="App.xaml">
@@ -50,5 +51,6 @@
     <Folder Include="Cells\" />
     <Folder Include="TemplateSelector\" />
     <Folder Include="Converters\" />
+    <Folder Include="CustomUI\" />
   </ItemGroup>
 </Project>
