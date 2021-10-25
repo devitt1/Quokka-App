@@ -88,7 +88,6 @@
                 x:Key="WifiNetworksTemplateSelector"
                 DefaultWifiNetworksTemplate="{StaticResource defaultWifiNetworksTemplate}">
             </selector:WifiNetworksTemplateSelector>
-            <converters:ConnectionStateConverter x:Key="connectionStateConverter"/>
             <converters:BoolConverter x:Key="boolConverter"/>
             <converters:ItemSelectedBackgroundColourConverter x:Key="itemSelectedBackgroundColourConverter"/>
         </ResourceDictionary>

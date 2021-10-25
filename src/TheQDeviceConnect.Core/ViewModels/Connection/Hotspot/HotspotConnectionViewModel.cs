@@ -38,6 +38,12 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
             base.ViewAppeared();
         }
 
+        public override void ViewDisappeared()
+        {
+            base.ViewDisappeared();
+            WifiConnectionState = WifiNetworkConnectionState.HOTSPOT_CONNECTING;
+        }
+
         public override void ViewDestroy(bool viewFinishing = true)
         {
             base.ViewDestroy(viewFinishing);
@@ -81,11 +87,11 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
             {
                 _wifiConnectionState = value;
                 RaisePropertyChanged(() => WifiConnectionState);
-                RenderStateCondtionally(_wifiConnectionState);
+                RenderStateConditionally(_wifiConnectionState);
             }
         }
 
-        public void RenderStateCondtionally(WifiNetworkConnectionState state)
+        public void RenderStateConditionally(WifiNetworkConnectionState state)
         {
             switch (state)
             {
