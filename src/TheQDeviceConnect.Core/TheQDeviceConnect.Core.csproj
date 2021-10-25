@@ -16,11 +16,14 @@
     <None Remove="ViewModels\Connection\" />
     <None Remove="ViewModels\Connection\Hotspot\" />
     <None Remove="ViewModels\Root\" />
+    <None Remove="Xamarin.Forms" />
+    <None Remove="Constants\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MvvmCross" Version="8.0.2" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
     <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2196" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Helpers\" />
@@ -30,5 +33,6 @@
     <Folder Include="ViewModels\Connection\" />
     <Folder Include="ViewModels\Connection\Hotspot\" />
     <Folder Include="ViewModels\Root\" />
+    <Folder Include="Constants\" />
   </ItemGroup>
 </Project>

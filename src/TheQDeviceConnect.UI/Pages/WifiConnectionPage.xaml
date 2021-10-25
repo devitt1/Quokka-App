@@ -98,12 +98,13 @@
             x:Name="ParentWifiConnectionPage"
             Orientation="Vertical">
 
-            <!--<StackLayout
-                x:Name="WifiConnectionSelectPage"
+            <StackLayout
+                x:Name="WifiSelectionPage"
                 Orientation="Vertical"
                 VerticalOptions="FillAndExpand"
                 HorizontalOptions="FillAndExpand"
-                IsVisible="false">
+                IsVisible="{Binding ShouldDisplayWifiSelectionPage}"
+                >
 
                 <Label
                     Margin="0, 53, 0, 0"
@@ -148,7 +149,7 @@
                      BackgroundColor="#DDE0E5"
                      HeightRequest="1"/>
 
-                 <views:MvxListView
+                 <!--<views:MvxListView
                      x:Name="WifiNetworksListView"
                      ItemsSource="{mvx:MvxBind WifiNetworkVMs}"
                      ItemTemplate="{StaticResource WifiNetworksTemplateSelector}"
@@ -171,7 +172,7 @@
                          </DataTemplate>
                      </ListView.ItemTemplate>
                  </views:MvxListView>
-                <BoxView Margin="5, 0, 5, 0" BackgroundColor="#DDE0E5" HeightRequest="1"/>
+                <BoxView Margin="5, 0, 5, 0" BackgroundColor="#DDE0E5" HeightRequest="1"/>-->
                     <Button
                         Text="Cancel"
                         BackgroundColor="Transparent"
@@ -183,7 +184,9 @@
                         WidthRequest="200"
                         HorizontalOptions="Center"
                         VerticalOptions="End"
-                        Margin="0, 0, 0, 10">
+                        Margin="0, 0, 0, 10"
+                        Command="{mvx:MvxBind CloseCommand}"
+                        >
                     </Button>
 
                     <Button
@@ -198,7 +201,7 @@
                         HorizontalOptions="Center"
                         VerticalOptions="End"
                         Margin="0, 0, 0, 20"
-                        Command="{mvx:MvxBind GoToWifiConnectionViewModelCommand}">
+                        Command="{mvx:MvxBind ShowWifiNetworkPasswordInsertPageCommand}">
                         <Button.Background>
                             <LinearGradientBrush
                                 StartPoint="0,0"
@@ -209,14 +212,15 @@
                             </LinearGradientBrush>
                         </Button.Background>
                     </Button>
-            </StackLayout>-->
+            </StackLayout>
 
             <StackLayout
                 x:Name="WifiNetworkPasswordInsertPage"
                 Orientation="Vertical"
                 VerticalOptions="FillAndExpand"
                 HorizontalOptions="FillAndExpand"
-                IsVisible="false">
+                IsVisible="{Binding ShouldDisplayWifiNetworkPasswordInsertPage}">
+
 
                 <Label
                     Margin="0, 53, 0, 0"
@@ -267,7 +271,8 @@
 
 
                 <Button
-                    Text="Back"
+                    Text="BACK"
+                    Command="{mvx:MvxBind ShowWifiNetworkSelectionPageCommand}"
                     BackgroundColor="Transparent"
                     TextColor="#1F2E4D"
                     FontAttributes="Bold"
@@ -292,7 +297,8 @@
                     HorizontalOptions="Center"
                     VerticalOptions="End"
                     Margin="0, 0, 0, 20"
-                    Command="{mvx:MvxBind GoToWifiConnectionViewModelCommand}">
+                    Command="{mvx:MvxBind ShowWifiNetworkConnectingPageCommand}"
+                    >
                     <Button.Background>
                         <LinearGradientBrush
                             StartPoint="0,0"
@@ -310,7 +316,7 @@
                 x:Name="WifiConnectingPage"
                 VerticalOptions="FillAndExpand"
                 HorizontalOptions="FillAndExpand"
-                IsVisible="false">
+                IsVisible="{Binding ShouldDisplayWifiConnectingPage}">
                 <Label
                     Margin="0, 53, 0, 0"
                     Text="Connecting to Wi-Fi"
@@ -367,7 +373,8 @@
                 x:Name="WifiNetworkConnectedPage"
                 Orientation="Vertical"
                 VerticalOptions="FillAndExpand"
-                HorizontalOptions="FillAndExpand">
+                HorizontalOptions="FillAndExpand"
+                IsVisible="{Binding ShouldDisplayWifiConnectedPage}">
 
                 <Label
                     Margin="0, 53, 0, 0"

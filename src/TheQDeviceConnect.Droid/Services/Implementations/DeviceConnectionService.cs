@@ -10,6 +10,7 @@ using AndroidContext = Android.Content.Context;
 using Xamarin.Forms;
 using Android.Net;
 using System.Linq;
+using System.Timers;
 
 [assembly: Dependency(typeof(DeviceConnectionService))]
 namespace TheQDeviceConnect.Droid.Services.Implementations
@@ -20,15 +21,42 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
         private NetworkCallback _networkCallback;
         private ConnectivityManager _connectivityManager;
         public event EventHandler OnWifiNetworkChanged;
+        public event EventHandler OnConnectionTimerElapsed;
+        public Timer ConnectionTimer { get; set; }
 
         public DeviceConnectionService()
         {
             DebugHelper.Info(this, "called!");
+
         }
 
+        private void initTimer()
+        {
+            ConnectionTimer = new Timer(3000);
+            ConnectionTimer.Elapsed -= handleConnectionTimerElapsed;
+            ConnectionTimer.Elapsed += handleConnectionTimerElapsed;
+        }
+
+        public void StartConnectionTimer()
+        {
+            ConnectionTimer.Start();
+        }
+
+
+        public void StopConnectionTimer()
+        {
+            ConnectionTimer.Stop();
+        }
+
+        private void handleConnectionTimerElapsed(object sender, ElapsedEventArgs eventArgs)
+        {
+           OnConnectionTimerElapsed.Invoke(sender, eventArgs);
+        }
         public void Initialize()
         {
             DebugHelper.Info(this, "called");
+
+            initTimer();
             _wifiManager = AndroidAplication
                   .Context
                   .GetSystemService
@@ -57,11 +85,6 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
             };
 
             _connectivityManager.RegisterDefaultNetworkCallback(_networkCallback);
-
-        }
-
-        private void handleNetworkChanged(object sender, EventArgs e)
-        {
 
         }
 

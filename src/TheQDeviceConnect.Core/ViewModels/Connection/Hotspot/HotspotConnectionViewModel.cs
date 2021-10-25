@@ -5,18 +5,15 @@ using MvvmCross.Commands;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 using TheQDeviceConnect.Core.Helpers;
+using TheQDeviceConnect.Core.Constants;
 using TheQDeviceConnect.Core.Services.Interfaces;
+using Xamarin.Forms;
 
 namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
 {
     public class HotspotConnectionViewModel : BaseNavigationViewModel
     {
-        public enum WifiNetworkConnectionState
-        {
-            DEFAULT, // Initial connection, no configuration made
-            CONNECTING,// User made configuration, waiting for connection
-            HOTSPOT_CONNECTED,
-        }
+        IDeviceConnectionService _deviceConnectionService;
 
         public MvxAsyncCommand GoToWifiConnectionViewModelCommand { get; private set; }
 
@@ -24,11 +21,53 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
         {
             addMockedData();
             GoToWifiConnectionViewModelCommand = new MvxAsyncCommand(GoToWifiConnectionVMAsync);
+            _deviceConnectionService = DependencyService.Get<IDeviceConnectionService>();
+            _deviceConnectionService.Initialize();
+            _deviceConnectionService.OnWifiNetworkChanged += handleWifiNetworkChanged;
         }
         
+
+        public override Task Initialize()
+        {
+            WifiConnectionState = WifiNetworkConnectionState.DEFAULT;
+            return base.Initialize();
+        }
+
+        public override void ViewAppeared()
+        {
+            base.ViewAppeared();
+        }
+
+        public override void ViewDestroy(bool viewFinishing = true)
+        {
+            base.ViewDestroy(viewFinishing);
+        }
+
         private async Task GoToWifiConnectionVMAsync()
         {
             await NavigationService.Navigate<WifiConnectionViewModel>();
+        }
+
+        private void addMockedData()
+        {
+            WifiNetworkVMs.Add(new WifiNetworkViewModel()
+            {
+                ssid = "TheQHotSpot"
+            });
+            WifiNetworkVMs.Add(new WifiNetworkViewModel()
+            {
+                ssid = "Kogan"
+            });
+        }
+
+        void handleWifiNetworkChanged(object sender, EventArgs eventArgs)
+        {
+            DebugHelper.Info(this, "Connection changed!");
+            if (_deviceConnectionService.IsConnectedToHotspot())
+            {
+                DebugHelper.Info(this, "Connected to The Q Hotspot!");
+                WifiConnectionState = WifiNetworkConnectionState.HOTSPOT_CONNECTED;
+            }
         }
 
         private WifiNetworkConnectionState _wifiConnectionState;
@@ -42,6 +81,44 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
             {
                 _wifiConnectionState = value;
                 RaisePropertyChanged(() => WifiConnectionState);
+                RenderStateCondtionally(_wifiConnectionState);
+            }
+        }
+
+        public void RenderStateCondtionally(WifiNetworkConnectionState state)
+        {
+            switch (state)
+            {
+                case WifiNetworkConnectionState.DEFAULT:
+                    ShouldDisplayInstructionPage = true;
+                    ShouldDisplayConnectingPage = false;
+                    ShouldDisplayConfirmConnectedPage = false;
+                    break;
+                case WifiNetworkConnectionState.HOTSPOT_CONNECTING:
+                    ShouldDisplayInstructionPage = false;
+                    ShouldDisplayConnectingPage = true;
+                    ShouldDisplayConfirmConnectedPage = false;
+                    break;
+                case WifiNetworkConnectionState.HOTSPOT_CONNECTED:
+                    ShouldDisplayInstructionPage = false;
+                    ShouldDisplayConnectingPage = false;
+                    ShouldDisplayConfirmConnectedPage = true;
+                    break;
+            }
+        }
+
+        //Code-snippet generated template for public fields
+        private bool _shouldDisplayInstructionPage;
+        public bool ShouldDisplayInstructionPage
+        {
+            get
+            {
+                return _shouldDisplayInstructionPage;
+            }
+            set
+            {
+                (_shouldDisplayInstructionPage) = value;
+                RaisePropertyChanged(() => ShouldDisplayInstructionPage);
             }
         }
 
@@ -69,7 +146,6 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
             set
             {
                 _shouldDisplayConfirmConnectedPage = value;
-                ShouldDisplayConnectingPage = false;
                 RaisePropertyChanged(() => ShouldDisplayConfirmConnectedPage);
             }
         }
@@ -84,35 +160,6 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
                 _wifiNetworkVMs = value;
                 RaisePropertyChanged(() => WifiNetworkVMs);
             }
-        }
-
-        private void addMockedData()
-        {
-            WifiNetworkVMs.Add(new WifiNetworkViewModel()
-            {
-                ssid = "TheQHotSpot"
-            });
-            WifiNetworkVMs.Add(new WifiNetworkViewModel()
-            {
-                ssid = "Kogan"
-            });
-        }
-
-        public override Task Initialize()
-        {
-            WifiConnectionState = WifiNetworkConnectionState.DEFAULT;
-            return base.Initialize();
-        }
-
-        public override void ViewAppeared()
-        {
-            base.ViewAppeared();
-            DebugHelper.Info(this, "view appeared!");
-        }
-
-        public override void ViewDestroy(bool viewFinishing = true)
-        {
-            base.ViewDestroy(viewFinishing);
         }
     }
 }

@@ -12,6 +12,7 @@ namespace TheQDeviceConnect.Core.Services.Implementations
         }
 
         public event EventHandler OnWifiNetworkChanged;
+        public event EventHandler OnConnectionTimerElapsed;
 
         public void ConnectToWifiNetwork(string ssid, string password)
         {
@@ -29,6 +30,16 @@ namespace TheQDeviceConnect.Core.Services.Implementations
         }
 
         public bool IsConnectedToHotspot()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void StartConnectionTimer()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void StopConnectionTimer()
         {
             throw new NotImplementedException();
         }
