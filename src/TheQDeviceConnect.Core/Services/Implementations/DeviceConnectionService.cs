@@ -34,6 +34,11 @@ namespace TheQDeviceConnect.Core.Services.Implementations
             throw new NotImplementedException();
         }
 
+        public void OpenWifiSettings()
+        {
+            throw new NotImplementedException();
+        }
+
         public void StartConnectionTimer()
         {
             throw new NotImplementedException();

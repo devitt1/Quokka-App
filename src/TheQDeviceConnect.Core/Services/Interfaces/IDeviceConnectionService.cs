@@ -8,6 +8,7 @@ namespace TheQDeviceConnect.Core.Services.Interfaces
         void ConnectToWifiNetwork(string ssid, string password);
         void Initialize();
         string GetConnectedNetworkSSID();
+        void OpenWifiSettings();
         bool IsConnectedToHotspot();
 
         void StartConnectionTimer();

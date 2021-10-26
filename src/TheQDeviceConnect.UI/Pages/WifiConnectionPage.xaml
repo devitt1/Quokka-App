@@ -241,8 +241,9 @@
                     HorizontalOptions="CenterAndExpand"/>
 
                 <Label
-                    Text="Enter password for ‘Wifi name 1’"
+                    x:Name="PasswordEntryLbl"
                     HorizontalTextAlignment="Center"
+                    Text="{Binding SelectedWifiNetworkSSID, StringFormat='Enter password for &quot;{0}&quot;'}"
                     TextColor="#42404A"
                     FontSize="16"
                     Margin="0, 0, 0, 20"
@@ -264,6 +265,7 @@
                     VerticalOptions="Start"
                     Margin="24, 0, 24, 0"
                     HeightRequest="70"
+                    IsPassword="True"
                     >
 
                 </locals:CustomEntry>

@@ -21,7 +21,7 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
             _deviceConnectionService.OnConnectionTimerElapsed += handleConnectionTimerElapsed;
 
             addMockedData();
-            CloseCommand = new MvxAsyncCommand(CloseAsync);
+            CloseCommand = new MvxAsyncCommand(CloseAsync, allowConcurrentExecutions: true);
             ShowWifiNetworkPasswordInsertPageCommand = new MvxCommand(ShowWifiNetworkPasswordInsertPage);
             ShowWifiNetworkSelectionPageCommand = new MvxCommand(ShowWifiNetworkSelectionPage);
             ShowWifiNetworkConnectingPageCommand = new MvxCommand(ShowWifiNetworkConnectingPage);
@@ -44,6 +44,7 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
         public override Task Initialize()
         {
             WifiConnectionState = WifiNetworkConnectionState.WIFI_SELECTING;
+            SelectedWifiNetworkSSID = "";
             return base.Initialize();
         }
 
@@ -185,6 +186,17 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
             }
         }
 
+        private string _selectedWifiNetworkSSID;
+        public string SelectedWifiNetworkSSID {
+            get {
+                return _selectedWifiNetworkSSID;
+            }
+            set {
+                _selectedWifiNetworkSSID = value;
+                RaisePropertyChanged(() => SelectedWifiNetworkSSID);
+            }
+        }
+
         private WifiNetworkViewModel _selectedWifiNetworkVM;
         public WifiNetworkViewModel SelectedWifiNetworkVM
         {
@@ -192,6 +204,7 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
             set
             {
                 _selectedWifiNetworkVM = value;
+                SelectedWifiNetworkSSID = SelectedWifiNetworkVM.ssid;
                 RaisePropertyChanged(() => SelectedWifiNetworkVM);
             }
         }

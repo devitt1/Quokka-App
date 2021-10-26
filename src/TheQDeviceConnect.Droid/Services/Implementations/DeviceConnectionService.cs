@@ -11,6 +11,8 @@ using Xamarin.Forms;
 using Android.Net;
 using System.Linq;
 using System.Timers;
+using Android.Content;
+using TheQDeviceConnect.Droid.Views;
 
 [assembly: Dependency(typeof(DeviceConnectionService))]
 namespace TheQDeviceConnect.Droid.Services.Implementations
@@ -52,6 +54,16 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
         {
            OnConnectionTimerElapsed.Invoke(sender, eventArgs);
         }
+
+        [Obsolete]
+        public void OpenWifiSettings()
+        {
+            Intent intent = new Intent(Android.Provider.Settings.ActionWifiSettings);
+            intent.SetFlags(ActivityFlags.NewTask);
+            Forms.Context.StartActivity(intent);
+            
+        }
+
         public void Initialize()
         {
             DebugHelper.Info(this, "called");

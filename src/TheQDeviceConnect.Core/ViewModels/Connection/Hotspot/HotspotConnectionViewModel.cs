@@ -16,17 +16,23 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
         IDeviceConnectionService _deviceConnectionService;
 
         public MvxAsyncCommand GoToWifiConnectionViewModelCommand { get; private set; }
+        public MvxCommand OpenAppWifiSettingsCommand { get; private set; }
 
         public HotspotConnectionViewModel(ILoggerFactory logProvider, IMvxNavigationService navigationService) : base(logProvider, navigationService)
         {
             addMockedData();
-            GoToWifiConnectionViewModelCommand = new MvxAsyncCommand(GoToWifiConnectionVMAsync);
+            GoToWifiConnectionViewModelCommand = new MvxAsyncCommand(GoToWifiConnectionVMAsync, allowConcurrentExecutions: true);
+            OpenAppWifiSettingsCommand = new MvxCommand(OpenWifiSettings);
             _deviceConnectionService = DependencyService.Get<IDeviceConnectionService>();
             _deviceConnectionService.Initialize();
             _deviceConnectionService.OnWifiNetworkChanged += handleWifiNetworkChanged;
         }
         
-
+        private void OpenWifiSettings()
+        {
+            _deviceConnectionService.OpenWifiSettings();
+            WifiConnectionState = WifiNetworkConnectionState.HOTSPOT_CONNECTING;
+        }
         public override Task Initialize()
         {
             WifiConnectionState = WifiNetworkConnectionState.DEFAULT;
@@ -41,7 +47,6 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
         public override void ViewDisappeared()
         {
             base.ViewDisappeared();
-            WifiConnectionState = WifiNetworkConnectionState.HOTSPOT_CONNECTING;
         }
 
         public override void ViewDestroy(bool viewFinishing = true)
@@ -54,6 +59,7 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
             await NavigationService.Navigate<WifiConnectionViewModel>();
         }
 
+       
         private void addMockedData()
         {
             WifiNetworkVMs.Add(new WifiNetworkViewModel()
