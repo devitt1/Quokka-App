@@ -76,6 +76,7 @@
     <Compile Include="Services\Implementations\DeviceConnectionService.cs" />
     <Compile Include="Views\RootViewActivity.cs" />
     <Compile Include="CustomRenderer\CustomEntryRenderer.cs" />
+    <Compile Include="CustomRenderer\CustomButtonRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProguardConfiguration Include="proguard.cfg" />

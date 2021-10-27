@@ -9,7 +9,7 @@
     x:Class="TheQDeviceConnect.UI.Pages.WifiConnectionPage"
     xmlns:converters="clr-namespace:TheQDeviceConnect.UI.Converters"
     xmlns:selector="clr-namespace:TheQDeviceConnect.UI.TemplateSelector"
-    xmlns:locals="clr-namespace:TheQDeviceConnect.UI.CustomUI"    
+    xmlns:customui="clr-namespace:TheQDeviceConnect.UI.CustomUI"    
     xmlns:repeaterView="clr-namespace:TheQDeviceConnect.UI.RepeaterView"
     xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
     xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
@@ -90,6 +90,7 @@
             </selector:WifiNetworksTemplateSelector>
             <converters:BoolConverter x:Key="boolConverter"/>
             <converters:ItemSelectedBackgroundColourConverter x:Key="itemSelectedBackgroundColourConverter"/>
+            <converters:ShouldEnableNextToPasswordEntryButtonConverter x:Key="shouldEnableNextToPasswordEntryButtonConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
@@ -148,32 +149,9 @@
                      BackgroundColor="#DDE0E5"
                      HeightRequest="1"/>
 
-                 <!--<views:MvxListView
-                     x:Name="WifiNetworksListView"
-                     ItemsSource="{mvx:MvxBind WifiNetworkVMs}"
-                     ItemTemplate="{StaticResource WifiNetworksTemplateSelector}"
-                     SelectionMode="Single"
-                     ItemClick="{mvx:MvxBind HandleWifiNetworkSelectedCommand}"
-                     SeparatorVisibility="Default"
-                     Margin="32, 0, 32, 0"
-                     BackgroundColor="Transparent"
-                     HorizontalOptions="FillAndExpand"
-                     VerticalOptions="Start"
-                     IsVisible="true">
-                     
-                     <ListView.ItemTemplate>
-                         <DataTemplate>
-                             <ViewCell>
-                                 <ViewCell.View>
-
-                                 </ViewCell.View>
-                             </ViewCell>
-                         </DataTemplate>
-                     </ListView.ItemTemplate>
-                 </views:MvxListView>
-                <BoxView Margin="5, 0, 5, 0" BackgroundColor="#DDE0E5" HeightRequest="1"/>-->
-                    <Button
-                        Text="Cancel"
+                    <customui:CustomButton
+                        IsUnderline="True"
+                        Text="CANCEL"
                         BackgroundColor="Transparent"
                         TextColor="#1F2E4D"
                         FontAttributes="Bold"
@@ -186,8 +164,11 @@
                         Margin="0, 0, 0, 10"
                         Command="{mvx:MvxBind CloseCommand}"
                         >
-                    </Button>
+                    </customui:CustomButton>
 
+                     <!--IsEnabled Property must be set
+                        after Command Property
+                        for button to behave properly-->
                     <Button
                         x:Name="nextToWifiNetworkPasswordInsertPage"
                         Text="NEXT"
@@ -195,12 +176,13 @@
                         FontAttributes="Bold"
                         FontSize="16"
                         HeightRequest="50"
-                        IsEnabled="True"
                         WidthRequest="200"
                         HorizontalOptions="Center"
                         VerticalOptions="End"
                         Margin="0, 0, 0, 20"
-                        Command="{mvx:MvxBind ShowWifiNetworkPasswordInsertPageCommand}">
+                        Command="{Binding ShowWifiNetworkPasswordInsertPageCommand}"
+                        IsEnabled="{Binding SelectedWifiNetworkVM, Mode=OneWay,Converter ={StaticResource shouldEnableNextToPasswordEntryButtonConverter}}"
+                        >
                         <Button.Background>
                             <LinearGradientBrush
                                 StartPoint="0,0"
@@ -219,7 +201,6 @@
                 VerticalOptions="FillAndExpand"
                 HorizontalOptions="FillAndExpand"
                 IsVisible="{Binding ShouldDisplayWifiNetworkPasswordInsertPage}">
-
 
                 <Label
                     Margin="0, 53, 0, 0"
@@ -250,17 +231,7 @@
                     VerticalOptions="Start"
                     HorizontalOptions="CenterAndExpand"/>
 
-                <!--<Entry
-                    BackgroundColor="White"
-                    IsPassword="True"
-                    IsEnabled="True"
-                    HorizontalOptions="CenterAndExpand"
-                    Text="Should be displayed somewhere here..."
-                    VerticalOptions="Start"
-                    x:Name="PasswordEntry">
-                </Entry>-->
-
-                <locals:CustomEntry
+                <customui:CustomEntry
                     HorizontalOptions="FillAndExpand"
                     VerticalOptions="Start"
                     Margin="24, 0, 24, 0"
@@ -268,11 +239,12 @@
                     IsPassword="True"
                     >
 
-                </locals:CustomEntry>
+                </customui:CustomEntry>
 
 
-                <Button
+                <customui:CustomButton
                     Text="BACK"
+                    IsUnderline="True"
                     Command="{mvx:MvxBind ShowWifiNetworkSelectionPageCommand}"
                     BackgroundColor="Transparent"
                     TextColor="#1F2E4D"
@@ -284,9 +256,9 @@
                     HorizontalOptions="Center"
                     VerticalOptions="EndAndExpand"
                     Margin="0, 0, 0, 10">
-                </Button>
+                </customui:CustomButton>
 
-                <Button
+                <customui:CustomButton
                     x:Name="nextToConnectingToWifiPage"
                     Text="NEXT"
                     TextColor="White"
@@ -309,7 +281,7 @@
                             <GradientStop Color="#1F2E4D" Offset="1"/>
                         </LinearGradientBrush>
                     </Button.Background>
-                </Button>
+                </customui:CustomButton>
             </StackLayout>
 
             <StackLayout
@@ -353,21 +325,6 @@
                         </OnPlatform>
                     </ActivityIndicator.Scale>
               </ActivityIndicator>
-
-                <!--<Button
-                    Text="Cancel"
-                    BackgroundColor="Transparent"
-                    TextColor="#1F2E4D"
-                    FontAttributes="Bold"
-                    FontSize="16"
-                    HeightRequest="50"
-                    IsEnabled="True"
-                    WidthRequest="200"
-                    HorizontalOptions="Center"
-                    VerticalOptions="EndAndExpand"
-                    Margin="0, 0, 0,20"
-                    >
-                </Button>-->
             </StackLayout>
 
               <StackLayout
@@ -405,7 +362,7 @@
                     VerticalOptions="Start"
                     HorizontalOptions="CenterAndExpand"/>
 
-                <Button
+                <customui:CustomButton
                     x:Name="openTheQButton"
                     Text="OPEN THE Q"
                     TextColor="White"
@@ -426,7 +383,7 @@
                             <GradientStop Color="#1F2E4D" Offset="1"/>
                         </LinearGradientBrush>
                     </Button.Background>
-                </Button>
+                </customui:CustomButton>
             </StackLayout>
 
         </StackLayout>

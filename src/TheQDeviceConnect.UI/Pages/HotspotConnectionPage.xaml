@@ -10,7 +10,7 @@
     xmlns:viewModels="clr-namespace:TheQDeviceConnect.Core.ViewModels.Connection.Hotspot;assembly=TheQDeviceConnect.Core"
     xmlns:selector="clr-namespace:TheQDeviceConnect.UI.TemplateSelector"
     xmlns:repeaterView="clr-namespace:TheQDeviceConnect.UI.RepeaterView"
-    xmlns:converters="clr-namespace:TheQDeviceConnect.UI.Converters"
+    xmlns:converters="clr-namespace:TheQDeviceConnect.UI.Converters" xmlns:customui="clr-namespace:TheQDeviceConnect.UI.CustomUI"
     x:Class="TheQDeviceConnect.UI.Pages.HotspotConnectionPage">
     <views:MvxContentPage.BackgroundColor>
         <OnPlatform x:TypeArguments="Color">
@@ -101,7 +101,7 @@
                         ItemsSource="{mvx:MvxBind WifiNetworkVMs}">
                  </repeaterView:RepeaterView>-->
               
-                <Button
+                <customui:CustomButton
                     Text="Go to settings"
                     TextColor="White"
                     FontAttributes="Bold"
@@ -124,7 +124,7 @@
                         </LinearGradientBrush>
                     </Button.Background>
 
-                </Button>
+                </customui:CustomButton>
             </StackLayout>
          
             <StackLayout
@@ -169,8 +169,9 @@
                     </ActivityIndicator.Scale>
               </ActivityIndicator>
 
-                <Button
+                <customui:CustomButton
                     Text="Cancel"
+                    IsUnderline="True"
                     BackgroundColor="Transparent"
                     TextColor="#1F2E4D"
                     FontAttributes="Bold"
@@ -181,8 +182,9 @@
                     HorizontalOptions="Center"
                     VerticalOptions="EndAndExpand"
                     Margin="0, 0, 0,20"
+                    Command="{mvx:MvxBind ShowHotspotInstructionPageCommand}"
                     >
-                </Button>
+                </customui:CustomButton>
             </StackLayout>
 
             <StackLayout
@@ -229,17 +231,24 @@
 
                  </Image>-->
 
-                 <Label
+                <customui:CustomButton
+                    IsUnderline="True"
                     Text="IT'S NOT FLASHING, START AGAIN"
-                    TextColor="#222225"
+                    BackgroundColor="Transparent"
+                    TextColor="#1F2E4D"
                     FontAttributes="Bold"
-                    HorizontalTextAlignment="Center"
-                    Margin="0, 0, 0, 10"
                     FontSize="16"
-                    VerticalOptions="EndAndExpand" 
-                    HorizontalOptions="CenterAndExpand"/>
+                    HeightRequest="50"
+                    IsEnabled="True"
+                    HorizontalOptions="CenterAndExpand"
+                    VerticalOptions="EndAndExpand"
+                    Margin="0, 0, 0, 10"
+                    Command="{mvx:MvxBind ShowHotspotInstructionPageCommand}"
+                    >
+                </customui:CustomButton>
 
-                <Button
+
+                <customui:CustomButton
                     Text="NEXT"
                     TextColor="White"
                     FontAttributes="Bold"
@@ -261,7 +270,7 @@
                             <GradientStop Color="#1F2E4D" Offset="1"/>
                         </LinearGradientBrush>
                     </Button.Background>
-                </Button>
+                </customui:CustomButton>
             </StackLayout>
 
         </StackLayout>
