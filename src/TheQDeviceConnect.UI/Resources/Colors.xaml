@@ -4,15 +4,7 @@
                     x:Class="TheQDeviceConnect.UI.Resources.Colors"
                     xmlns:local="clr-namespace:TheQDeviceConnect.UI.Resources">
 
-    <Color x:Key="PrimaryColor">#1C3351</Color>
-    <Color x:Key="PrimaryDarkColor">#008653</Color>
-    <Color x:Key="PrimaryLightColor">#64eab0</Color>
-
-    <Color x:Key="AccentColor">#E6AF2E</Color>
-    <Color x:Key="AccentDarkColor">#F47527</Color>
-    <Color x:Key="AccentLightColor">#b3c7d4</Color>
-
-    <Color x:Key="PrimaryTextColor">#FFFFFF</Color>
-    <Color x:Key="SecondaryTextColor">#E69975</Color>
-
+    <Color x:Key="PrimaryColor">#FFFFFF</Color>
+    <Color x:Key="PrimaryDarkColor">#000000</Color>
+    <Color x:Key="PrimaryLightColor">#4Dffffff</Color>
 </ResourceDictionary>
