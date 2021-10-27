@@ -14,7 +14,6 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
 {
     public class WifiConnectionViewModel : BaseNavigationViewModel
     {
-
         public WifiConnectionViewModel(ILoggerFactory logProvider, IMvxNavigationService navigationService) : base(logProvider, navigationService)
         {
             _deviceConnectionService = DependencyService.Get<IDeviceConnectionService>();
@@ -46,6 +45,10 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
             WifiConnectionState = WifiNetworkConnectionState.WIFI_SELECTING;
             SelectedWifiNetworkSSID = "";
             return base.Initialize();
+        }
+        public override void ViewAppeared()
+        {
+            base.ViewAppeared();
         }
 
         private void handleConnectionTimerElapsed(object sender, EventArgs eventArgs)
@@ -144,7 +147,6 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
         private void ShowWifiNetworkPasswordInsertPage()
         {
             WifiConnectionState = WifiNetworkConnectionState.WIFI_PASSWORD_ENTRY;
-
         }
 
         private void ShowWifiNetworkConnectingPage()

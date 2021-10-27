@@ -17,12 +17,14 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
 
         public MvxAsyncCommand GoToWifiConnectionViewModelCommand { get; private set; }
         public MvxCommand OpenAppWifiSettingsCommand { get; private set; }
+        public MvxCommand ShowHotspotInstructionPageCommand { get; private set; }
 
         public HotspotConnectionViewModel(ILoggerFactory logProvider, IMvxNavigationService navigationService) : base(logProvider, navigationService)
         {
             addMockedData();
             GoToWifiConnectionViewModelCommand = new MvxAsyncCommand(GoToWifiConnectionVMAsync, allowConcurrentExecutions: true);
             OpenAppWifiSettingsCommand = new MvxCommand(OpenWifiSettings);
+            ShowHotspotInstructionPageCommand = new MvxCommand(ShowHotspotInstructionPage);
             _deviceConnectionService = DependencyService.Get<IDeviceConnectionService>();
             _deviceConnectionService.Initialize();
             _deviceConnectionService.OnWifiNetworkChanged += handleWifiNetworkChanged;
@@ -33,6 +35,12 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
             _deviceConnectionService.OpenWifiSettings();
             WifiConnectionState = WifiNetworkConnectionState.HOTSPOT_CONNECTING;
         }
+
+        private void ShowHotspotInstructionPage()
+        {
+            WifiConnectionState = WifiNetworkConnectionState.DEFAULT;
+        }
+
         public override Task Initialize()
         {
             WifiConnectionState = WifiNetworkConnectionState.DEFAULT;
@@ -42,6 +50,14 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
         public override void ViewAppeared()
         {
             base.ViewAppeared();
+            if (_deviceConnectionService.IsConnectedToHotspot())
+            {
+                DebugHelper.Info(this, "Connected to The Q Hotspot!");
+                WifiConnectionState = WifiNetworkConnectionState.HOTSPOT_CONNECTED;
+            } else
+            {
+                WifiConnectionState = WifiNetworkConnectionState.DEFAULT;
+            }
         }
 
         public override void ViewDisappeared()
