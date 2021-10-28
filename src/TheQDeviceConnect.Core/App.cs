@@ -13,6 +13,11 @@ namespace TheQDeviceConnect.Core
                 .AsInterfaces()
                 .RegisterAsLazySingleton();
 
+            CreatableTypes()
+              .EndingWith("Client")
+              .AsInterfaces()
+              .RegisterAsLazySingleton();
+
             RegisterAppStart<HomeViewModel>();
         }
     }
