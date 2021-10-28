@@ -1,23 +1,58 @@
 ﻿using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+using MvvmCross.ViewModels;
+using TheQDeviceConnect.Core.DataModels;
 using TheQDeviceConnect.Core.Helpers;
+using TheQDeviceConnect.Core.Rest.Interfaces;
 using TheQDeviceConnect.Core.Services.Interfaces;
 
 namespace TheQDeviceConnect.Core.Services.Implementations
 {
     public class DeviceConnectionService : IDeviceConnectionService
     {
-        public DeviceConnectionService()
+        private readonly IRestClient _restClient;
+        public MvxObservableCollection<WifiNetwork> NearbyWifiNetwork { get; set; }
+
+        public DeviceConnectionService(IRestClient restClient)
         {
             DebugHelper.Info(this, "created!");
+            _restClient = restClient;
         }
 
         public event EventHandler OnWifiNetworkChanged;
         public event EventHandler OnConnectionTimerElapsed;
+        
 
         public void ConnectToWifiNetwork(string ssid, string password)
         {
             DebugHelper.Info(this, "called!");
         }
+
+        public async Task<MvxObservableCollection<WifiNetwork>> GetNearbyWifiNetworksAsync()
+        {
+            NearbyWifiNetwork = await _restClient.MakeApiCall<MvxObservableCollection<WifiNetwork>>("WifiNetwork/", HttpMethod.Get);
+            return NearbyWifiNetwork;
+        }
+
+        public async Task<bool> UpdateDeviceWifiNetworkCredential(string ssidArg, string passwordArg)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(ssidArg) && !string.IsNullOrEmpty(passwordArg))
+                {
+                    object data = new { ssid = ssidArg, password = passwordArg };
+                    await _restClient.MakeApiCall<WifiNetwork>("WifiNetwork/selected_wifi_network", HttpMethod.Put, data);
+                }
+                return true;
+
+            } catch (Exception e)
+            {
+                DebugHelper.Error(this, e);
+                return false;
+            }
+        }
+
 
         public string GetConnectedNetworkSSID()
         {
