@@ -18,12 +18,19 @@
     <None Remove="ViewModels\Root\" />
     <None Remove="Xamarin.Forms" />
     <None Remove="Constants\" />
+    <None Remove="Rest\" />
+    <None Remove="Rest\Implementations\" />
+    <None Remove="Rest\Interfaces\" />
+    <None Remove="Newtonsoft.Json" />
+    <None Remove="DataModels\" />
+    <None Remove="ViewModels\Converters\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MvvmCross" Version="8.0.2" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
     <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2196" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Helpers\" />
@@ -34,5 +41,10 @@
     <Folder Include="ViewModels\Connection\Hotspot\" />
     <Folder Include="ViewModels\Root\" />
     <Folder Include="Constants\" />
+    <Folder Include="Rest\" />
+    <Folder Include="Rest\Implementations\" />
+    <Folder Include="Rest\Interfaces\" />
+    <Folder Include="DataModels\" />
+    <Folder Include="ViewModels\Converters\" />
   </ItemGroup>
 </Project>
