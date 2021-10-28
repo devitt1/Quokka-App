@@ -8,13 +8,15 @@ using TheQDeviceConnect.Core.Helpers;
 using TheQDeviceConnect.Core.Constants;
 using TheQDeviceConnect.Core.Services.Interfaces;
 using Xamarin.Forms;
+using MvvmCross;
+using TheQDeviceConnect.Core.DataModels;
 
 namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
 {
     public class HotspotConnectionViewModel : BaseNavigationViewModel
     {
         IDeviceConnectionService _deviceConnectionService;
-
+        IDeviceConnectionService _coreDeviceConnectionService;
         public MvxAsyncCommand GoToWifiConnectionViewModelCommand { get; private set; }
         public MvxCommand OpenAppWifiSettingsCommand { get; private set; }
         public MvxCommand ShowHotspotInstructionPageCommand { get; private set; }
@@ -28,8 +30,18 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
             _deviceConnectionService = DependencyService.Get<IDeviceConnectionService>();
             _deviceConnectionService.Initialize();
             _deviceConnectionService.OnWifiNetworkChanged += handleWifiNetworkChanged;
+
+            _coreDeviceConnectionService = Mvx.IoCProvider.Resolve<IDeviceConnectionService>();
         }
-        
+
+        private async void preloadNearbyWifiNetworks()
+        {
+            WifiConnectionState = WifiNetworkConnectionState.HOTSPOT_CONNECTING;
+
+            await _coreDeviceConnectionService.GetNearbyWifiNetworksAsync();
+            WifiConnectionState = WifiNetworkConnectionState.HOTSPOT_CONNECTED;
+
+        }
         private void OpenWifiSettings()
         {
             _deviceConnectionService.OpenWifiSettings();
@@ -53,8 +65,10 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
             if (_deviceConnectionService.IsConnectedToHotspot())
             {
                 DebugHelper.Info(this, "Connected to The Q Hotspot!");
-                WifiConnectionState = WifiNetworkConnectionState.HOTSPOT_CONNECTED;
-            } else
+                preloadNearbyWifiNetworks();
+
+            }
+            else
             {
                 WifiConnectionState = WifiNetworkConnectionState.DEFAULT;
             }

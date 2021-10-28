@@ -31,7 +31,10 @@ namespace TheQDeviceConnect.Core.Services.Implementations
 
         public async Task<MvxObservableCollection<WifiNetwork>> GetNearbyWifiNetworksAsync()
         {
-            NearbyWifiNetwork = await _restClient.MakeApiCall<MvxObservableCollection<WifiNetwork>>("WifiNetwork/", HttpMethod.Get);
+            if (NearbyWifiNetwork == null)
+            {
+                NearbyWifiNetwork = await _restClient.MakeApiCall<MvxObservableCollection<WifiNetwork>>("WifiNetwork/", HttpMethod.Get);
+            }
             return NearbyWifiNetwork;
         }
 
