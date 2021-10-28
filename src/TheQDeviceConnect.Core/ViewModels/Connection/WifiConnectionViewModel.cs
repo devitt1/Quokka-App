@@ -2,12 +2,15 @@
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using MvvmCross;
 using MvvmCross.Commands;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 using TheQDeviceConnect.Core.Constants;
+using TheQDeviceConnect.Core.DataModels;
 using TheQDeviceConnect.Core.Helpers;
 using TheQDeviceConnect.Core.Services.Interfaces;
+using TheQDeviceConnect.Core.ViewModels.Converters;
 using Xamarin.Forms;
 
 namespace TheQDeviceConnect.Core.ViewModels.Connection
@@ -19,7 +22,9 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
             _deviceConnectionService = DependencyService.Get<IDeviceConnectionService>();
             _deviceConnectionService.OnConnectionTimerElapsed += handleConnectionTimerElapsed;
 
-            addMockedData();
+            _coreDeviceConnectionService = Mvx.IoCProvider.Resolve<IDeviceConnectionService>();
+
+            //addMockedData();
             CloseCommand = new MvxAsyncCommand(CloseAsync, allowConcurrentExecutions: true);
             ShowWifiNetworkPasswordInsertPageCommand = new MvxCommand(ShowWifiNetworkPasswordInsertPage);
             ShowWifiNetworkSelectionPageCommand = new MvxCommand(ShowWifiNetworkSelectionPage);
@@ -27,13 +32,32 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
             ShowWifiNetworkConnectedPageCommand = new MvxCommand(ShowWifiWifiNetworkConnectedPage);
         }
 
-        IDeviceConnectionService _deviceConnectionService;
+        IDeviceConnectionService _coreDeviceConnectionService; //Service from core
+        IDeviceConnectionService _deviceConnectionService; // Native 
         public IMvxAsyncCommand CloseCommand { get; private set; }
         public IMvxCommand ShowWifiNetworkSelectionPageCommand { get; private set; }
         public IMvxCommand ShowWifiNetworkPasswordInsertPageCommand { get; private set; }
         public IMvxCommand ShowWifiNetworkConnectingPageCommand { get; private set; }
         public IMvxCommand ShowWifiNetworkConnectedPageCommand { get; private set; }
 
+
+        private MvxNotifyTask _taskNotifier;
+        public MvxNotifyTask TaskNotifier
+        {
+            get => _taskNotifier;
+            private set => SetProperty(ref _taskNotifier, value);
+        }
+
+        private async Task GetNearbyWifiNetworksAsync()
+        {
+            MvxObservableCollection<WifiNetwork> result = await _coreDeviceConnectionService.GetNearbyWifiNetworksAsync();
+
+            if (result.Count > 0)
+            {
+                WifiNetworkVMs = WifiNetworkConverter.Convert(result);
+                registerPropertyChangedEventHandler(WifiNetworkVMs);
+            }
+        }
         private async Task CloseAsync()
         {
             await NavigationService.Close(this);
@@ -45,6 +69,12 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
             WifiConnectionState = WifiNetworkConnectionState.WIFI_SELECTING;
             SelectedWifiNetworkSSID = "";
             return base.Initialize();
+        }
+
+        public override void ViewAppearing()
+        {
+            base.ViewAppearing();
+            TaskNotifier = MvxNotifyTask.Create(GetNearbyWifiNetworksAsync);
         }
         public override void ViewAppeared()
         {
@@ -58,7 +88,7 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
         }
 
         
-        private void registerPropertyChangedEventHandler(MvxObservableCollection<IWifiNetworkViewModel> wifiNetworkViewModels)
+        private void registerPropertyChangedEventHandler(MvxObservableCollection<WifiNetworkViewModel> wifiNetworkViewModels)
         {
             foreach (IWifiNetworkViewModel wifiNetworkVM in wifiNetworkViewModels)
             {
@@ -66,7 +96,7 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
             }
         }
 
-        private void registerPropertyChangedEventHandler(IWifiNetworkViewModel wifiNetworkViewModel)
+        private void registerPropertyChangedEventHandler(WifiNetworkViewModel wifiNetworkViewModel)
         {
             wifiNetworkViewModel.PropertyChanged += handleWifiNetworkVMPropertyChanged;
 
@@ -74,7 +104,7 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
 
         private void handleWifiNetworkVMPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            DebugHelper.Info(this, "Changed!");
+            //DebugHelper.Info(this, "Changed!");
             if (e.PropertyName == "IsClicked")
             {
                 (sender as WifiNetworkViewModel).IsSelected = true;
@@ -153,7 +183,7 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
         {
 
             WifiConnectionState = WifiNetworkConnectionState.WIFI_CONNECTING;
-
+            _coreDeviceConnectionService.UpdateDeviceWifiNetworkCredential(SelectedWifiNetworkSSID, SelectedWifiNetworkPassword);
             _deviceConnectionService.StartConnectionTimer();
         }
 
@@ -177,8 +207,8 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
             }
         }
 
-        private MvxObservableCollection<IWifiNetworkViewModel> _wifiNetworkVMs = new MvxObservableCollection<IWifiNetworkViewModel>();
-        public MvxObservableCollection<IWifiNetworkViewModel> WifiNetworkVMs
+        private MvxObservableCollection<WifiNetworkViewModel> _wifiNetworkVMs = new MvxObservableCollection<WifiNetworkViewModel>();
+        public MvxObservableCollection<WifiNetworkViewModel> WifiNetworkVMs
         {
             get => _wifiNetworkVMs;
             set
@@ -196,6 +226,21 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
             set {
                 _selectedWifiNetworkSSID = value;
                 RaisePropertyChanged(() => SelectedWifiNetworkSSID);
+            }
+        }
+
+        //Code-snippet generated template for public fields
+        private string _selectedWifiNetworkPassword;
+        public string SelectedWifiNetworkPassword
+        {
+            get
+            {
+                return _selectedWifiNetworkPassword;
+            }
+            set
+            {
+                (_selectedWifiNetworkPassword) = value;
+                RaisePropertyChanged(() => SelectedWifiNetworkPassword);
             }
         }
 
