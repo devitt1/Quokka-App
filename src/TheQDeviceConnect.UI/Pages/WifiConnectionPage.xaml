@@ -133,15 +133,21 @@
                     Margin="0, 0, 0, 20"
                     VerticalOptions="Start"
                     HorizontalOptions="CenterAndExpand"/>
-
-                <repeaterView:RepeaterView
+                <ScrollView
+                    Orientation="Vertical"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="FillAndExpand">
+                     <repeaterView:RepeaterView
                         x:Name="WifiNetworksRepeaterView"
                         BackgroundColor="Transparent"
                         HorizontalOptions="FillAndExpand"
-                        VerticalOptions="Start"
+                        VerticalOptions="FillAndExpand"
                         ItemTemplate="{StaticResource WifiNetworksTemplateSelector}"
                         ItemsSource="{mvx:MvxBind WifiNetworkVMs}">
-                 </repeaterView:RepeaterView>
+                    </repeaterView:RepeaterView>
+
+                </ScrollView>
+               
                  <BoxView
                      Margin="5, 0, 5, 10"
                      HorizontalOptions="FillAndExpand"
@@ -169,8 +175,8 @@
                      <!--IsEnabled Property must be set
                         after Command Property
                         for button to behave properly-->
-                    <Button
-                        x:Name="nextToWifiNetworkPasswordInsertPage"
+                    <customui:CustomButton
+                        x:Name="nextToWifiNetworkPasswordInsertPageBtn"
                         Text="NEXT"
                         TextColor="White"
                         FontAttributes="Bold"
@@ -180,10 +186,29 @@
                         HorizontalOptions="Center"
                         VerticalOptions="End"
                         Margin="0, 0, 0, 20"
-                        Command="{Binding ShowWifiNetworkPasswordInsertPageCommand}"
+                        Command="{mvx:MvxBind ShowWifiNetworkPasswordInsertPageCommand}"
                         IsEnabled="{Binding SelectedWifiNetworkVM, Mode=OneWay,Converter ={StaticResource shouldEnableNextToPasswordEntryButtonConverter}}"
                         >
-                        <Button.Background>
+                        <customui:CustomButton.Style>
+                            <Style TargetType="Button">
+                                <Style.Triggers>
+                                    <Trigger TargetType="Button" Property="IsEnabled" Value="False">
+                                        <Setter Property="Background">
+                                           <Setter.Value>
+                                               <LinearGradientBrush
+                                                    StartPoint="0,0"
+                                                    EndPoint="1,1">
+                                                    <GradientStop Color="#772B2B2B" Offset="0" />
+                                                    <GradientStop Color="#771E2023" Offset="0.5" />
+                                                    <GradientStop Color="#771F2E4D" Offset="1"/>
+                                                </LinearGradientBrush>
+                                           </Setter.Value>
+                                        </Setter>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </customui:CustomButton.Style>
+                        <customui:CustomButton.Background>
                             <LinearGradientBrush
                                 StartPoint="0,0"
                                 EndPoint="1,1">
@@ -191,9 +216,10 @@
                                 <GradientStop Color="#1E2023" Offset="0.5" />
                                 <GradientStop Color="#1F2E4D" Offset="1"/>
                             </LinearGradientBrush>
-                        </Button.Background>
-                    </Button>
+                        </customui:CustomButton.Background>
+                    </customui:CustomButton>
             </StackLayout>
+
 
             <StackLayout
                 x:Name="WifiNetworkPasswordInsertPage"
@@ -237,6 +263,7 @@
                     Margin="24, 0, 24, 0"
                     HeightRequest="70"
                     IsPassword="True"
+                    Text="{Binding SelectedWifiNetworkPassword, Mode=OneWayToSource}"
                     >
 
                 </customui:CustomEntry>

@@ -21,10 +21,8 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
         {
             _deviceConnectionService = DependencyService.Get<IDeviceConnectionService>();
             _deviceConnectionService.OnConnectionTimerElapsed += handleConnectionTimerElapsed;
-
             _coreDeviceConnectionService = Mvx.IoCProvider.Resolve<IDeviceConnectionService>();
 
-            //addMockedData();
             CloseCommand = new MvxAsyncCommand(CloseAsync, allowConcurrentExecutions: true);
             ShowWifiNetworkPasswordInsertPageCommand = new MvxCommand(ShowWifiNetworkPasswordInsertPage);
             ShowWifiNetworkSelectionPageCommand = new MvxCommand(ShowWifiNetworkSelectionPage);

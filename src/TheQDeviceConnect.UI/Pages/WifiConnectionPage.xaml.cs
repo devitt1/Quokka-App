@@ -4,6 +4,7 @@ using MvvmCross.Forms.Views;
 using TheQDeviceConnect.Core.Helpers;
 using TheQDeviceConnect.Core.Services.Interfaces;
 using TheQDeviceConnect.Core.ViewModels.Connection;
+using TheQDeviceConnect.UI.CustomUI;
 using Xamarin.Forms;
 
 namespace TheQDeviceConnect.UI.Pages
