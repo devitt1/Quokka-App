@@ -12,7 +12,8 @@ using Android.Net;
 using System.Linq;
 using System.Timers;
 using Android.Content;
-using TheQDeviceConnect.Droid.Views;
+using MvvmCross.ViewModels;
+using TheQDeviceConnect.Core.DataModels;
 
 [assembly: Dependency(typeof(DeviceConnectionService))]
 namespace TheQDeviceConnect.Droid.Services.Implementations
@@ -26,10 +27,15 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
         public event EventHandler OnConnectionTimerElapsed;
         public Timer ConnectionTimer { get; set; }
 
+
         public DeviceConnectionService()
         {
             DebugHelper.Info(this, "called!");
+        }
 
+        public async Task<MvxObservableCollection<WifiNetwork>> GetNearbyWifiNetworksAsync()
+        {
+            return null;
         }
 
         private void initTimer()
@@ -217,7 +223,11 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
             return ssid;
         }
 
-       
+        public Task<bool> UpdateDeviceWifiNetworkCredential(string ssidArg, string passwordArg)
+        {
+            throw new NotImplementedException();
+        }
+
         private class NetworkCallback : ConnectivityManager.NetworkCallback
         {
             private ConnectivityManager _conn;

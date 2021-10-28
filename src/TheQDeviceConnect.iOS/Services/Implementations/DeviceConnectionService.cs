@@ -1,7 +1,9 @@
 using System;
 using System.Reflection;
 using System.Threading.Tasks;
+using MvvmCross.ViewModels;
 using NetworkExtension;
+using TheQDeviceConnect.Core.DataModels;
 using TheQDeviceConnect.Core.Helpers;
 using TheQDeviceConnect.Core.Services.Interfaces;
 using TheQDeviceConnect.iOS.Services.Implementations;
@@ -16,6 +18,10 @@ namespace TheQDeviceConnect.iOS.Services.Implementations
         NEHotspotHelper _wifiHelper;
         NEHotspotConfiguration _wifiConfig;
         NEHotspotConfigurationManager _wifiConfigManager;
+
+        public event EventHandler OnWifiNetworkChanged;
+        public event EventHandler OnConnectionTimerElapsed;
+
         public DeviceConnectionService()
         {
             
@@ -68,6 +74,41 @@ namespace TheQDeviceConnect.iOS.Services.Implementations
         }
 
         public void GetCurrentNetwork()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetConnectedNetworkSSID()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OpenWifiSettings()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsConnectedToHotspot()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void StartConnectionTimer()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void StopConnectionTimer()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<MvxObservableCollection<WifiNetwork>> GetNearbyWifiNetworksAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> UpdateDeviceWifiNetworkCredential(string ssidArg, string passwordArg)
         {
             throw new NotImplementedException();
         }

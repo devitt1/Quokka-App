@@ -1,4 +1,9 @@
 using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+using MvvmCross.ViewModels;
+using TheQDeviceConnect.Core.DataModels;
+
 namespace TheQDeviceConnect.Core.Services.Interfaces
 {
     public interface IDeviceConnectionService
@@ -13,6 +18,9 @@ namespace TheQDeviceConnect.Core.Services.Interfaces
 
         void StartConnectionTimer();
         void StopConnectionTimer();
+
+        Task<MvxObservableCollection<WifiNetwork>> GetNearbyWifiNetworksAsync();
+        Task<bool> UpdateDeviceWifiNetworkCredential(string ssidArg, string passwordArg);
     }
 
 
