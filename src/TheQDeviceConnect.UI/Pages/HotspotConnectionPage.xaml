@@ -10,7 +10,7 @@
     xmlns:viewModels="clr-namespace:TheQDeviceConnect.Core.ViewModels.Connection.Hotspot;assembly=TheQDeviceConnect.Core"
     xmlns:selector="clr-namespace:TheQDeviceConnect.UI.TemplateSelector"
     xmlns:repeaterView="clr-namespace:TheQDeviceConnect.UI.RepeaterView"
-    xmlns:converters="clr-namespace:TheQDeviceConnect.UI.Converters" xmlns:customui="clr-namespace:TheQDeviceConnect.UI.CustomUI"
+    xmlns:converters="clr-namespace:TheQDeviceConnect.UI.Converters" xmlns:customui="clr-namespace:TheQDeviceConnect.UI.CustomUI" xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" xmlns:form="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
     x:Class="TheQDeviceConnect.UI.Pages.HotspotConnectionPage">
     <views:MvxContentPage.BackgroundColor>
         <OnPlatform x:TypeArguments="Color">
@@ -90,6 +90,8 @@
                     WidthRequest="333">
 
                  </Image>
+
+                   
                 
 
                   <!--<repeaterView:RepeaterView
@@ -214,7 +216,7 @@
                     HorizontalOptions="CenterAndExpand"/>
 
                  <Label
-                    Text="The Q device you have connected to will&#10;flash its lights. If the correct device is&#10;flashing, tap next to confirm and continue&#10;the setup process."
+                    Text="The Q device you have connected to will&#10;quickly flash its lights. If the correct device is&#10;flashing, tap next to confirm and continue&#10;the setup process."
                     HorizontalTextAlignment="Center"
                     TextColor="#42404A"
                     FontSize="16"
@@ -230,6 +232,30 @@
                     WidthRequest="333">
 
                  </Image>-->
+
+                <!--<ffimageloading:CachedImage
+                        HorizontalOptions="CenterAndExpand"
+                        VerticalOptions="Start"
+			            HeightRequest="248"
+                        WidthRequest="333"
+                        CacheDuration="30"
+			            DownsampleToViewSize="true"
+			            Source = "https://loremflickr.com/600/600/led,flashing,rpi?">
+		        </ffimageloading:CachedImage>-->
+
+               <form:AnimationView
+                   x:Name="ledFlashingAnimView"
+                   Grid.Row="1"
+                   Animation="blinking-lights.json"
+                   AutoPlay="True"
+                   HeightRequest="248"
+                   WidthRequest="333"
+                   RepeatMode="Infinite"
+                   Speed="5"
+                   
+                   >
+
+               </form:AnimationView>
 
                 <customui:CustomButton
                     IsUnderline="True"
