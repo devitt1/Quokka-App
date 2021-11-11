@@ -12,7 +12,7 @@
     xmlns:customui="clr-namespace:TheQDeviceConnect.UI.CustomUI"    
     xmlns:repeaterView="clr-namespace:TheQDeviceConnect.UI.RepeaterView"
     xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
-    xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+    xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" xmlns:form="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
     >
     <views:MvxContentPage.BackgroundColor>
         <OnPlatform x:TypeArguments="Color">
@@ -354,24 +354,24 @@
               </ActivityIndicator>
             </StackLayout>
 
-              <StackLayout
-                x:Name="WifiNetworkConnectedPage"
+             <StackLayout
                 Orientation="Vertical"
+                x:Name="WifiNetworkConnectedConfirmPage"
                 VerticalOptions="FillAndExpand"
                 HorizontalOptions="FillAndExpand"
-                IsVisible="{Binding ShouldDisplayWifiConnectedPage}">
-
+                IsVisible="{Binding ShouldDisplayWifiConnectedConfirmPage}">
                 <Label
                     Margin="0, 53, 0, 0"
-                    Text="Connect The Q to the same&#10;Wi-Fi network as your&#10;mobile"
+                    Text="Confirm you have &#10;connected to the correct&#10;The Q device"
+                    FontAttributes="Bold"
                     HorizontalTextAlignment="Center"
                     TextColor="#222225"
                     FontSize="20"
                     VerticalOptions="Start"
                     HorizontalOptions="CenterAndExpand"/>
 
-                <Label
-                    Text="STEP 4"
+                 <Label
+                    Text="STEP 5"
                     TextColor="#222225"
                     FontAttributes="Bold"
                     HorizontalTextAlignment="Center"
@@ -380,18 +380,48 @@
                     VerticalOptions="Start" 
                     HorizontalOptions="CenterAndExpand"/>
 
-                <Label
-                    Text="The Q is now connected to the same&#10;Wi-Fi network as your mobile and the two&#10;devices are linked.&#10;&#10;Tap the button below to open the app."
+                 <Label
+                    Text="The Q device you have connected to will&#10;slowly flash its lights. If the correct device is&#10;flashing, tap next to confirm and continue&#10;the setup process."
                     HorizontalTextAlignment="Center"
                     TextColor="#42404A"
                     FontSize="16"
                     Margin="0, 0, 0, 20"
-                    VerticalOptions="Start"
+                    VerticalOptions="Start" 
                     HorizontalOptions="CenterAndExpand"/>
 
+                  <form:AnimationView
+                       x:Name="ledFlashingAnimView"
+                       Grid.Row="1"
+                       Animation="blinking-lights.json"
+                       AutoPlay="True"
+                       HeightRequest="248"
+                       WidthRequest="333"
+                       RepeatMode="Infinite"
+                       Speed="0.5"
+                   
+                   >
+
+                    </form:AnimationView>
+
+                  <customui:CustomButton
+                    IsUnderline="True"
+                    Text="IT'S NOT FLASHING, TRY WIFI AGAIN"
+                    BackgroundColor="Transparent"
+                    TextColor="#1F2E4D"
+                    FontAttributes="Bold"
+                    FontSize="16"
+                    HeightRequest="50"
+                    IsEnabled="True"
+                    HorizontalOptions="CenterAndExpand"
+                    VerticalOptions="EndAndExpand"
+                    Margin="0, 0, 0, 10"
+                    Command="{mvx:MvxBind ShowWifiNetworkSelectionPageCommand}"
+                    >
+                </customui:CustomButton>
+
+
                 <customui:CustomButton
-                    x:Name="openTheQButton"
-                    Text="OPEN THE Q"
+                    Text="NEXT"
                     TextColor="White"
                     FontAttributes="Bold"
                     FontSize="16"
@@ -399,8 +429,10 @@
                     IsEnabled="True"
                     WidthRequest="200"
                     HorizontalOptions="Center"
-                    VerticalOptions="EndAndExpand"
-                    Margin="0, 0, 0, 20">
+                    VerticalOptions="End"
+                    Margin="0, 0, 0, 20"
+                    Command="{mvx:MvxBind ShowWifiNetworkConnectedPageCommand}"
+                    >
                     <Button.Background>
                         <LinearGradientBrush
                             StartPoint="0,0"
@@ -412,6 +444,57 @@
                     </Button.Background>
                 </customui:CustomButton>
             </StackLayout>
+
+            <StackLayout
+            x:Name="WifiNetworkConnectedPage"
+            Orientation="Vertical"
+            VerticalOptions="FillAndExpand"
+            HorizontalOptions="FillAndExpand"
+            IsVisible="{Binding ShouldDisplayWifiConnectedPage}">
+
+            <Label
+                Margin="0, 53, 0, 0"
+                Text="The Q and your mobile are &#10;now connected"
+                HorizontalTextAlignment="Center"
+                TextColor="#222225"
+                FontAttributes="Bold"
+                FontSize="20"
+                VerticalOptions="Start"
+                HorizontalOptions="CenterAndExpand"/>
+
+
+            <Label
+                Text="The Q is now connected to the same&#10;Wi-Fi network as your mobile and the two&#10;devices are linked.&#10;&#10;Tap the button below to open the app."
+                HorizontalTextAlignment="Center"
+                TextColor="#42404A"
+                FontSize="16"
+                Margin="0, 0, 0, 20"
+                VerticalOptions="Start"
+                HorizontalOptions="CenterAndExpand"/>
+
+            <customui:CustomButton
+                x:Name="openTheQButton"
+                Text="OPEN THE Q"
+                TextColor="White"
+                FontAttributes="Bold"
+                FontSize="16"
+                HeightRequest="50"
+                IsEnabled="True"
+                WidthRequest="200"
+                HorizontalOptions="Center"
+                VerticalOptions="EndAndExpand"
+                Margin="0, 0, 0, 20">
+                <Button.Background>
+                    <LinearGradientBrush
+                        StartPoint="0,0"
+                        EndPoint="1,1">
+                        <GradientStop Color="#2B2B2B" Offset="0.0" />
+                        <GradientStop Color="#1E2023" Offset="0.5" />
+                        <GradientStop Color="#1F2E4D" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </customui:CustomButton>
+        </StackLayout>
 
         </StackLayout>
     </ContentPage.Content>
