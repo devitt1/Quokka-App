@@ -19,8 +19,11 @@ namespace TheQDeviceConnect.iOS.Services.Implementations
         NEHotspotConfiguration _wifiConfig;
         NEHotspotConfigurationManager _wifiConfigManager;
 
+        public string DeviceResolvedLocalAddress { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         public event EventHandler OnWifiNetworkChanged;
         public event EventHandler OnConnectionTimerElapsed;
+        public event EventHandler OnAndroidNsdResolved;
 
         public DeviceConnectionService()
         {
@@ -109,6 +112,36 @@ namespace TheQDeviceConnect.iOS.Services.Implementations
         }
 
         public Task<bool> UpdateDeviceWifiNetworkCredential(string ssidArg, string passwordArg)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void InitializeAndroidNsd()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsInternetReachable()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DiscoverNeabymDNSServices()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateDeviceLocalAddress(string address)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsDeviceAddressResolved()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void StopDiscoverNearbymDNSServices()
         {
             throw new NotImplementedException();
         }
