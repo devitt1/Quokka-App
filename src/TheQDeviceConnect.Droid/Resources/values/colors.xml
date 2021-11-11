@@ -4,7 +4,7 @@
     <color name="primaryDarkColor">#000000</color>
     <color name="primaryLightColor">#FFFFFF</color>
 
-    <color name="accentColor">#E6AF2E</color>
+    <color name="accentColor">@android:color/transparent</color>
     <color name="accentDarkColor">#F47527</color>
     <color name="accentLightColor">#b3c7d4</color>
 
