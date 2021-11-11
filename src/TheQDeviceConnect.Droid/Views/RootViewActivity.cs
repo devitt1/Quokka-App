@@ -23,6 +23,8 @@ namespace TheQDeviceConnect.Droid.Views
         {
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
+            Xamarin.Essentials.Platform.Init(this, savedInstanceState);
+            FFImageLoading.Forms.Platform.CachedImageRenderer.Init(enableFastRenderer: false);
 
             base.OnCreate(savedInstanceState); 
         }
