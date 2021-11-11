@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using MvvmCross;
@@ -10,23 +11,29 @@ using TheQDeviceConnect.Core.Constants;
 using TheQDeviceConnect.Core.DataModels;
 using TheQDeviceConnect.Core.Helpers;
 using TheQDeviceConnect.Core.Services.Interfaces;
+using TheQDeviceConnect.Core.Utils;
 using TheQDeviceConnect.Core.ViewModels.Converters;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace TheQDeviceConnect.Core.ViewModels.Connection
 {
-    public class WifiConnectionViewModel : BaseNavigationViewModel
+    public class WifiConnectionViewModel: BaseNavigationViewModel
     {
         public WifiConnectionViewModel(ILoggerFactory logProvider, IMvxNavigationService navigationService) : base(logProvider, navigationService)
         {
             _deviceConnectionService = DependencyService.Get<IDeviceConnectionService>();
             _deviceConnectionService.OnConnectionTimerElapsed += handleConnectionTimerElapsed;
+            _deviceConnectionService.OnWifiNetworkChanged += handleWifiNetworkChanged;
+            _deviceConnectionService.OnAndroidNsdResolved += handleAndroidNsdResolved;
+
             _coreDeviceConnectionService = Mvx.IoCProvider.Resolve<IDeviceConnectionService>();
 
             CloseCommand = new MvxAsyncCommand(CloseAsync, allowConcurrentExecutions: true);
             ShowWifiNetworkPasswordInsertPageCommand = new MvxCommand(ShowWifiNetworkPasswordInsertPage);
             ShowWifiNetworkSelectionPageCommand = new MvxCommand(ShowWifiNetworkSelectionPage);
             ShowWifiNetworkConnectingPageCommand = new MvxCommand(ShowWifiNetworkConnectingPage);
+            ShowWifiNetworkConnectedConfirmPageCommand = new MvxCommand(ShowWifiNetworkConnectedConfirmPage);
             ShowWifiNetworkConnectedPageCommand = new MvxCommand(ShowWifiWifiNetworkConnectedPage);
         }
 
@@ -36,6 +43,7 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
         public IMvxCommand ShowWifiNetworkSelectionPageCommand { get; private set; }
         public IMvxCommand ShowWifiNetworkPasswordInsertPageCommand { get; private set; }
         public IMvxCommand ShowWifiNetworkConnectingPageCommand { get; private set; }
+        public IMvxCommand ShowWifiNetworkConnectedConfirmPageCommand { get; private set; }
         public IMvxCommand ShowWifiNetworkConnectedPageCommand { get; private set; }
 
 
@@ -45,6 +53,7 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
             get => _taskNotifier;
             private set => SetProperty(ref _taskNotifier, value);
         }
+
 
         private async Task GetNearbyWifiNetworksAsync()
         {
@@ -61,6 +70,10 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
             await NavigationService.Close(this);
         }
 
+        public override void Prepare()
+        {
+            base.Prepare();
+        }
 
         public override Task Initialize()
         {
@@ -76,16 +89,57 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
         }
         public override void ViewAppeared()
         {
+            if (SecureStorage.GetAsync("DeviceResolvedLocalAddress").Result != null)
+            {
+                ShowWifiNetworkConnectedPageCommand.Execute();
+            }
+            _deviceConnectionService.DiscoverNeabymDNSServices();
             base.ViewAppeared();
+        }
+
+        public override void ViewDisappeared()
+        {
+            _deviceConnectionService.StopDiscoverNearbymDNSServices();
+            base.ViewDisappeared();
         }
 
         private void handleConnectionTimerElapsed(object sender, EventArgs eventArgs)
         {
-            ShowWifiNetworkConnectedPageCommand.Execute();
+            ShowWifiNetworkConnectedConfirmPageCommand.Execute();
             _deviceConnectionService.StopConnectionTimer();
         }
 
         
+        private void handleWifiNetworkChanged(object sender, EventArgs e)
+        {
+            DebugHelper.Info(this, "Connection changed!");
+            if (_deviceConnectionService.GetConnectedNetworkSSID() == $"\"{SelectedWifiNetworkSSID}\"")
+            {
+                DebugHelper.Info(this, $"Connected to the selected Wifi Network: {SelectedWifiNetworkSSID}");
+                if (_coreDeviceConnectionService.IsInternetReachable())
+                {
+                    _deviceConnectionService.StartConnectionTimer();
+                    DebugHelper.Info(this, "Connected to the internet, waiting for mDNS service to be online!\n");
+                    Thread.Sleep(10000);
+                    DebugHelper.Info(this, "Wait time over, beginning discovery process...\n");
+                    _deviceConnectionService.InitializeAndroidNsd();
+                    _deviceConnectionService.DiscoverNeabymDNSServices();
+                }
+            }
+            
+        }
+
+        private void handleAndroidNsdResolved(object sender, EventArgs eventArgs)
+        {
+            DebugHelper.Info(this, eventArgs);
+            _deviceConnectionService.StopConnectionTimer();
+            SimpleServiceResolvedEventArgs e = eventArgs as SimpleServiceResolvedEventArgs;
+            Application.Current.Properties["DeviceResolvedLocalAddress"] = e.Host;
+            _deviceConnectionService.DeviceResolvedLocalAddress = e.Host;
+            ShowWifiNetworkConnectedConfirmPageCommand.Execute();
+        }
+
+
         private void registerPropertyChangedEventHandler(MvxObservableCollection<WifiNetworkViewModel> wifiNetworkViewModels)
         {
             foreach (IWifiNetworkViewModel wifiNetworkVM in wifiNetworkViewModels)
@@ -102,7 +156,6 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
 
         private void handleWifiNetworkVMPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            //DebugHelper.Info(this, "Changed!");
             if (e.PropertyName == "IsClicked")
             {
                 (sender as WifiNetworkViewModel).IsSelected = true;
@@ -144,24 +197,36 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
                     ShouldDisplayWifiSelectionPage = true;
                     ShouldDisplayWifiNetworkPasswordInsertPage = false;
                     ShouldDisplayWifiConnectingPage = false;
+                    ShouldDisplayWifiConnectedConfirmPage = false;
                     ShouldDisplayWifiConnectedPage = false;
+
                     break;
                 case WifiNetworkConnectionState.WIFI_PASSWORD_ENTRY:
                     ShouldDisplayWifiSelectionPage = false;
                     ShouldDisplayWifiNetworkPasswordInsertPage = true;
                     ShouldDisplayWifiConnectingPage = false;
+                    ShouldDisplayWifiConnectedConfirmPage = false;
                     ShouldDisplayWifiConnectedPage = false;
                     break;
                 case WifiNetworkConnectionState.WIFI_CONNECTING:
                     ShouldDisplayWifiSelectionPage = false;
                     ShouldDisplayWifiNetworkPasswordInsertPage = false;
                     ShouldDisplayWifiConnectingPage = true;
+                    ShouldDisplayWifiConnectedConfirmPage = false;
+                    ShouldDisplayWifiConnectedPage = false;
+                    break;
+                case WifiNetworkConnectionState.WIFI_CONNECTED_CONFIRM:
+                    ShouldDisplayWifiSelectionPage = false;
+                    ShouldDisplayWifiNetworkPasswordInsertPage = false;
+                    ShouldDisplayWifiConnectingPage = false;
+                    ShouldDisplayWifiConnectedConfirmPage = true;
                     ShouldDisplayWifiConnectedPage = false;
                     break;
                 case WifiNetworkConnectionState.WIFI_CONNECTED:
                     ShouldDisplayWifiSelectionPage = false;
                     ShouldDisplayWifiNetworkPasswordInsertPage = false;
                     ShouldDisplayWifiConnectingPage = false;
+                    ShouldDisplayWifiConnectedConfirmPage = false;
                     ShouldDisplayWifiConnectedPage = true;
                     break;
             }
@@ -182,7 +247,13 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
 
             WifiConnectionState = WifiNetworkConnectionState.WIFI_CONNECTING;
             _coreDeviceConnectionService.UpdateDeviceWifiNetworkCredential(SelectedWifiNetworkSSID, SelectedWifiNetworkPassword);
-            _deviceConnectionService.StartConnectionTimer();
+            _deviceConnectionService.ConnectToWifiNetwork(SelectedWifiNetworkSSID, SelectedWifiNetworkPassword);
+
+        }
+
+        private void ShowWifiNetworkConnectedConfirmPage()
+        {
+            WifiConnectionState = WifiNetworkConnectionState.WIFI_CONNECTED_CONFIRM;
         }
 
         private void ShowWifiWifiNetworkConnectedPage()
@@ -281,6 +352,21 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
             {
                 (_shouldDisplayWifiSelectionPage) = value;
                 RaisePropertyChanged(() => ShouldDisplayWifiSelectionPage);
+            }
+        }
+
+        //Code-snippet generated template for public fields
+        private bool _shoudDisplayWifiConnectedConfirmPage;
+        public bool ShouldDisplayWifiConnectedConfirmPage
+        {
+            get
+            {
+                return _shoudDisplayWifiConnectedConfirmPage;
+            }
+            set
+            {
+                (_shoudDisplayWifiConnectedConfirmPage) = value;
+                RaisePropertyChanged(() => ShouldDisplayWifiConnectedConfirmPage);
             }
         }
 
