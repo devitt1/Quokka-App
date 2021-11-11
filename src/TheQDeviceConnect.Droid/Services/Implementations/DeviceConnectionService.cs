@@ -5,8 +5,9 @@ using Android.Net.Wifi;
 using TheQDeviceConnect.Core.Helpers;
 using TheQDeviceConnect.Core.Services.Interfaces;
 using TheQDeviceConnect.Droid.Services.Implementations;
-using AndroidAplication = Android.App.Application;
+using AndroidApplication = Android.App.Application;
 using AndroidContext = Android.Content.Context;
+using CoreDeviceConnectionService = TheQDeviceConnect.Core.Services.Implementations.DeviceConnectionService;
 using Xamarin.Forms;
 using Android.Net;
 using System.Linq;
@@ -14,6 +15,10 @@ using System.Timers;
 using Android.Content;
 using MvvmCross.ViewModels;
 using TheQDeviceConnect.Core.DataModels;
+using TheQDeviceConnect.Droid.Utils;
+using MvvmCross;
+using Android.OS;
+using Xamarin.Essentials;
 
 [assembly: Dependency(typeof(DeviceConnectionService))]
 namespace TheQDeviceConnect.Droid.Services.Implementations
@@ -23,37 +28,64 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
         private WifiManager _wifiManager;
         private NetworkCallback _networkCallback;
         private ConnectivityManager _connectivityManager;
+        private NsdHelper _nsdHelper;
+        private IDeviceConnectionService _coreDeviceConnectionService;
         public event EventHandler OnWifiNetworkChanged;
         public event EventHandler OnConnectionTimerElapsed;
+        public event EventHandler OnAndroidNsdResolved;
         public Timer ConnectionTimer { get; set; }
+        private string _deviceResolvedLocalAddress;
+        public string DeviceResolvedLocalAddress
+        {
+            get
+            {
+                return _deviceResolvedLocalAddress;
+            }
+            set
+            {
+                _deviceResolvedLocalAddress = value;
+            }
+        }
 
 
         public DeviceConnectionService()
         {
             DebugHelper.Info(this, "called!");
+            _coreDeviceConnectionService = Mvx.IoCProvider.Resolve<IDeviceConnectionService>();
+            if (SecureStorage.GetAsync("DeviceResolvedLocalAddress").Result != null)
+            {
+                _deviceResolvedLocalAddress = SecureStorage.GetAsync("DeviceResolvedLocalAddress").Result;
+            }
         }
 
         public async Task<MvxObservableCollection<WifiNetwork>> GetNearbyWifiNetworksAsync()
         {
+            //This will never be implemented
             return null;
         }
 
-        private void initTimer()
+        private void initTimer(int timeoutLimit)
         {
-            ConnectionTimer = new Timer(3000);
+            ConnectionTimer = new Timer(timeoutLimit);
             ConnectionTimer.Elapsed -= handleConnectionTimerElapsed;
             ConnectionTimer.Elapsed += handleConnectionTimerElapsed;
         }
 
         public void StartConnectionTimer()
         {
-            ConnectionTimer.Start();
+            if (ConnectionTimer != null)
+            {
+                ConnectionTimer.Start();
+            }
         }
 
 
         public void StopConnectionTimer()
         {
-            ConnectionTimer.Stop();
+            if (ConnectionTimer != null)
+            {
+                ConnectionTimer.Stop();
+            }
         }
 
         private void handleConnectionTimerElapsed(object sender, ElapsedEventArgs eventArgs)
@@ -74,14 +106,15 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
         {
             DebugHelper.Info(this, "called");
 
-            initTimer();
-            _wifiManager = AndroidAplication
+            initTimer(20000);
+
+            _wifiManager = AndroidApplication
                   .Context
                   .GetSystemService
                   (AndroidContext.WifiService)
                   as WifiManager;
 
-            _connectivityManager = AndroidAplication
+            _connectivityManager = AndroidApplication
                 .Context
                 .GetSystemService(AndroidContext.ConnectivityService)
                 as ConnectivityManager;
@@ -94,6 +127,7 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
                 {
                     DebugHelper.Info(this, "Connected to  " + GetConnectedNetworkSSID(), MethodBase.GetCurrentMethod().Name);
                     OnWifiNetworkChanged.Invoke(this, EventArgs.Empty);
+
                 },
                 NetworkUnavailable = () =>
                 {
@@ -104,15 +138,43 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
 
             _connectivityManager.RegisterDefaultNetworkCallback(_networkCallback);
 
+         
+
         }
 
-        public void ConnectToWifiNetwork(string ssid, string password)
+        private void handleNsdResolved(object sender, EventArgs e)
         {
-            var t = Task<bool>.Run(() =>
+            DebugHelper.Info(this, e);
+            OnAndroidNsdResolved.Invoke(this, e);
+        }
+
+        public async void ConnectToWifiNetwork(string ssid, string password)
+        {
+            try
             {
-                return ConnectWpa(ssid, password);
+                bool result = await ConnectWpa(ssid, password);
             }
-          );
+            catch (Exception e)
+            {
+                DebugHelper.Error(this, e);
+                throw e;
+            }
+        }
+
+        public void InitializeAndroidNsd()
+        {
+            _nsdHelper = new NsdHelper(AndroidApplication.Context);
+            _nsdHelper.Initialize();
+            _nsdHelper.NsdResolved += handleNsdResolved;
+        }
+        public void DiscoverNeabymDNSServices()
+        {
+            _nsdHelper.DiscoverServices();
+        }
+
+        public void StopDiscoverNearbymDNSServices()
+        {
+            _nsdHelper.StopDiscovery();
         }
 
         public async Task<bool> ConnectWpa(string ssid, string password)
@@ -135,7 +197,6 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
                         .Build();
 
                     _connectivityManager.RequestNetwork(request, _networkCallback);
-
                 }
                 else // if Android Version < 10
                 {
@@ -189,8 +250,6 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
                 DebugHelper.Error(this, exception, MethodBase.GetCurrentMethod().Name);
             }
 
-
-
         }
 
         public void DisconnectWifi()
@@ -224,6 +283,11 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
         }
 
         public Task<bool> UpdateDeviceWifiNetworkCredential(string ssidArg, string passwordArg)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsInternetReachable()
         {
             throw new NotImplementedException();
         }
