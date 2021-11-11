@@ -13,6 +13,7 @@ namespace TheQDeviceConnect.Core.Services.Implementations
     {
         private readonly IRestClient _restClient;
         public MvxObservableCollection<WifiNetwork> NearbyWifiNetwork { get; set; }
+        public string DeviceResolvedLocalAddress { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public DeviceConnectionService(IRestClient restClient)
         {
@@ -22,7 +23,7 @@ namespace TheQDeviceConnect.Core.Services.Implementations
 
         public event EventHandler OnWifiNetworkChanged;
         public event EventHandler OnConnectionTimerElapsed;
-        
+        public event EventHandler OnAndroidNsdResolved;
 
         public void ConnectToWifiNetwork(string ssid, string password)
         {
@@ -83,6 +84,36 @@ namespace TheQDeviceConnect.Core.Services.Implementations
         }
 
         public void StopConnectionTimer()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void InitializeAndroidNsd()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsInternetReachable()
+        {
+            var response = _restClient.GetInternetReachability();
+            return response.Result;
+        }
+
+        public void DiscoverNeabymDNSServices()
+        {
+            throw new NotImplementedException();
+        }
+        public bool IsDeviceAddressResolved()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateDeviceLocalAddress(string address)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void StopDiscoverNearbymDNSServices()
         {
             throw new NotImplementedException();
         }
