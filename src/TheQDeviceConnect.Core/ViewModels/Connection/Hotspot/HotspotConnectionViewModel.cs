@@ -30,8 +30,13 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
             _deviceConnectionService = DependencyService.Get<IDeviceConnectionService>();
             _deviceConnectionService.Initialize();
             _deviceConnectionService.OnWifiNetworkChanged += handleWifiNetworkChanged;
-
+            _deviceConnectionService.OnAndroidNsdResolved += handleAndroidNsdResolved;
             _coreDeviceConnectionService = Mvx.IoCProvider.Resolve<IDeviceConnectionService>();
+        }
+
+        private void handleAndroidNsdResolved(object sender, EventArgs e)
+        {
+            DebugHelper.Info(this, e);
         }
 
         private async void preloadNearbyWifiNetworks()
@@ -56,6 +61,7 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
         public override Task Initialize()
         {
             WifiConnectionState = WifiNetworkConnectionState.DEFAULT;
+
             return base.Initialize();
         }
 
@@ -66,7 +72,6 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
             {
                 DebugHelper.Info(this, "Connected to The Q Hotspot!");
                 preloadNearbyWifiNetworks();
-
             }
             else
             {
