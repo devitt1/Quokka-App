@@ -10,6 +10,7 @@ namespace TheQDeviceConnect.Core.Services.Interfaces
     {
         event EventHandler OnWifiNetworkChanged;
         event EventHandler OnConnectionTimerElapsed;
+        event EventHandler OnAndroidNsdResolved;
         void ConnectToWifiNetwork(string ssid, string password);
         void Initialize();
         string GetConnectedNetworkSSID();
@@ -18,6 +19,14 @@ namespace TheQDeviceConnect.Core.Services.Interfaces
 
         void StartConnectionTimer();
         void StopConnectionTimer();
+
+        bool IsInternetReachable();
+        void InitializeAndroidNsd();
+        void DiscoverNeabymDNSServices();
+        void StopDiscoverNearbymDNSServices();
+
+        public string DeviceResolvedLocalAddress { get; set; }
+
 
         Task<MvxObservableCollection<WifiNetwork>> GetNearbyWifiNetworksAsync();
         Task<bool> UpdateDeviceWifiNetworkCredential(string ssidArg, string passwordArg);
