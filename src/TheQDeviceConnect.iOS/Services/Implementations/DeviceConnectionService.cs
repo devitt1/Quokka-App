@@ -21,12 +21,16 @@ namespace TheQDeviceConnect.iOS.Services.Implementations
 
         public string DeviceResolvedLocalAddress { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
+        private readonly string THEQ_SSID = "The Q Hotspot";
+        private readonly string THEQ_PASSWORD = "theqpassword";
+
         public event EventHandler OnWifiNetworkChanged;
         public event EventHandler OnConnectionTimerElapsed;
         public event EventHandler OnAndroidNsdResolved;
 
         public DeviceConnectionService()
         {
+
             
         }
 
@@ -63,10 +67,13 @@ namespace TheQDeviceConnect.iOS.Services.Implementations
                     if (error != null)
                     {
                         DebugHelper.Error(this, $"Error while connecting to WiFi network {ssid}: {error}");
+                    } else
+                    {
+                        DebugHelper.Info(this, $"No issue occured. Successfully connected to Wifi netowork {ssid}");
                     }
                 });
 
-
+                
                 return true;
             }
             catch (Exception e)
@@ -88,12 +95,16 @@ namespace TheQDeviceConnect.iOS.Services.Implementations
 
         public void OpenWifiSettings()
         {
-            throw new NotImplementedException();
+            DebugHelper.Info(this, "iOS: OpenWifiSettings() called");
+
+            ConnectToWifiNetwork(THEQ_SSID, THEQ_PASSWORD);
+            //UIKit.UIApplication.SharedApplication.OpenUrl(new Foundation.NSUrl("app-settings:WIFI"));
         }
 
         public bool IsConnectedToHotspot()
         {
-            throw new NotImplementedException();
+            DebugHelper.Info(this, "iOS: IsConnectedToHotspot() called");
+            return false;
         }
 
         public void StartConnectionTimer()
@@ -118,7 +129,8 @@ namespace TheQDeviceConnect.iOS.Services.Implementations
 
         public void InitializeAndroidNsd()
         {
-            throw new NotImplementedException();
+            DebugHelper.Info(this, "InitializeAndroidNsd not implemented on iOS. " +
+               "Device Platform automatically resolve hostname");
         }
 
         public bool IsInternetReachable()
@@ -128,7 +140,8 @@ namespace TheQDeviceConnect.iOS.Services.Implementations
 
         public void DiscoverNeabymDNSServices()
         {
-            throw new NotImplementedException();
+            DebugHelper.Info(this, "DiscoverNearbymDNSServices not implemented on iOS. " +
+                "Device Platform automatically resolve hostname");
         }
 
         public void UpdateDeviceLocalAddress(string address)
@@ -143,7 +156,8 @@ namespace TheQDeviceConnect.iOS.Services.Implementations
 
         public void StopDiscoverNearbymDNSServices()
         {
-            throw new NotImplementedException();
+            DebugHelper.Info(this, "StopDiscoverNearbymDNSServices not implemented on iOS. " +
+             "Device Platform automatically resolve hostname");
         }
     }
 }
