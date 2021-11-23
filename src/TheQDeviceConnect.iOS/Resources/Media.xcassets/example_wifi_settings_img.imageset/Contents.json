@@ -22,7 +22,7 @@
       "idiom" : "universal"
     },
     {
-      "filename" : "quokka.png",
+      "filename" : "example_wifi_settings_img.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
@@ -47,7 +47,7 @@
       "scale" : "1x"
     },
     {
-      "filename" : "quokka-1.png",
+      "filename" : "example_wifi_settings_img-1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
@@ -72,7 +72,7 @@
       "scale" : "2x"
     },
     {
-      "filename" : "quokka-2.png",
+      "filename" : "example_wifi_settings_img-2.png",
       "idiom" : "universal",
       "scale" : "3x"
     },

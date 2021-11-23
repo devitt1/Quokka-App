@@ -109,6 +109,10 @@
     <ImageAsset Include="Resources\Media.xcassets\wifi_icon.imageset\wifi_icon.png" />
     <ImageAsset Include="Resources\Media.xcassets\wifi_icon.imageset\wifi_icon-1.png" />
     <ImageAsset Include="Resources\Media.xcassets\wifi_icon.imageset\wifi_icon-2.png" />
+    <ImageAsset Include="Resources\Media.xcassets\example_wifi_settings_img.imageset\Contents.json" />
+    <ImageAsset Include="Resources\Media.xcassets\example_wifi_settings_img.imageset\example_wifi_settings_img.png" />
+    <ImageAsset Include="Resources\Media.xcassets\example_wifi_settings_img.imageset\example_wifi_settings_img-1.png" />
+    <ImageAsset Include="Resources\Media.xcassets\example_wifi_settings_img.imageset\example_wifi_settings_img-2.png" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard">
@@ -152,43 +156,43 @@
     <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\Icon-1024.png">
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\1024.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\Icon-120.png">
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\120.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\Icon-152.png">
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\152.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\Icon-167.png">
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\167.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\Icon-180.png">
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\180.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\Icon-20.png">
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\20.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\Icon-29.png">
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\29.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\Icon-40.png">
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\40.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\Icon-58.png">
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\58.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\Icon-60.png">
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\60.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\Icon-76.png">
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\76.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\Icon-80.png">
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\80.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\Icon-87.png">
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\87.png">
       <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Resources\Media.xcassets\LaunchImages.launchimage\Contents.json">
@@ -201,43 +205,43 @@
     <BundleResource Include="Resources\launch_image%403x.png" />
   </ItemGroup>
   <ItemGroup>
-    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\Icon-1024.png">
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\1024.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\Icon-120.png">
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\120.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\Icon-152.png">
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\152.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\Icon-167.png">
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\167.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\Icon-180.png">
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\180.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\Icon-20.png">
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\20.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\Icon-29.png">
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\29.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\Icon-40.png">
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\40.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\Icon-58.png">
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\58.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\Icon-60.png">
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\60.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\Icon-76.png">
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\76.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\Icon-80.png">
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\80.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\Icon-87.png">
+    <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\87.png">
       <Visible>false</Visible>
     </ImageAsset>
   </ItemGroup>
@@ -249,6 +253,7 @@
     <Folder Include="Resources\Media.xcassets\wifi_icon.imageset\" />
     <Folder Include="Resources\Media.xcassets\button_bkg.imageset\" />
     <Folder Include="CustomRenderer\" />
+    <Folder Include="Resources\Media.xcassets\example_wifi_settings_img.imageset\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
