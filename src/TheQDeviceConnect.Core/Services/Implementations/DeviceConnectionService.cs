@@ -14,6 +14,7 @@ namespace TheQDeviceConnect.Core.Services.Implementations
         private readonly IRestClient _restClient;
         public MvxObservableCollection<WifiNetwork> NearbyWifiNetwork { get; set; }
         public string DeviceResolvedLocalAddress { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string CurrentConnectedNetworkSSID { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public DeviceConnectionService(IRestClient restClient)
         {
@@ -93,10 +94,10 @@ namespace TheQDeviceConnect.Core.Services.Implementations
             throw new NotImplementedException();
         }
 
-        public bool IsInternetReachable()
+        public async Task<bool> IsInternetReachable()
         {
-            var response = _restClient.GetInternetReachability();
-            return response.Result;
+            var result = await _restClient.GetInternetReachability();
+            return result;
         }
 
         public void DiscoverNeabymDNSServices()
