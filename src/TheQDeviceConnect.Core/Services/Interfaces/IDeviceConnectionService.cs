@@ -13,14 +13,14 @@ namespace TheQDeviceConnect.Core.Services.Interfaces
         event EventHandler OnAndroidNsdResolved;
         void ConnectToWifiNetwork(string ssid, string password);
         void Initialize();
-        string GetConnectedNetworkSSID();
+        string CurrentConnectedNetworkSSID { get; set; }
         void OpenWifiSettings();
         bool IsConnectedToHotspot();
 
         void StartConnectionTimer();
         void StopConnectionTimer();
 
-        bool IsInternetReachable();
+        Task<bool> IsInternetReachable();
         void InitializeAndroidNsd();
         void DiscoverNeabymDNSServices();
         void StopDiscoverNearbymDNSServices();
