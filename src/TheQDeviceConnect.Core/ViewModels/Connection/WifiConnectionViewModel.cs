@@ -65,6 +65,27 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
                 registerPropertyChangedEventHandler(WifiNetworkVMs);
             }
         }
+
+        private async Task CheckInternetReachabilityAsync()
+        {
+            if (await _coreDeviceConnectionService.IsInternetReachable())
+            {
+                _deviceConnectionService.StartConnectionTimer();
+
+                //Only needed for Android applications
+                DebugHelper.Info(this, "Connected to the internet, waiting for mDNS service to be online!\n");
+                Thread.Sleep(5000);
+                startAndroidNsd();
+                DebugHelper.Info(this, "Wait time over, beginning discovery process...\n");
+
+            }
+        }
+
+        private void startAndroidNsd()
+        {
+            _deviceConnectionService.InitializeAndroidNsd();
+            _deviceConnectionService.DiscoverNeabymDNSServices();
+        }
         private async Task CloseAsync()
         {
             await NavigationService.Close(this);
@@ -113,20 +134,12 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
         private void handleWifiNetworkChanged(object sender, EventArgs e)
         {
             DebugHelper.Info(this, "Connection changed!");
-            if (_deviceConnectionService.GetConnectedNetworkSSID() == $"\"{SelectedWifiNetworkSSID}\"")
+            if (_deviceConnectionService.CurrentConnectedNetworkSSID == $"\"{SelectedWifiNetworkSSID}\""
+                || _deviceConnectionService.CurrentConnectedNetworkSSID == $"{ SelectedWifiNetworkSSID}")
             {
                 DebugHelper.Info(this, $"Connected to the selected Wifi Network: {SelectedWifiNetworkSSID}");
-                if (_coreDeviceConnectionService.IsInternetReachable())
-                {
-                    _deviceConnectionService.StartConnectionTimer();
-                    DebugHelper.Info(this, "Connected to the internet, waiting for mDNS service to be online!\n");
-                    Thread.Sleep(10000);
-                    DebugHelper.Info(this, "Wait time over, beginning discovery process...\n");
-                    _deviceConnectionService.InitializeAndroidNsd();
-                    _deviceConnectionService.DiscoverNeabymDNSServices();
-                }
+                MvxNotifyTask task = MvxNotifyTask.Create(CheckInternetReachabilityAsync);
             }
-            
         }
 
         private void handleAndroidNsdResolved(object sender, EventArgs eventArgs)
