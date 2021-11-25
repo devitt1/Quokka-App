@@ -194,7 +194,7 @@ namespace TheQDeviceConnect.Droid.Utils
             string type = serviceInfo.ServiceType;
             DebugHelper.Info(this, $"Name : {name} \n" +
                 $"Service Type: {type}");
-            if (type.Equals(this.ServiceType) && name.Contains("theqbox1"))
+            if (type.Equals(this.ServiceType) && name.Contains("theqbox"))
             {
                 DebugHelper.Info(this, "Service found @ '" + name + "'");
                 _nsdHelper.NsdManager.ResolveService(serviceInfo, _nsdHelper.ResolveListener);
