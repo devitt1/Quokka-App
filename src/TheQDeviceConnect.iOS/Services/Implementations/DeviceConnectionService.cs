@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.Timers;
 using MvvmCross.ViewModels;
 using NetworkExtension;
 using TheQDeviceConnect.Core.DataModels;
@@ -18,11 +19,29 @@ namespace TheQDeviceConnect.iOS.Services.Implementations
         NEHotspotHelper _wifiHelper;
         NEHotspotConfiguration _wifiConfig;
         NEHotspotConfigurationManager _wifiConfigManager;
+        public Timer ConnectionTimer { get; set; }
 
         public string DeviceResolvedLocalAddress { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
+        //Code-snippet generated template for public fields
+        private string _currentConnectedNetworkSSID;
+        public string CurrentConnectedNetworkSSID
+        {
+            get
+            {
+                return _currentConnectedNetworkSSID;
+            }
+            set
+            {
+                (_currentConnectedNetworkSSID) = value;
+                OnWifiNetworkChanged.Invoke(this, EventArgs.Empty);
+            }
+
+        }
         private readonly string THEQ_SSID = "The Q Hotspot";
         private readonly string THEQ_PASSWORD = "theqpassword";
+
+
 
         public event EventHandler OnWifiNetworkChanged;
         public event EventHandler OnConnectionTimerElapsed;
@@ -39,6 +58,19 @@ namespace TheQDeviceConnect.iOS.Services.Implementations
             _wifiHelper = new NEHotspotHelper();
             _wifiConfigManager = new NEHotspotConfigurationManager();
 
+            initTimer(10000);
+        }
+
+        private void initTimer(int timeoutLimit)
+        {
+            ConnectionTimer = new Timer(timeoutLimit);
+            ConnectionTimer.Elapsed -= handleConnectionTimerElapsed;
+            ConnectionTimer.Elapsed += handleConnectionTimerElapsed;
+        }
+
+        private void handleConnectionTimerElapsed(object sender, ElapsedEventArgs eventArgs)
+        {
+            OnConnectionTimerElapsed.Invoke(sender, eventArgs);
         }
 
         public void ConnectToWifiNetwork(string ssid, string password)
@@ -59,21 +91,23 @@ namespace TheQDeviceConnect.iOS.Services.Implementations
         {
             try
             {
-
-                _wifiConfigManager.RemoveConfiguration("Kogan_9EE1_5G");
-
                 _wifiConfigManager.ApplyConfiguration(_wifiConfig, (error) =>
                 {
                     if (error != null)
                     {
                         DebugHelper.Error(this, $"Error while connecting to WiFi network {ssid}: {error}");
+                        if (error.ToString() == "already associated.")
+                        {
+                            DebugHelper.Info(this, $"Current ssid = {ssid}");
+                            CurrentConnectedNetworkSSID = ssid;
+                        }
                     } else
                     {
                         DebugHelper.Info(this, $"No issue occured. Successfully connected to Wifi netowork {ssid}");
+                        DebugHelper.Info(this, $"Current ssid = {ssid}");
+                        CurrentConnectedNetworkSSID = ssid;
                     }
                 });
-
-                
                 return true;
             }
             catch (Exception e)
@@ -81,16 +115,6 @@ namespace TheQDeviceConnect.iOS.Services.Implementations
                 DebugHelper.Error(this, e, MethodBase.GetCurrentMethod().Name);
                 return false;
             }
-        }
-
-        public void GetCurrentNetwork()
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetConnectedNetworkSSID()
-        {
-            throw new NotImplementedException();
         }
 
         public void OpenWifiSettings()
@@ -104,17 +128,34 @@ namespace TheQDeviceConnect.iOS.Services.Implementations
         public bool IsConnectedToHotspot()
         {
             DebugHelper.Info(this, "iOS: IsConnectedToHotspot() called");
-            return false;
+            if (CurrentConnectedNetworkSSID == "The Q Hotspot")
+            {
+                DebugHelper.Info(this, "Connected to the Q hotspot");
+                return true;
+            }
+            else
+            {
+                DebugHelper.Info(this, "Not connected to the Q hotspot");
+                return false;
+            }
         }
 
         public void StartConnectionTimer()
         {
-            throw new NotImplementedException();
+            if (ConnectionTimer != null)
+            {
+                DebugHelper.Info(this, "StartConnectionTimer");
+                ConnectionTimer.Start();
+            }
         }
 
         public void StopConnectionTimer()
         {
-            throw new NotImplementedException();
+            if (ConnectionTimer != null)
+            {
+                DebugHelper.Info(this, "StopConnectionTimer");
+                ConnectionTimer.Stop();
+            }
         }
 
         public Task<MvxObservableCollection<WifiNetwork>> GetNearbyWifiNetworksAsync()
@@ -133,7 +174,7 @@ namespace TheQDeviceConnect.iOS.Services.Implementations
                "Device Platform automatically resolve hostname");
         }
 
-        public bool IsInternetReachable()
+        public Task<bool> IsInternetReachable()
         {
             throw new NotImplementedException();
         }
@@ -149,7 +190,7 @@ namespace TheQDeviceConnect.iOS.Services.Implementations
             throw new NotImplementedException();
         }
 
-        public bool IsDeviceAddressResolved()
+        public Task<bool> IsDeviceAddressResolved()
         {
             throw new NotImplementedException();
         }
