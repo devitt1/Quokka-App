@@ -17,7 +17,6 @@ using MvvmCross.ViewModels;
 using TheQDeviceConnect.Core.DataModels;
 using TheQDeviceConnect.Droid.Utils;
 using MvvmCross;
-using Android.OS;
 using Xamarin.Essentials;
 
 [assembly: Dependency(typeof(DeviceConnectionService))]
@@ -90,7 +89,7 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
 
         private void handleConnectionTimerElapsed(object sender, ElapsedEventArgs eventArgs)
         {
-           OnConnectionTimerElapsed.Invoke(sender, eventArgs);
+            OnConnectionTimerElapsed.Invoke(sender, eventArgs);
         }
 
         [Obsolete]
@@ -99,14 +98,14 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
             Intent intent = new Intent(Android.Provider.Settings.ActionWifiSettings);
             intent.SetFlags(ActivityFlags.NewTask);
             Forms.Context.StartActivity(intent);
-            
+
         }
 
         public void Initialize()
         {
             DebugHelper.Info(this, "called");
 
-            initTimer(20000);
+            initTimer(10000);
 
             _wifiManager = AndroidApplication
                   .Context
@@ -119,26 +118,22 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
                 .GetSystemService(AndroidContext.ConnectivityService)
                 as ConnectivityManager;
 
-
-
             _networkCallback = new NetworkCallback(_connectivityManager)
             {
                 NetworkAvailable = network =>
                 {
-                    DebugHelper.Info(this, "Connected to  " + GetConnectedNetworkSSID(), MethodBase.GetCurrentMethod().Name);
+                    DebugHelper.Info(this, "Connected to  " + CurrentConnectedNetworkSSID, MethodBase.GetCurrentMethod().Name);
                     OnWifiNetworkChanged.Invoke(this, EventArgs.Empty);
 
                 },
                 NetworkUnavailable = () =>
                 {
-                    DebugHelper.Info(this, "Unconnected!" + GetConnectedNetworkSSID(), MethodBase.GetCurrentMethod().Name);
+                    DebugHelper.Info(this, "Unconnected!" + CurrentConnectedNetworkSSID, MethodBase.GetCurrentMethod().Name);
                     OnWifiNetworkChanged.Invoke(this, EventArgs.Empty);
                 }
             };
 
             _connectivityManager.RegisterDefaultNetworkCallback(_networkCallback);
-
-         
 
         }
 
@@ -200,9 +195,9 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
                 }
                 else // if Android Version < 10
                 {
-                    #pragma warning disable CS0612 // Type or member is obsolete
+#pragma warning disable CS0612 // Type or member is obsolete
                     handleConnectionOlderVersion(_wifiManager, ssid, password);
-                    #pragma warning restore CS0612 // Type or member is obsolete
+#pragma warning restore CS0612 // Type or member is obsolete
                 }
                 return true;
             }
@@ -264,7 +259,7 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
 
         public bool IsConnectedToHotspot()
         {
-            if (GetConnectedNetworkSSID() == "\"The Q Hotspot\"")
+            if (CurrentConnectedNetworkSSID == "\"The Q Hotspot\"")
             {
                 DebugHelper.Info(this, "Connected to the Q hotspot");
                 return true;
@@ -275,11 +270,23 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
                 return false;
             }
         }
-        public string GetConnectedNetworkSSID()
+
+        //Code-snippet generated template for public fields
+        private string _currentConnectedNetworkSSID = "";
+        public string CurrentConnectedNetworkSSID
         {
-            var ssid = _wifiManager.ConnectionInfo.SSID;
-            DebugHelper.Info(this, "Current connected network SSID is " + ssid);
-            return ssid;
+            get
+            {
+                if (_wifiManager != null) {
+                    _currentConnectedNetworkSSID = _wifiManager.ConnectionInfo.SSID;
+                }
+                return _currentConnectedNetworkSSID;
+            }
+            set
+            {
+                _currentConnectedNetworkSSID = value;
+                (_currentConnectedNetworkSSID) = value;
+            }
         }
 
         public Task<bool> UpdateDeviceWifiNetworkCredential(string ssidArg, string passwordArg)
@@ -287,7 +294,7 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
             throw new NotImplementedException();
         }
 
-        public bool IsInternetReachable()
+        public Task<bool> IsInternetReachable()
         {
             throw new NotImplementedException();
         }
