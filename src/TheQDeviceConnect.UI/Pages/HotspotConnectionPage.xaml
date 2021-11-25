@@ -165,7 +165,7 @@
                     <ActivityIndicator.Scale>
                         <OnPlatform
                             x:TypeArguments="x:Double"
-                            iOS="1"
+                            iOS="3"
                             Android="1">
                         </OnPlatform>
                     </ActivityIndicator.Scale>
@@ -254,7 +254,21 @@
                    Speed="5"
                    
                    >
+                   <form:AnimationView.HeightRequest>
+                       <OnPlatform x:TypeArguments="x:Double">
+                              <On Platform="iOS" Value="124" />
+                              <On Platform="Android" Value="248" />
+                       </OnPlatform>
 
+                   </form:AnimationView.HeightRequest>
+
+                    <form:AnimationView.WidthRequest>
+                       <OnPlatform x:TypeArguments="x:Double">
+                              <On Platform="iOS" Value="166" />
+                              <On Platform="Android" Value="333" />
+                       </OnPlatform>
+
+                   </form:AnimationView.WidthRequest>
                </form:AnimationView>
 
                 <customui:CustomButton

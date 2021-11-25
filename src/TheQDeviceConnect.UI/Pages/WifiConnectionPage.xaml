@@ -347,7 +347,7 @@
                     <ActivityIndicator.Scale>
                         <OnPlatform
                             x:TypeArguments="x:Double"
-                            iOS="1"
+                            iOS="3"
                             Android="1">
                         </OnPlatform>
                     </ActivityIndicator.Scale>
