@@ -299,6 +299,11 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
             throw new NotImplementedException();
         }
 
+        public Task<bool> UpdateDeviceWifiNetworkCredential(string ssidArg, string passwordArg, string authMgntArg = "psk", string peapUsernameArg = null, string peapPasswordArg = null)
+        {
+            throw new NotImplementedException();
+        }
+
         private class NetworkCallback : ConnectivityManager.NetworkCallback
         {
             private ConnectivityManager _conn;

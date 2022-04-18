@@ -12,7 +12,8 @@
     xmlns:customui="clr-namespace:TheQDeviceConnect.UI.CustomUI"    
     xmlns:repeaterView="clr-namespace:TheQDeviceConnect.UI.RepeaterView"
     xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
-    xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" xmlns:form="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
+    xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+    xmlns:form="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
     >
     <views:MvxContentPage.BackgroundColor>
         <OnPlatform x:TypeArguments="Color">
@@ -137,7 +138,7 @@
                     Orientation="Vertical"
                     HorizontalOptions="FillAndExpand"
                     VerticalOptions="FillAndExpand">
-                     <repeaterView:RepeaterView
+                    <repeaterView:RepeaterView
                         x:Name="WifiNetworksRepeaterView"
                         BackgroundColor="Transparent"
                         HorizontalOptions="FillAndExpand"
@@ -147,15 +148,15 @@
                     </repeaterView:RepeaterView>
 
                 </ScrollView>
-               
-                 <BoxView
+
+                <BoxView
                      Margin="5, 0, 5, 10"
                      HorizontalOptions="FillAndExpand"
                      VerticalOptions="EndAndExpand"
                      BackgroundColor="#DDE0E5"
                      HeightRequest="1"/>
 
-                    <customui:CustomButton
+                <customui:CustomButton
                         IsUnderline="True"
                         Text="CANCEL"
                         BackgroundColor="Transparent"
@@ -170,12 +171,12 @@
                         Margin="0, 0, 0, 10"
                         Command="{mvx:MvxBind CloseCommand}"
                         >
-                    </customui:CustomButton>
+                </customui:CustomButton>
 
-                     <!--IsEnabled Property must be set
+                <!--IsEnabled Property must be set
                         after Command Property
                         for button to behave properly-->
-                    <customui:CustomButton
+                <customui:CustomButton
                         x:Name="nextToWifiNetworkPasswordInsertPageBtn"
                         Text="NEXT"
                         TextColor="White"
@@ -189,35 +190,35 @@
                         Command="{mvx:MvxBind ShowWifiNetworkPasswordInsertPageCommand}"
                         IsEnabled="{Binding SelectedWifiNetworkVM, Mode=OneWay,Converter ={StaticResource shouldEnableNextToPasswordEntryButtonConverter}}"
                         >
-                        <customui:CustomButton.Style>
-                            <Style TargetType="Button">
-                                <Style.Triggers>
-                                    <Trigger TargetType="Button" Property="IsEnabled" Value="False">
-                                        <Setter Property="Background">
-                                           <Setter.Value>
-                                               <LinearGradientBrush
+                    <customui:CustomButton.Style>
+                        <Style TargetType="Button">
+                            <Style.Triggers>
+                                <Trigger TargetType="Button" Property="IsEnabled" Value="False">
+                                    <Setter Property="Background">
+                                        <Setter.Value>
+                                            <LinearGradientBrush
                                                     StartPoint="0,0"
                                                     EndPoint="1,1">
-                                                    <GradientStop Color="#772B2B2B" Offset="0" />
-                                                    <GradientStop Color="#771E2023" Offset="0.5" />
-                                                    <GradientStop Color="#771F2E4D" Offset="1"/>
-                                                </LinearGradientBrush>
-                                           </Setter.Value>
-                                        </Setter>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </customui:CustomButton.Style>
-                        <customui:CustomButton.Background>
-                            <LinearGradientBrush
+                                                <GradientStop Color="#772B2B2B" Offset="0" />
+                                                <GradientStop Color="#771E2023" Offset="0.5" />
+                                                <GradientStop Color="#771F2E4D" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </customui:CustomButton.Style>
+                    <customui:CustomButton.Background>
+                        <LinearGradientBrush
                                 StartPoint="0,0"
                                 EndPoint="1,1">
-                                <GradientStop Color="#2B2B2B" Offset="0.0" />
-                                <GradientStop Color="#1E2023" Offset="0.5" />
-                                <GradientStop Color="#1F2E4D" Offset="1"/>
-                            </LinearGradientBrush>
-                        </customui:CustomButton.Background>
-                    </customui:CustomButton>
+                            <GradientStop Color="#2B2B2B" Offset="0.0" />
+                            <GradientStop Color="#1E2023" Offset="0.5" />
+                            <GradientStop Color="#1F2E4D" Offset="1"/>
+                        </LinearGradientBrush>
+                    </customui:CustomButton.Background>
+                </customui:CustomButton>
             </StackLayout>
 
 
@@ -247,28 +248,129 @@
                     VerticalOptions="Start" 
                     HorizontalOptions="CenterAndExpand"/>
 
-                <Label
-                    x:Name="PasswordEntryLbl"
+                 <Label
+                    x:Name="AuthMgntLbl"
                     HorizontalTextAlignment="Center"
-                    Text="{Binding SelectedWifiNetworkSSID, StringFormat='Enter password for &quot;{0}&quot;'}"
+                    Text="Select authentication method"
+                    TextColor="#42404A"
+                    FontSize="16"
+                    Margin="0, 0, 0, 0"
+                    VerticalOptions="Start"
+                    HorizontalOptions="CenterAndExpand"/>
+
+                <Picker x:Name="AuthMgntPicker"
+                        Title="Select"
+                        TitleColor="#42404A"
+                        FontSize="16"
+                        Margin="0, 0, 0, 20"
+                        VerticalOptions="Start"
+                        HorizontalOptions="CenterAndExpand"
+                        SelectedItem="{Binding SelectedWifiNetworkAuthMgnt}"
+                        >
+                    <Picker.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                          <x:String>psk</x:String>
+                          <x:String>eap</x:String>
+                        </x:Array>
+                    </Picker.ItemsSource>
+                </Picker>
+
+                 <StackLayout
+                    Orientation="Vertical"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="Start">
+                     <StackLayout.Triggers>
+                          <DataTrigger TargetType="StackLayout"
+                                     Binding="{Binding SelectedWifiNetworkAuthMgnt}"
+                                     Value="eap">
+                            <Setter Property="IsVisible" Value="False">
+                            </Setter>
+                        </DataTrigger>
+                         <DataTrigger TargetType="StackLayout"
+                                     Binding="{Binding SelectedWifiNetworkAuthMgnt}"
+                                     Value="psk">
+                            <Setter Property="IsVisible" Value="True">
+                            </Setter>
+                        </DataTrigger>
+                     </StackLayout.Triggers>
+                       <Label
+                        x:Name="PasswordEntryLbl"
+                        HorizontalTextAlignment="Center"
+                        Text="{Binding SelectedWifiNetworkSSID, StringFormat='Enter password for &quot;{0}&quot;'}"
+                        TextColor="#42404A"
+                        FontSize="16"
+                        Margin="0, 0, 0, 20"
+                        VerticalOptions="Start"
+                        HorizontalOptions="CenterAndExpand"/>
+
+                    <customui:CustomEntry
+                        HorizontalOptions="FillAndExpand"
+                        VerticalOptions="Start"
+                        Margin="24, 0, 24, 0"
+                        HeightRequest="70"
+                        IsPassword="True"
+                        Placeholder="Password"
+                        Text="{Binding SelectedWifiNetworkPassword, Mode=OneWayToSource}"
+                        />
+                    </StackLayout>
+                <StackLayout
+                    Orientation="Vertical"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="Start">
+                    <StackLayout.Triggers>
+                        <DataTrigger TargetType="StackLayout"
+                                     Binding="{Binding SelectedWifiNetworkAuthMgnt}"
+                                     Value="peap">
+                            <Setter Property="IsVisible" Value="True">
+                            </Setter>
+                        </DataTrigger>
+                         <DataTrigger TargetType="StackLayout"
+                                     Binding="{Binding SelectedWifiNetworkAuthMgnt}"
+                                     Value="psk">
+                            <Setter Property="IsVisible" Value="False">
+                            </Setter>
+                        </DataTrigger>
+                    </StackLayout.Triggers>
+
+                     <Label
+                        x:Name="EAPUsernameLabel"
+                        HorizontalTextAlignment="Center"
+                        Text="Enter EAP username:"
+                        TextColor="#42404A"
+                        FontSize="16"
+                        Margin="0, 0, 0, 20"
+                        VerticalOptions="Start"
+                        HorizontalOptions="CenterAndExpand"/>
+
+                    <customui:CustomEntry
+                        HorizontalOptions="FillAndExpand"
+                        VerticalOptions="Start"
+                        Margin="24, 0, 24, 0"
+                        HeightRequest="70"
+                        IsPassword="True"
+                        Text="{Binding SelectedWifiNetworkEAPUsername, Mode=OneWayToSource}"
+                    />
+
+                    <Label
+                    x:Name="EAPPasswordLabel"
+                    HorizontalTextAlignment="Center"
+                    Text="Enter EAP password:"
                     TextColor="#42404A"
                     FontSize="16"
                     Margin="0, 0, 0, 20"
                     VerticalOptions="Start"
                     HorizontalOptions="CenterAndExpand"/>
 
-                <customui:CustomEntry
-                    HorizontalOptions="FillAndExpand"
-                    VerticalOptions="Start"
-                    Margin="24, 0, 24, 0"
-                    HeightRequest="70"
-                    IsPassword="True"
-                    Text="{Binding SelectedWifiNetworkPassword, Mode=OneWayToSource}"
-                    >
-
-                </customui:CustomEntry>
-
-
+                    <customui:CustomEntry
+                        HorizontalOptions="FillAndExpand"
+                        VerticalOptions="Start"
+                        Margin="24, 0, 24, 0"
+                        HeightRequest="70"
+                        IsPassword="True"
+                        Text="{Binding SelectedWifiNetworkEAPPassword, Mode=OneWayToSource}"
+                    />
+                </StackLayout>
+               
                 <customui:CustomButton
                     Text="BACK"
                     IsUnderline="True"

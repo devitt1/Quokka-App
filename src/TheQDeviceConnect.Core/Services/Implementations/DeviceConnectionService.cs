@@ -13,8 +13,12 @@ namespace TheQDeviceConnect.Core.Services.Implementations
     {
         private readonly IRestClient _restClient;
         public MvxObservableCollection<WifiNetwork> NearbyWifiNetwork { get; set; }
-        public string DeviceResolvedLocalAddress { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string CurrentConnectedNetworkSSID { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string DeviceResolvedLocalAddress { get =>
+                throw new NotImplementedException(); set =>
+                throw new NotImplementedException(); }
+        public string CurrentConnectedNetworkSSID { get =>
+                throw new NotImplementedException(); set =>
+                throw new NotImplementedException(); }
 
         public DeviceConnectionService(IRestClient restClient)
         {
@@ -26,27 +30,31 @@ namespace TheQDeviceConnect.Core.Services.Implementations
         public event EventHandler OnConnectionTimerElapsed;
         public event EventHandler OnAndroidNsdResolved;
 
-        public void ConnectToWifiNetwork(string ssid, string password)
-        {
-            DebugHelper.Info(this, "called!");
-        }
-
         public async Task<MvxObservableCollection<WifiNetwork>> GetNearbyWifiNetworksAsync()
         {
             if (NearbyWifiNetwork == null)
             {
-                NearbyWifiNetwork = await _restClient.MakeApiCall<MvxObservableCollection<WifiNetwork>>("WifiNetwork/", HttpMethod.Get);
+                NearbyWifiNetwork =
+                    await _restClient.MakeApiCall<MvxObservableCollection<WifiNetwork>>("WifiNetwork/", HttpMethod.Get);
             }
             return NearbyWifiNetwork;
         }
 
-        public async Task<bool> UpdateDeviceWifiNetworkCredential(string ssidArg, string passwordArg)
+        public async Task<bool> UpdateDeviceWifiNetworkCredential(string ssidArg,
+            string passwordArg = "default", string authMgntArg = "psk", string peapUsernameArg = null,
+            string peapPasswordArg = null)
         {
             try
             {
-                if (!string.IsNullOrEmpty(ssidArg) && !string.IsNullOrEmpty(passwordArg))
+                if (!string.IsNullOrEmpty(ssidArg))
                 {
-                    object data = new { ssid = ssidArg, password = passwordArg };
+                    if (string.IsNullOrEmpty(passwordArg))
+                    {
+                        passwordArg = "default";
+                    }
+                    object data = new { ssid = ssidArg, password = passwordArg,
+                    auth_mgnt = authMgntArg, peap_username = peapUsernameArg,
+                    peap_password = peapPasswordArg };
                     await _restClient.MakeApiCall<WifiNetwork>("WifiNetwork/selected_wifi_network", HttpMethod.Put, data);
                 }
                 return true;
@@ -115,6 +123,11 @@ namespace TheQDeviceConnect.Core.Services.Implementations
         }
 
         public void StopDiscoverNearbymDNSServices()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ConnectToWifiNetwork(string ssid, string password)
         {
             throw new NotImplementedException();
         }

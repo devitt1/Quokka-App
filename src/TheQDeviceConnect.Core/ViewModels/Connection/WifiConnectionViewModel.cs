@@ -74,7 +74,7 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
 
                 //Only needed for Android applications
                 DebugHelper.Info(this, "Connected to the internet, waiting for mDNS service to be online!\n");
-                Thread.Sleep(5000);
+                Thread.Sleep(2000);
                 startAndroidNsd();
                 DebugHelper.Info(this, "Wait time over, beginning discovery process...\n");
 
@@ -100,6 +100,8 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
         {
             WifiConnectionState = WifiNetworkConnectionState.WIFI_SELECTING;
             SelectedWifiNetworkSSID = "";
+            SelectedWifiNetworkPassword = "";
+            SelectedWifiNetworkAuthMgnt = "psk";
             return base.Initialize();
         }
 
@@ -259,7 +261,9 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
         {
 
             WifiConnectionState = WifiNetworkConnectionState.WIFI_CONNECTING;
-            _coreDeviceConnectionService.UpdateDeviceWifiNetworkCredential(SelectedWifiNetworkSSID, SelectedWifiNetworkPassword);
+            _coreDeviceConnectionService.UpdateDeviceWifiNetworkCredential(SelectedWifiNetworkSSID,
+                SelectedWifiNetworkPassword, SelectedWifiNetworkAuthMgnt,
+                SelectedWifiNetworkEAPUsername, SelectedWifiNetworkEAPPassword);
             _deviceConnectionService.ConnectToWifiNetwork(SelectedWifiNetworkSSID, SelectedWifiNetworkPassword);
 
         }
@@ -323,6 +327,51 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
             {
                 (_selectedWifiNetworkPassword) = value;
                 RaisePropertyChanged(() => SelectedWifiNetworkPassword);
+            }
+        }
+
+        //Code-snippet generated template for public fields
+        private string _selectedWifiNetworkAuthMgnt;
+        public string SelectedWifiNetworkAuthMgnt
+        {
+            get
+            {
+                return _selectedWifiNetworkAuthMgnt;
+            }
+            set
+            {
+                (_selectedWifiNetworkAuthMgnt) = value;
+                RaisePropertyChanged(() => SelectedWifiNetworkAuthMgnt);
+            }
+        }
+
+        //Code-snippet generated template for public fields
+        private string _selectedWifiNetworkEAPUsername;
+        public string SelectedWifiNetworkEAPUsername
+        {
+            get
+            {
+                return _selectedWifiNetworkEAPUsername;
+            }
+            set
+            {
+                (_selectedWifiNetworkEAPUsername) = value;
+                RaisePropertyChanged(() => SelectedWifiNetworkEAPUsername);
+            }
+        }
+
+        //Code-snippet generated template for public fields
+        private string _selectedWifiNetworkEAPPassword;
+        public string SelectedWifiNetworkEAPPassword
+        {
+            get
+            {
+                return _selectedWifiNetworkEAPPassword;
+            }
+            set
+            {
+                (_selectedWifiNetworkEAPPassword) = value;
+                RaisePropertyChanged(() => SelectedWifiNetworkEAPPassword);
             }
         }
 

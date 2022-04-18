@@ -29,7 +29,9 @@ namespace TheQDeviceConnect.Core.Services.Interfaces
 
 
         Task<MvxObservableCollection<WifiNetwork>> GetNearbyWifiNetworksAsync();
-        Task<bool> UpdateDeviceWifiNetworkCredential(string ssidArg, string passwordArg);
+        Task<bool> UpdateDeviceWifiNetworkCredential(string ssidArg,
+            string passwordArg, string authMgntArg = "psk", 
+            string peapUsernameArg = null, string peapPasswordArg = null);
     }
 
 

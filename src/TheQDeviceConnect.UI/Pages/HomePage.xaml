@@ -20,9 +20,7 @@
             </OnPlatform.Platforms>
         </OnPlatform>
     </views:MvxContentPage.BackgroundColor>
-    
-    
-  
+
     <ContentPage.Content>
         <StackLayout>
              <Label
