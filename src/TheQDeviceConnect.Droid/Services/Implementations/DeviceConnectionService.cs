@@ -7,7 +7,6 @@ using TheQDeviceConnect.Core.Services.Interfaces;
 using TheQDeviceConnect.Droid.Services.Implementations;
 using AndroidApplication = Android.App.Application;
 using AndroidContext = Android.Content.Context;
-using CoreDeviceConnectionService = TheQDeviceConnect.Core.Services.Implementations.DeviceConnectionService;
 using Xamarin.Forms;
 using Android.Net;
 using System.Linq;
@@ -57,7 +56,7 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
             }
         }
 
-        public async Task<MvxObservableCollection<WifiNetwork>> GetNearbyWifiNetworksAsync()
+        public async Task<MvxObservableCollection<WifiNetworkInfo>> GetNearbyWifiNetworksAsync()
         {
             //This will never be implemented
             return null;
@@ -195,9 +194,9 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
                 }
                 else // if Android Version < 10
                 {
-#pragma warning disable CS0612 // Type or member is obsolete
+                    #pragma warning disable CS0612 // Type or member is obsolete
                     handleConnectionOlderVersion(_wifiManager, ssid, password);
-#pragma warning restore CS0612 // Type or member is obsolete
+                    #pragma warning restore CS0612 // Type or member is obsolete
                 }
                 return true;
             }

@@ -23,7 +23,6 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
 
         public HotspotConnectionViewModel(ILoggerFactory logProvider, IMvxNavigationService navigationService) : base(logProvider, navigationService)
         {
-            addMockedData();
             GoToWifiConnectionViewModelCommand = new MvxAsyncCommand(GoToWifiConnectionVMAsync, allowConcurrentExecutions: true);
             OpenAppWifiSettingsCommand = new MvxCommand(OpenWifiSettings);
             ShowHotspotInstructionPageCommand = new MvxCommand(ShowHotspotInstructionPage);
@@ -94,19 +93,6 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
             await NavigationService.Navigate<WifiConnectionViewModel>();
         }
 
-       
-        private void addMockedData()
-        {
-            WifiNetworkVMs.Add(new WifiNetworkViewModel()
-            {
-                ssid = "TheQHotSpot"
-            });
-            WifiNetworkVMs.Add(new WifiNetworkViewModel()
-            {
-                ssid = "Kogan"
-            });
-        }
-
         void handleWifiNetworkChanged(object sender, EventArgs eventArgs)
         {
             DebugHelper.Info(this, "Connection changed!");
@@ -114,6 +100,7 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
             {
                 DebugHelper.Info(this, "Connected to The Q Hotspot!");
                 WifiConnectionState = WifiNetworkConnectionState.HOTSPOT_CONNECTED;
+                preloadNearbyWifiNetworks();
             }
         }
 

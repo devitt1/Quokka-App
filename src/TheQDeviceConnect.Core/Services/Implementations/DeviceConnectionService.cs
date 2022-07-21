@@ -12,7 +12,7 @@ namespace TheQDeviceConnect.Core.Services.Implementations
     public class DeviceConnectionService : IDeviceConnectionService
     {
         private readonly IRestClient _restClient;
-        public MvxObservableCollection<WifiNetwork> NearbyWifiNetwork { get; set; }
+        public MvxObservableCollection<WifiNetworkInfo> NearbyWifiNetwork { get; set; }
         public string DeviceResolvedLocalAddress { get =>
                 throw new NotImplementedException(); set =>
                 throw new NotImplementedException(); }
@@ -30,12 +30,12 @@ namespace TheQDeviceConnect.Core.Services.Implementations
         public event EventHandler OnConnectionTimerElapsed;
         public event EventHandler OnAndroidNsdResolved;
 
-        public async Task<MvxObservableCollection<WifiNetwork>> GetNearbyWifiNetworksAsync()
+        public async Task<MvxObservableCollection<WifiNetworkInfo>> GetNearbyWifiNetworksAsync()
         {
             if (NearbyWifiNetwork == null)
             {
                 NearbyWifiNetwork =
-                    await _restClient.MakeApiCall<MvxObservableCollection<WifiNetwork>>("WifiNetwork/", HttpMethod.Get);
+                    await _restClient.MakeApiCall<MvxObservableCollection<WifiNetworkInfo>>("WifiNetwork/", HttpMethod.Get);
             }
             return NearbyWifiNetwork;
         }
@@ -52,10 +52,10 @@ namespace TheQDeviceConnect.Core.Services.Implementations
                     {
                         passwordArg = "default";
                     }
-                    object data = new { ssid = ssidArg, password = passwordArg,
+                    WifiNetworkCredential data = new WifiNetworkCredential { ssid = ssidArg, password = passwordArg,
                     auth_mgnt = authMgntArg, peap_username = peapUsernameArg,
                     peap_password = peapPasswordArg };
-                    await _restClient.MakeApiCall<WifiNetwork>("WifiNetwork/selected_wifi_network", HttpMethod.Put, data);
+                    await _restClient.MakeApiCall<WifiNetworkCredential>("WifiNetwork/selected_wifi_network/", HttpMethod.Put, data);
                 }
                 return true;
 

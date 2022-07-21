@@ -87,7 +87,7 @@ namespace TheQDeviceConnect.iOS.Services.Implementations
             );
         }
 
-        public async Task<bool> ConnectWpa(string ssid, string password)
+        public bool ConnectWpa(string ssid, string password)
         {
             try
             {
@@ -101,7 +101,8 @@ namespace TheQDeviceConnect.iOS.Services.Implementations
                             DebugHelper.Info(this, $"Current ssid = {ssid}");
                             CurrentConnectedNetworkSSID = ssid;
                         }
-                    } else
+                    }
+                    else
                     {
                         DebugHelper.Info(this, $"No issue occured. Successfully connected to Wifi netowork {ssid}");
                         DebugHelper.Info(this, $"Current ssid = {ssid}");
@@ -158,7 +159,7 @@ namespace TheQDeviceConnect.iOS.Services.Implementations
             }
         }
 
-        public Task<MvxObservableCollection<WifiNetwork>> GetNearbyWifiNetworksAsync()
+        public Task<MvxObservableCollection<WifiNetworkInfo>> GetNearbyWifiNetworksAsync()
         {
             throw new NotImplementedException();
         }
@@ -199,6 +200,16 @@ namespace TheQDeviceConnect.iOS.Services.Implementations
         {
             DebugHelper.Info(this, "StopDiscoverNearbymDNSServices not implemented on iOS. " +
              "Device Platform automatically resolve hostname");
+        }
+
+        public Task<bool> UpdateDeviceWifiNetworkCredential(string ssidArg, string passwordArg, string authMgntArg = "psk", string peapUsernameArg = null, string peapPasswordArg = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<MvxObservableCollection<WifiNetworkInfo>> IDeviceConnectionService.GetNearbyWifiNetworksAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }

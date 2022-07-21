@@ -57,7 +57,7 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
 
         private async Task GetNearbyWifiNetworksAsync()
         {
-            MvxObservableCollection<WifiNetwork> result = await _coreDeviceConnectionService.GetNearbyWifiNetworksAsync();
+            MvxObservableCollection<WifiNetworkInfo> result = await _coreDeviceConnectionService.GetNearbyWifiNetworksAsync();
 
             if (result.Count > 0)
             {

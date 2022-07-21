@@ -6,19 +6,19 @@ using TheQDeviceConnect.Core.ViewModels.Connection;
 
 namespace TheQDeviceConnect.Core.ViewModels.Converters
 {
-    public class WifiNetworkConverter : MvxValueConverter<WifiNetwork, WifiNetworkViewModel>
+    public class WifiNetworkConverter : MvxValueConverter<WifiNetworkInfo, WifiNetworkViewModel>
     {
         public WifiNetworkConverter()
         {
         }
 
-        public static MvxObservableCollection<WifiNetworkViewModel> Convert(MvxObservableCollection<WifiNetwork> values)
+        public static MvxObservableCollection<WifiNetworkViewModel> Convert(MvxObservableCollection<WifiNetworkInfo> values)
         {
             var wifiNetworkItems = values;
 
             var viewModels = new MvxObservableCollection<WifiNetworkViewModel>();
 
-            foreach (WifiNetwork network in wifiNetworkItems)
+            foreach (WifiNetworkInfo network in wifiNetworkItems)
             {
                 var vmToAdd = new WifiNetworkViewModel
                 {
