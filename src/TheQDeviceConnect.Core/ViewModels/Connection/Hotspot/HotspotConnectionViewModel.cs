@@ -10,6 +10,7 @@ using TheQDeviceConnect.Core.Services.Interfaces;
 using Xamarin.Forms;
 using MvvmCross;
 using TheQDeviceConnect.Core.DataModels;
+using Xamarin.Essentials;
 
 namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
 {
@@ -18,18 +19,18 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
         IDeviceConnectionService _deviceConnectionService;
         IDeviceConnectionService _coreDeviceConnectionService;
         public MvxAsyncCommand GoToWifiConnectionViewModelCommand { get; private set; }
-        public MvxCommand OpenAppWifiSettingsCommand { get; private set; }
+        public IMvxAsyncCommand OpenAppWifiSettingsCommand { get; private set; }
         public MvxCommand ShowHotspotInstructionPageCommand { get; private set; }
 
         public HotspotConnectionViewModel(ILoggerFactory logProvider, IMvxNavigationService navigationService) : base(logProvider, navigationService)
         {
             GoToWifiConnectionViewModelCommand = new MvxAsyncCommand(GoToWifiConnectionVMAsync, allowConcurrentExecutions: true);
-            OpenAppWifiSettingsCommand = new MvxCommand(OpenWifiSettings);
+            OpenAppWifiSettingsCommand = new MvxAsyncCommand(OpenWifiSettings);
             ShowHotspotInstructionPageCommand = new MvxCommand(ShowHotspotInstructionPage);
             _deviceConnectionService = DependencyService.Get<IDeviceConnectionService>();
             _deviceConnectionService.Initialize();
             _deviceConnectionService.OnWifiNetworkChanged += handleWifiNetworkChanged;
-            _deviceConnectionService.OnAndroidNsdResolved += handleAndroidNsdResolved;
+            //_deviceConnectionService.OnAndroidNsdResolved += handleAndroidNsdResolved;
             _coreDeviceConnectionService = Mvx.IoCProvider.Resolve<IDeviceConnectionService>();
         }
 
@@ -46,9 +47,9 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
             WifiConnectionState = WifiNetworkConnectionState.HOTSPOT_CONNECTED;
 
         }
-        private void OpenWifiSettings()
+        private async Task OpenWifiSettings()
         {
-            _deviceConnectionService.OpenWifiSettings();
+            await _deviceConnectionService.OpenWifiSettings();
             WifiConnectionState = WifiNetworkConnectionState.HOTSPOT_CONNECTING;
         }
 
@@ -60,13 +61,20 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
         public override Task Initialize()
         {
             WifiConnectionState = WifiNetworkConnectionState.DEFAULT;
+            Task.Run(async () =>
+            {
+                await _deviceConnectionService.ForcePermissionAsync("192.168.4.1", 5001);
+            });
 
             return base.Initialize();
         }
 
-        public override void ViewAppeared()
+
+       
+
+        public override void ViewAppearing()
         {
-            base.ViewAppeared();
+            base.ViewAppearing();
             if (_deviceConnectionService.IsConnectedToHotspot())
             {
                 DebugHelper.Info(this, "Connected to The Q Hotspot!");
@@ -101,6 +109,7 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
                 DebugHelper.Info(this, "Connected to The Q Hotspot!");
                 WifiConnectionState = WifiNetworkConnectionState.HOTSPOT_CONNECTED;
                 preloadNearbyWifiNetworks();
+
             }
         }
 

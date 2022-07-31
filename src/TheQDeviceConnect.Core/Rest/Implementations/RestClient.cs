@@ -33,7 +33,7 @@ namespace TheQDeviceConnect.Core.Rest.Implementations
             }
 
         }
-        private string _device_local_ip_address;
+        private string _device_local_ip_address = "";
 
         public string BaseEndPoint { get; private set; }
 
@@ -66,9 +66,8 @@ namespace TheQDeviceConnect.Core.Rest.Implementations
         {
             if (useHotspot)
             {
-                _device_local_ip_address = DEVICE_LOCAL_GATEWAY_IP_ADDRESS;
-                BaseEndPoint = "http://" + _device_local_ip_address + ":" + PORT + "/";
-                url = BaseEndPoint + url;
+                string baseEndPoint = "http://" + DEVICE_LOCAL_GATEWAY_IP_ADDRESS + ":" + PORT + "/";
+                url = baseEndPoint + url;
             }
             else
             {

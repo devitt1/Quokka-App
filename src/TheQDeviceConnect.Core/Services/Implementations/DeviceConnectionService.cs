@@ -24,6 +24,7 @@ namespace TheQDeviceConnect.Core.Services.Implementations
         {
             DebugHelper.Info(this, "created!");
             _restClient = restClient;
+            NearbyWifiNetwork = new MvxObservableCollection<WifiNetworkInfo>();
         }
 
         public event EventHandler OnWifiNetworkChanged;
@@ -32,12 +33,21 @@ namespace TheQDeviceConnect.Core.Services.Implementations
 
         public async Task<MvxObservableCollection<WifiNetworkInfo>> GetNearbyWifiNetworksAsync()
         {
-            if (NearbyWifiNetwork == null)
+            try
             {
-                NearbyWifiNetwork =
-                    await _restClient.MakeApiCall<MvxObservableCollection<WifiNetworkInfo>>("WifiNetwork/", HttpMethod.Get);
+                if (NearbyWifiNetwork.Count == 0)
+                {
+                    NearbyWifiNetwork =
+                   await _restClient.MakeApiCall<MvxObservableCollection<WifiNetworkInfo>>("WifiNetwork/", HttpMethod.Get);
+
+                }
+
+                return NearbyWifiNetwork;
+            } catch (Exception e)
+            {
+                DebugHelper.Error(this, e);
+                throw e;
             }
-            return NearbyWifiNetwork;
         }
 
         public async Task<bool> UpdateDeviceWifiNetworkCredential(string ssidArg,
@@ -128,6 +138,21 @@ namespace TheQDeviceConnect.Core.Services.Implementations
         }
 
         public void ConnectToWifiNetwork(string ssid, string password)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task IDeviceConnectionService.OpenWifiSettings()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task ForcePermission()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task ForcePermissionAsync(string ip_address_string, int port)
         {
             throw new NotImplementedException();
         }

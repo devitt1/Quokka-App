@@ -9,12 +9,27 @@ namespace TheQDeviceConnect.Core.Services.Interfaces
     public interface IDeviceConnectionService
     {
         event EventHandler OnWifiNetworkChanged;
+
         event EventHandler OnConnectionTimerElapsed;
+
         event EventHandler OnAndroidNsdResolved;
+
         void ConnectToWifiNetwork(string ssid, string password);
+
         void Initialize();
+
         string CurrentConnectedNetworkSSID { get; set; }
-        void OpenWifiSettings();
+
+        Task OpenWifiSettings();
+
+        /**
+         * This function force the iOS device to to show 
+         * Local Network Usage Description Pop Up
+         * so that the user will give the permission to 
+         * in order to make request to the Q local network API
+         */
+        Task ForcePermissionAsync(string ip_address_string, int port);
+
         bool IsConnectedToHotspot();
 
         void StartConnectionTimer();
@@ -24,6 +39,7 @@ namespace TheQDeviceConnect.Core.Services.Interfaces
         void InitializeAndroidNsd();
         void DiscoverNeabymDNSServices();
         void StopDiscoverNearbymDNSServices();
+       
 
         public string DeviceResolvedLocalAddress { get; set; }
 

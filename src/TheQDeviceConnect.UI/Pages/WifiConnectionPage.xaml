@@ -499,11 +499,22 @@
                        HeightRequest="248"
                        WidthRequest="333"
                        RepeatMode="Infinite"
-                       Speed="0.5"
-                   
-                   >
+                       Speed="0.5">
+                        <form:AnimationView.HeightRequest>
+                           <OnPlatform x:TypeArguments="x:Double">
+                                  <On Platform="iOS" Value="248" />
+                                  <On Platform="Android" Value="248" />
+                           </OnPlatform>
 
-                    </form:AnimationView>
+                        </form:AnimationView.HeightRequest>
+                       <form:AnimationView.WidthRequest>
+                           <OnPlatform x:TypeArguments="x:Double">
+                                  <On Platform="iOS" Value="333" />
+                                  <On Platform="Android" Value="333" />
+                           </OnPlatform>
+
+                        </form:AnimationView.WidthRequest>
+                   </form:AnimationView>
 
                   <customui:CustomButton
                     IsUnderline="True"

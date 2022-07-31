@@ -58,7 +58,7 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
 
         public async Task<MvxObservableCollection<WifiNetworkInfo>> GetNearbyWifiNetworksAsync()
         {
-            //This will never be implemented
+            // This will never be implemented because will use from PCL 
             return null;
         }
 

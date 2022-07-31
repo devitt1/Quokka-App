@@ -23,7 +23,7 @@ namespace TheQDeviceConnect.Core.ViewModels.Home
             GoToHotspotConnectionViewModelCommand = new MvxAsyncCommand(GoToHotspotConnectionVMAsync, allowConcurrentExecutions: true);
             _deviceConnectionService = DependencyService.Get<IDeviceConnectionService>();
             _coreDeviceConnectionService = Mvx.IoCProvider.Resolve<IDeviceConnectionService>();
-            _deviceConnectionService.OnAndroidNsdResolved += handleAndroidNsdResolved;
+            //_deviceConnectionService.OnAndroidNsdResolved += handleAndroidNsdResolved;
 
         }
 
@@ -49,15 +49,15 @@ namespace TheQDeviceConnect.Core.ViewModels.Home
 
         public override Task Initialize()
         {
-            try
-            {
-                _deviceConnectionService.InitializeAndroidNsd();
-            }
-            catch (Exception e)
-            {
-                DebugHelper.Error(this, e);
+            //try
+            //{
+            //    _deviceConnectionService.InitializeAndroidNsd();
+            //}
+            //catch (Exception e)
+            //{
+            //    DebugHelper.Error(this, e);
 
-            }
+            //}
             return base.Initialize();
         }
 
@@ -71,7 +71,7 @@ namespace TheQDeviceConnect.Core.ViewModels.Home
         public override void ViewAppeared()
         {
             base.ViewAppeared();
-            _deviceConnectionService.DiscoverNeabymDNSServices();
+            //_deviceConnectionService.DiscoverNeabymDNSServices();
             //try
             //{
             //    if (SecureStorage.GetAsync("DeviceResolvedLocalAddress").Result == null)
@@ -93,7 +93,7 @@ namespace TheQDeviceConnect.Core.ViewModels.Home
         public override void ViewDisappeared()
         {
             base.ViewDisappeared();
-            _deviceConnectionService.StopDiscoverNearbymDNSServices();
+            //_deviceConnectionService.StopDiscoverNearbymDNSServices();
         }
     }
 }

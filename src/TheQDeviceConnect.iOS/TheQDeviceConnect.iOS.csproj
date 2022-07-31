@@ -115,6 +115,7 @@
     <ImageAsset Include="Resources\Media.xcassets\example_wifi_settings_img.imageset\example_wifi_settings_img.png" />
     <ImageAsset Include="Resources\Media.xcassets\example_wifi_settings_img.imageset\example_wifi_settings_img-1.png" />
     <ImageAsset Include="Resources\Media.xcassets\example_wifi_settings_img.imageset\example_wifi_settings_img-2.png" />
+    <Compile Include="Permissions\LocalNetworkAccess.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard">
@@ -257,6 +258,7 @@
     <Folder Include="Resources\Media.xcassets\button_bkg.imageset\" />
     <Folder Include="CustomRenderer\" />
     <Folder Include="Resources\Media.xcassets\example_wifi_settings_img.imageset\" />
+    <Folder Include="Permissions\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

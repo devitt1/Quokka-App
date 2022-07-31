@@ -256,7 +256,7 @@
                    >
                    <form:AnimationView.HeightRequest>
                        <OnPlatform x:TypeArguments="x:Double">
-                              <On Platform="iOS" Value="124" />
+                              <On Platform="iOS" Value="248" />
                               <On Platform="Android" Value="248" />
                        </OnPlatform>
 
@@ -264,7 +264,7 @@
 
                     <form:AnimationView.WidthRequest>
                        <OnPlatform x:TypeArguments="x:Double">
-                              <On Platform="iOS" Value="166" />
+                              <On Platform="iOS" Value="333" />
                               <On Platform="Android" Value="333" />
                        </OnPlatform>
 

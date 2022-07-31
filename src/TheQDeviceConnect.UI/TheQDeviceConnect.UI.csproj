@@ -34,6 +34,7 @@
     <None Remove="CustomUI\" />
     <None Remove="Xamarin.FFImageLoading.Forms" />
     <None Remove="Com.Airbnb.Xamarin.Forms.Lottie" />
+    <None Remove="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
     <None Update="App.xaml">
@@ -53,5 +54,10 @@
     <Folder Include="TemplateSelector\" />
     <Folder Include="Converters\" />
     <Folder Include="CustomUI\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Xamarin.iOS">
+      <HintPath>..\..\..\..\..\..\..\..\..\Library\Frameworks\Xamarin.iOS.framework\Versions\15.10.0.5\lib\mono\Xamarin.iOS\Xamarin.iOS.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

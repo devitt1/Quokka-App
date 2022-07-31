@@ -1,4 +1,6 @@
 using System;
+using System.Net;
+using System.Net.Sockets;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Timers;
@@ -8,13 +10,14 @@ using TheQDeviceConnect.Core.DataModels;
 using TheQDeviceConnect.Core.Helpers;
 using TheQDeviceConnect.Core.Services.Interfaces;
 using TheQDeviceConnect.iOS.Services.Implementations;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 [assembly: Dependency(typeof(DeviceConnectionService))]
 namespace TheQDeviceConnect.iOS.Services.Implementations
 {
     public class DeviceConnectionService : IDeviceConnectionService
-    {
+    { 
 
         NEHotspotHelper _wifiHelper;
         NEHotspotConfiguration _wifiConfig;
@@ -58,7 +61,24 @@ namespace TheQDeviceConnect.iOS.Services.Implementations
             _wifiHelper = new NEHotspotHelper();
             _wifiConfigManager = new NEHotspotConfigurationManager();
 
-            initTimer(10000);
+            initTimer(2000);
+        }
+
+        public async Task ForcePermissionAsync(string ip_address_string, int port)
+        {
+            try
+            {
+                IPAddress ipAddress = IPAddress.Parse(ip_address_string);
+                IPEndPoint remoteEndPoint = new IPEndPoint(ipAddress, port);
+
+            var client = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+            await client.ConnectAsync(remoteEndPoint).ConfigureAwait(true);
+
+            } catch (Exception e)
+            {
+                DebugHelper.Error(this, e);
+            }
+          
         }
 
         private void initTimer(int timeoutLimit)
@@ -73,57 +93,52 @@ namespace TheQDeviceConnect.iOS.Services.Implementations
             OnConnectionTimerElapsed.Invoke(sender, eventArgs);
         }
 
-        public void ConnectToWifiNetwork(string ssid, string password)
-        {
-            _wifiConfig = new NEHotspotConfiguration(ssid, password, false)
-            {
-                JoinOnce = true
-            };
-
-            var t = Task<bool>.Run(() =>
-            {
-                return ConnectWpa(ssid, password);
-            }
-            );
-        }
-
-        public bool ConnectWpa(string ssid, string password)
+        public async Task<bool> ConnectWpa(string ssid, string password)
         {
             try
             {
-                _wifiConfigManager.ApplyConfiguration(_wifiConfig, (error) =>
+                _wifiConfig = new NEHotspotConfiguration(ssid, password, false)
                 {
-                    if (error != null)
-                    {
-                        DebugHelper.Error(this, $"Error while connecting to WiFi network {ssid}: {error}");
-                        if (error.ToString() == "already associated.")
-                        {
-                            DebugHelper.Info(this, $"Current ssid = {ssid}");
-                            CurrentConnectedNetworkSSID = ssid;
-                        }
-                    }
-                    else
-                    {
-                        DebugHelper.Info(this, $"No issue occured. Successfully connected to Wifi netowork {ssid}");
-                        DebugHelper.Info(this, $"Current ssid = {ssid}");
-                        CurrentConnectedNetworkSSID = ssid;
-                    }
-                });
+                    JoinOnce = true
+                };
+
+                await _wifiConfigManager.ApplyConfigurationAsync(_wifiConfig);
+                DebugHelper.Info(this, $"No issue occured. Successfully connected to Wifi netowork {ssid}");
+                DebugHelper.Info(this, $"Current ssid = {ssid}");
+                CurrentConnectedNetworkSSID = ssid;
                 return true;
             }
             catch (Exception e)
             {
-                DebugHelper.Error(this, e, MethodBase.GetCurrentMethod().Name);
+                DebugHelper.Error(this, $"Error while connecting to WiFi network {ssid}: {e}");
+                if (e.ToString() == "already associated.")
+                {
+                    DebugHelper.Info(this, $"Current ssid = {ssid}");
+                    CurrentConnectedNetworkSSID = ssid;
+                }
                 return false;
             }
         }
 
-        public void OpenWifiSettings()
+        public async Task OpenWifiSettings()
         {
             DebugHelper.Info(this, "iOS: OpenWifiSettings() called");
-
-            ConnectToWifiNetwork(THEQ_SSID, THEQ_PASSWORD);
+            PermissionStatus status = await CheckAndRequestPermissionAsync();
+            if (status == PermissionStatus.Granted)
+            {
+                await ConnectWpa(THEQ_SSID, THEQ_PASSWORD);
+            }
             //UIKit.UIApplication.SharedApplication.OpenUrl(new Foundation.NSUrl("app-settings:WIFI"));
+        }
+
+
+        public async Task<PermissionStatus> CheckAndRequestPermissionAsync()
+        {
+            //BasePermission LocalNetworkAccessPermission = new Permissions.LocalNetworkAccess();
+            //var status = await LocalNetworkAccessPermission.CheckStatusAsync();
+            //DebugHelper.Info(this, status);
+
+            return PermissionStatus.Granted;
         }
 
         public bool IsConnectedToHotspot()
@@ -208,6 +223,11 @@ namespace TheQDeviceConnect.iOS.Services.Implementations
         }
 
         Task<MvxObservableCollection<WifiNetworkInfo>> IDeviceConnectionService.GetNearbyWifiNetworksAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ConnectToWifiNetwork(string ssid, string password)
         {
             throw new NotImplementedException();
         }

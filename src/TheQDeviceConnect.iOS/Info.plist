@@ -42,11 +42,11 @@
 	<string>UIStatusBarStyleLightContent</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>Custom Property</key>
-	<array>
-		<integer>1</integer>
-	</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This app needs access to your location to find nearby networks</string>
+	<key>UIRequiresPersistentWiFi</key>
+	<true/>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>This app needs access to your local network </string>
 </dict>
 </plist>

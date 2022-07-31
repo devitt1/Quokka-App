@@ -11,8 +11,6 @@ namespace TheQDeviceConnect.UI.Pages
 {
     public partial class WifiConnectionPage : MvxContentPage<WifiConnectionViewModel>
     {
-        IDeviceConnectionService _deviceConnectionService;
-
         public WifiConnectionPage()
         {
             InitializeComponent();

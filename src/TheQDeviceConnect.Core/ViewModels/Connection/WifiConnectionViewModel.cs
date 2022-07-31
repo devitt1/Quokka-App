@@ -70,12 +70,10 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
         {
             if (await _coreDeviceConnectionService.IsInternetReachable())
             {
-                _deviceConnectionService.StartConnectionTimer();
-
                 //Only needed for Android applications
                 DebugHelper.Info(this, "Connected to the internet, waiting for mDNS service to be online!\n");
-                Thread.Sleep(2000);
-                startAndroidNsd();
+                //Thread.Sleep(2000);
+                //startAndroidNsd();
                 DebugHelper.Info(this, "Wait time over, beginning discovery process...\n");
 
             }
@@ -112,17 +110,17 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
         }
         public override void ViewAppeared()
         {
-            if (SecureStorage.GetAsync("DeviceResolvedLocalAddress").Result != null)
-            {
-                ShowWifiNetworkConnectedPageCommand.Execute();
-            }
-            _deviceConnectionService.DiscoverNeabymDNSServices();
+            //if (SecureStorage.GetAsync("DeviceResolvedLocalAddress").Result != null)
+            //{
+            //    ShowWifiNetworkConnectedPageCommand.Execute();
+            //}
+            //_deviceConnectionService.DiscoverNeabymDNSServices();
             base.ViewAppeared();
         }
 
         public override void ViewDisappeared()
         {
-            _deviceConnectionService.StopDiscoverNearbymDNSServices();
+            //_deviceConnectionService.StopDiscoverNearbymDNSServices();
             base.ViewDisappeared();
         }
 
@@ -191,19 +189,6 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
 
         }
 
-        private void addMockedData()
-        {
-            WifiNetworkVMs.Add(new WifiNetworkViewModel()
-            {
-                ssid = "TheQHotSpot"
-            });
-            WifiNetworkVMs.Add(new WifiNetworkViewModel()
-            {
-                ssid = "Kogan"
-            });
-            registerPropertyChangedEventHandler(WifiNetworkVMs);
-        }
-
         public void RenderStateCondtionally(WifiNetworkConnectionState state)
         {
             switch (state)
@@ -264,7 +249,8 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
             _coreDeviceConnectionService.UpdateDeviceWifiNetworkCredential(SelectedWifiNetworkSSID,
                 SelectedWifiNetworkPassword, SelectedWifiNetworkAuthMgnt,
                 SelectedWifiNetworkEAPUsername, SelectedWifiNetworkEAPPassword);
-            _deviceConnectionService.ConnectToWifiNetwork(SelectedWifiNetworkSSID, SelectedWifiNetworkPassword);
+            _deviceConnectionService.StartConnectionTimer();
+            //_deviceConnectionService.ConnectToWifiNetwork(SelectedWifiNetworkSSID, SelectedWifiNetworkPassword);
 
         }
 
