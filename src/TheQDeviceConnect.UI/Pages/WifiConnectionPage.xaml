@@ -257,28 +257,34 @@
                     Margin="0, 0, 0, 0"
                     VerticalOptions="Start"
                     HorizontalOptions="CenterAndExpand"/>
-
-                <Picker x:Name="AuthMgntPicker"
-                        Title="Select"
-                        TitleColor="#42404A"
-                        FontSize="16"
-                        Margin="0, 0, 0, 20"
-                        VerticalOptions="Start"
-                        HorizontalOptions="CenterAndExpand"
-                        SelectedItem="{Binding SelectedWifiNetworkAuthMgnt}"
-                        >
-                    <Picker.ItemsSource>
-                        <x:Array Type="{x:Type x:String}">
-                          <x:String>psk</x:String>
-                          <x:String>eap</x:String>
-                        </x:Array>
-                    </Picker.ItemsSource>
-                </Picker>
-
                  <StackLayout
-                    Orientation="Vertical"
-                    HorizontalOptions="FillAndExpand"
-                    VerticalOptions="Start">
+                        Orientation="Vertical"
+                        HorizontalOptions="FillAndExpand"
+                        Padding="40, 0, 40, 0"
+                        VerticalOptions="Start">
+                    <Picker x:Name="AuthMgntPicker"
+                            Title="Select"
+                            TitleColor="#42404A"
+                            FontSize="Medium"
+                            Margin="0, 0, 0, 20"
+                            HeightRequest="50"
+                            VerticalOptions="StartAndExpand"
+                            HorizontalOptions="FillAndExpand"
+                            SelectedItem="{Binding SelectedWifiNetworkAuthMgnt}"
+                            >
+                        <Picker.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                              <x:String>psk</x:String>
+                              <x:String>eap</x:String>
+                            </x:Array>
+                        </Picker.ItemsSource>
+                    </Picker>
+                 </StackLayout>
+                 <StackLayout
+                        Orientation="Vertical"
+                        HorizontalOptions="FillAndExpand"
+                        Padding="40, 0, 40, 0"
+                        VerticalOptions="Start">
                      <StackLayout.Triggers>
                           <DataTrigger TargetType="StackLayout"
                                      Binding="{Binding SelectedWifiNetworkAuthMgnt}"
@@ -306,8 +312,8 @@
                     <customui:CustomEntry
                         HorizontalOptions="FillAndExpand"
                         VerticalOptions="Start"
-                        Margin="24, 0, 24, 0"
-                        HeightRequest="70"
+                        Margin="0, 0, 0, 0"
+                        HeightRequest="50"
                         IsPassword="True"
                         Placeholder="Password"
                         Text="{Binding SelectedWifiNetworkPassword, Mode=OneWayToSource}"
@@ -316,6 +322,7 @@
                 <StackLayout
                     Orientation="Vertical"
                     HorizontalOptions="FillAndExpand"
+                    Padding="40, 0, 40, 0"
                     VerticalOptions="Start">
                     <StackLayout.Triggers>
                         <DataTrigger TargetType="StackLayout"
@@ -335,7 +342,7 @@
                      <Label
                         x:Name="EAPUsernameLabel"
                         HorizontalTextAlignment="Center"
-                        Text="Enter EAP username:"
+                        Text="EAP username"
                         TextColor="#42404A"
                         FontSize="16"
                         Margin="0, 0, 0, 20"
@@ -345,16 +352,15 @@
                     <customui:CustomEntry
                         HorizontalOptions="FillAndExpand"
                         VerticalOptions="Start"
-                        Margin="24, 0, 24, 0"
-                        HeightRequest="70"
-                        IsPassword="True"
+                        Margin="0, 0, 0, 20"
+                        HeightRequest="50"
                         Text="{Binding SelectedWifiNetworkEAPUsername, Mode=OneWayToSource}"
                     />
 
                     <Label
                     x:Name="EAPPasswordLabel"
                     HorizontalTextAlignment="Center"
-                    Text="Enter EAP password:"
+                    Text="EAP password"
                     TextColor="#42404A"
                     FontSize="16"
                     Margin="0, 0, 0, 20"
@@ -364,8 +370,8 @@
                     <customui:CustomEntry
                         HorizontalOptions="FillAndExpand"
                         VerticalOptions="Start"
-                        Margin="24, 0, 24, 0"
-                        HeightRequest="70"
+                        Margin="0, 0, 0, 20"
+                        HeightRequest="50"
                         IsPassword="True"
                         Text="{Binding SelectedWifiNetworkEAPPassword, Mode=OneWayToSource}"
                     />

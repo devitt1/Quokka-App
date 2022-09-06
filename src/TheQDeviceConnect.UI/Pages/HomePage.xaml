@@ -6,9 +6,8 @@
     xmlns:views="clr-namespace:MvvmCross.Forms.Views;assembly=MvvmCross.Forms"
     xmlns:mvx="clr-namespace:MvvmCross.Forms.Bindings;assembly=MvvmCross.Forms"
     xmlns:local="clr-namespace:TheQDeviceConnect.UI.Pages"
-
     x:Class="TheQDeviceConnect.UI.Pages.HomePage"
-    
+    Style="{StaticResource TheQConnectDeviceBackgroundStyle}"
     xmlns:viewModels="clr-namespace:TheQDeviceConnect.Core.ViewModels.Home;assembly=TheQDeviceConnect.Core"
                       Title="TheQ Device Connect">
     

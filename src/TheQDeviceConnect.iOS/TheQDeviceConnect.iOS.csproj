@@ -116,6 +116,7 @@
     <ImageAsset Include="Resources\Media.xcassets\example_wifi_settings_img.imageset\example_wifi_settings_img-1.png" />
     <ImageAsset Include="Resources\Media.xcassets\example_wifi_settings_img.imageset\example_wifi_settings_img-2.png" />
     <Compile Include="Permissions\LocalNetworkAccess.cs" />
+    <Compile Include="Permissions\LocalNetworkAuthorization.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard">

@@ -12,6 +12,7 @@ using TheQDeviceConnect.Core.Services.Interfaces;
 using TheQDeviceConnect.iOS.Services.Implementations;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using static Xamarin.Essentials.Permissions;
 
 [assembly: Dependency(typeof(DeviceConnectionService))]
 namespace TheQDeviceConnect.iOS.Services.Implementations
@@ -25,7 +26,6 @@ namespace TheQDeviceConnect.iOS.Services.Implementations
         public Timer ConnectionTimer { get; set; }
 
         public string DeviceResolvedLocalAddress { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
         //Code-snippet generated template for public fields
         private string _currentConnectedNetworkSSID;
         public string CurrentConnectedNetworkSSID
@@ -61,13 +61,14 @@ namespace TheQDeviceConnect.iOS.Services.Implementations
             _wifiHelper = new NEHotspotHelper();
             _wifiConfigManager = new NEHotspotConfigurationManager();
 
-            initTimer(2000);
+            initTimer(5000);
         }
 
         public async Task ForcePermissionAsync(string ip_address_string, int port)
         {
             try
             {
+                await CheckAndRequestPermissionAsync();
                 IPAddress ipAddress = IPAddress.Parse(ip_address_string);
                 IPEndPoint remoteEndPoint = new IPEndPoint(ipAddress, port);
 
@@ -77,6 +78,7 @@ namespace TheQDeviceConnect.iOS.Services.Implementations
             } catch (Exception e)
             {
                 DebugHelper.Error(this, e);
+                throw e;
             }
           
         }
@@ -123,19 +125,16 @@ namespace TheQDeviceConnect.iOS.Services.Implementations
         public async Task OpenWifiSettings()
         {
             DebugHelper.Info(this, "iOS: OpenWifiSettings() called");
-            PermissionStatus status = await CheckAndRequestPermissionAsync();
-            if (status == PermissionStatus.Granted)
-            {
-                await ConnectWpa(THEQ_SSID, THEQ_PASSWORD);
-            }
             //UIKit.UIApplication.SharedApplication.OpenUrl(new Foundation.NSUrl("app-settings:WIFI"));
         }
 
 
         public async Task<PermissionStatus> CheckAndRequestPermissionAsync()
         {
-            //BasePermission LocalNetworkAccessPermission = new Permissions.LocalNetworkAccess();
-            //var status = await LocalNetworkAccessPermission.CheckStatusAsync();
+            BasePermission LocalNetworkAccessPermission = new Permissions.LocalNetworkAccess();
+            var status = await LocalNetworkAccessPermission.RequestAsync();
+
+
             //DebugHelper.Info(this, status);
 
             return PermissionStatus.Granted;
@@ -190,7 +189,7 @@ namespace TheQDeviceConnect.iOS.Services.Implementations
                "Device Platform automatically resolve hostname");
         }
 
-        public Task<bool> IsInternetReachable()
+        public Task<bool> IsInternetReachable(string url)
         {
             throw new NotImplementedException();
         }
@@ -228,6 +227,16 @@ namespace TheQDeviceConnect.iOS.Services.Implementations
         }
 
         public void ConnectToWifiNetwork(string ssid, string password)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task ConnectToTheQNetwork()
+        {
+            await ConnectWpa(THEQ_SSID, THEQ_PASSWORD);
+        }
+
+        public Task<string> GetDeviceName()
         {
             throw new NotImplementedException();
         }

@@ -303,6 +303,26 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
             throw new NotImplementedException();
         }
 
+        public Task ConnectToTheQNetwork()
+        {
+            throw new NotImplementedException();
+        }
+
+        Task IDeviceConnectionService.OpenWifiSettings()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task ForcePermissionAsync(string ip_address_string, int port)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<string> GetDeviceName()
+        {
+            throw new NotImplementedException();
+        }
+
         private class NetworkCallback : ConnectivityManager.NetworkCallback
         {
             private ConnectivityManager _conn;

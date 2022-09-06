@@ -38,27 +38,23 @@ namespace TheQDeviceConnect.Core.Rest.Implementations
         public string BaseEndPoint { get; private set; }
 
 
-        public async Task<bool> GetInternetReachability()
+        public async Task<bool> GetInternetReachability(string url)
         {
-            var url = "https://www.google.com";
-            var request = new HttpRequestMessage { RequestUri = new Uri(url), Method = HttpMethod.Get};
-            HttpResponseMessage response = new HttpResponseMessage();
             try
             {
+                var request = new HttpRequestMessage { RequestUri = new Uri(url), Method = HttpMethod.Get };
+                HttpResponseMessage response = new HttpResponseMessage();
                 response = await Client.SendAsync(request).ConfigureAwait(true);
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return response.StatusCode != System.Net.HttpStatusCode.NotFound;
             }
             catch (Exception ex)
             {
-                DebugHelper.Error(this, ex);
-                return false;
+                if (ex is HttpRequestException)
+                {
+                    DebugHelper.Error(this, ex);
+                    return false;
+                }
+                throw new Exception("Error getting checking device internet reachability", ex);
             }
         }
 

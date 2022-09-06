@@ -4,11 +4,12 @@ using static Xamarin.Essentials.Permissions;
 
 namespace TheQDeviceConnect.iOS.Permissions
 {
-    public class LocalNetworkAccess : BasePermission
+    public class LocalNetworkAccess : BasePlatformPermission 
     {
+        LocalNetworkAuthorization _localNetworkAuthorization;
         public LocalNetworkAccess()
         {
-
+            _localNetworkAuthorization = new LocalNetworkAuthorization();
         }
 
         public override Task<PermissionStatus> CheckStatusAsync()
@@ -23,7 +24,8 @@ namespace TheQDeviceConnect.iOS.Permissions
 
         public override Task<PermissionStatus> RequestAsync()
         {
-            throw new System.NotImplementedException();
+            _localNetworkAuthorization.RequestAuthorization(true);
+            return Task.FromResult<PermissionStatus>(0);
         }
 
         public override bool ShouldShowRationale()

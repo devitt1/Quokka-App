@@ -20,6 +20,7 @@ namespace TheQDeviceConnect.Core.Services.Implementations
                 throw new NotImplementedException(); set =>
                 throw new NotImplementedException(); }
 
+
         public DeviceConnectionService(IRestClient restClient)
         {
             DebugHelper.Info(this, "created!");
@@ -30,6 +31,22 @@ namespace TheQDeviceConnect.Core.Services.Implementations
         public event EventHandler OnWifiNetworkChanged;
         public event EventHandler OnConnectionTimerElapsed;
         public event EventHandler OnAndroidNsdResolved;
+
+
+        public async Task<string> GetDeviceName()
+        {
+            try
+            {
+                var deviceName =
+                await _restClient.MakeApiCall<string>("WifiNetwork/me", HttpMethod.Get);
+                return deviceName;
+            }
+            catch (Exception e)
+            {
+                DebugHelper.Error(this, e);
+                throw e;
+            }
+        }
 
         public async Task<MvxObservableCollection<WifiNetworkInfo>> GetNearbyWifiNetworksAsync()
         {
@@ -112,9 +129,9 @@ namespace TheQDeviceConnect.Core.Services.Implementations
             throw new NotImplementedException();
         }
 
-        public async Task<bool> IsInternetReachable()
+        public async Task<bool> IsInternetReachable(string url)
         {
-            var result = await _restClient.GetInternetReachability();
+            var result = await _restClient.GetInternetReachability(url);
             return result;
         }
 
@@ -153,6 +170,11 @@ namespace TheQDeviceConnect.Core.Services.Implementations
         }
 
         public Task ForcePermissionAsync(string ip_address_string, int port)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task ConnectToTheQNetwork()
         {
             throw new NotImplementedException();
         }

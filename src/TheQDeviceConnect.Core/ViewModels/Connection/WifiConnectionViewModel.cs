@@ -66,18 +66,18 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
             }
         }
 
-        private async Task CheckInternetReachabilityAsync()
-        {
-            if (await _coreDeviceConnectionService.IsInternetReachable())
-            {
-                //Only needed for Android applications
-                DebugHelper.Info(this, "Connected to the internet, waiting for mDNS service to be online!\n");
-                //Thread.Sleep(2000);
-                //startAndroidNsd();
-                DebugHelper.Info(this, "Wait time over, beginning discovery process...\n");
+        //private async Task CheckInternetReachabilityAsync()
+        //{
+        //    if (await _coreDeviceConnectionService.IsInternetReachable())
+        //    {
+        //        //Only needed for Android applications
+        //        DebugHelper.Info(this, "Connected to the internet, waiting for mDNS service to be online!\n");
+        //        //Thread.Sleep(2000);
+        //        //startAndroidNsd();
+        //        DebugHelper.Info(this, "Wait time over, beginning discovery process...\n");
 
-            }
-        }
+        //    }
+        //}
 
         private void startAndroidNsd()
         {
@@ -93,6 +93,7 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
         {
             base.Prepare();
         }
+
 
         public override Task Initialize()
         {
@@ -110,11 +111,6 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
         }
         public override void ViewAppeared()
         {
-            //if (SecureStorage.GetAsync("DeviceResolvedLocalAddress").Result != null)
-            //{
-            //    ShowWifiNetworkConnectedPageCommand.Execute();
-            //}
-            //_deviceConnectionService.DiscoverNeabymDNSServices();
             base.ViewAppeared();
         }
 
@@ -138,7 +134,7 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
                 || _deviceConnectionService.CurrentConnectedNetworkSSID == $"{ SelectedWifiNetworkSSID}")
             {
                 DebugHelper.Info(this, $"Connected to the selected Wifi Network: {SelectedWifiNetworkSSID}");
-                MvxNotifyTask task = MvxNotifyTask.Create(CheckInternetReachabilityAsync);
+                //MvxNotifyTask task = MvxNotifyTask.Create(CheckInternetReachabilityAsync);
             }
         }
 

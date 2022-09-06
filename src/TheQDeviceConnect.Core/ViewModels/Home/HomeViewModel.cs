@@ -27,6 +27,8 @@ namespace TheQDeviceConnect.Core.ViewModels.Home
 
         }
 
+        private bool deviceIsOnline;
+
         public MvxAsyncCommand GoToHotspotConnectionViewModelCommand { get; private set; }
         IDeviceConnectionService _coreDeviceConnectionService; //Service from core
         IDeviceConnectionService _deviceConnectionService; // Native
@@ -37,15 +39,17 @@ namespace TheQDeviceConnect.Core.ViewModels.Home
             await Permissions.RequestAsync<Permissions.StorageRead>();
             var status = await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
             
-            if (SecureStorage.GetAsync("DeviceResolvedLocalAddress").Result == null)
-            {
-                await NavigationService.Navigate<HotspotConnectionViewModel>();
-            }
-            else
+            if (deviceIsOnline)
             {
                 await NavigationService.Navigate<WifiConnectionViewModel>();
             }
+            else
+            {
+                await NavigationService.Navigate<HotspotConnectionViewModel>();
+            }
         }
+
+        
 
         public override Task Initialize()
         {
@@ -72,22 +76,23 @@ namespace TheQDeviceConnect.Core.ViewModels.Home
         {
             base.ViewAppeared();
             //_deviceConnectionService.DiscoverNeabymDNSServices();
-            //try
-            //{
-            //    if (SecureStorage.GetAsync("DeviceResolvedLocalAddress").Result == null)
-            //    {
-            //        _deviceConnectionService.DiscoverNeabymDNSServices();
-            //    }
-            //    else
-            //    {
-            //        NavigationService.Navigate<WifiConnectionViewModel>();
-            //    }
-            //}
-            //catch (Exception e)
-            //{
-            //    DebugHelper.Error(this, e);
-
-            //}
+            try
+            {
+                Task.Run(async () =>
+                {
+                    string deviceName = await SecureStorage.GetAsync("ConnectedDeviceName");
+                    if (deviceName != null)
+                    {
+                        deviceIsOnline = await
+                        _coreDeviceConnectionService.IsInternetReachable($"https://{deviceName}.au.ngrok.io");
+                    }
+                }).Wait();
+            }
+            catch (Exception e)
+            {
+                DebugHelper.Error(this, e);
+                throw new Exception("Exepction when trying to read from Secure Storage", e);
+            }
         }
 
         public override void ViewDisappeared()

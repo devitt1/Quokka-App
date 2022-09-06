@@ -4,6 +4,24 @@
                     x:Class="TheQDeviceConnect.UI.Resources.Colors"
                     xmlns:local="clr-namespace:TheQDeviceConnect.UI.Resources">
 
+     <Style x:Key="TheQConnectDeviceBackgroundStyle" TargetType="ContentPage">
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    StartPoint="0.5, 0"
+                    EndPoint="0.5, 1"
+                    >
+                    <LinearGradientBrush.GradientStops>
+                        <GradientStopCollection>
+                            <GradientStop Color="#F4F7FB" Offset="0"/>
+                            <GradientStop Color="#FFFFFF" Offset="0.5"/>
+                        </GradientStopCollection>
+                    </LinearGradientBrush.GradientStops>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <Color x:Key="PrimaryColor">#FFFFFF</Color>
     <Color x:Key="PrimaryDarkColor">#000000</Color>
     <Color x:Key="PrimaryLightColor">#4Dffffff</Color>

@@ -10,7 +10,7 @@ namespace TheQDeviceConnect.Core.Rest.Interfaces
             object data = null, bool useHotspot = true,
             string resolved_ip_address = null) where TResult : class;
 
-        Task<bool> GetInternetReachability();
+        Task<bool> GetInternetReachability(string url);
         string BaseEndPoint { get; }
     }
 }

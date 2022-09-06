@@ -15,6 +15,7 @@ namespace TheQDeviceConnect.Core.Services.Interfaces
         event EventHandler OnAndroidNsdResolved;
 
         void ConnectToWifiNetwork(string ssid, string password);
+        Task ConnectToTheQNetwork();
 
         void Initialize();
 
@@ -35,7 +36,7 @@ namespace TheQDeviceConnect.Core.Services.Interfaces
         void StartConnectionTimer();
         void StopConnectionTimer();
 
-        Task<bool> IsInternetReachable();
+        Task<bool> IsInternetReachable(string url);
         void InitializeAndroidNsd();
         void DiscoverNeabymDNSServices();
         void StopDiscoverNearbymDNSServices();
@@ -45,6 +46,7 @@ namespace TheQDeviceConnect.Core.Services.Interfaces
 
 
         Task<MvxObservableCollection<WifiNetworkInfo>> GetNearbyWifiNetworksAsync();
+        Task<string> GetDeviceName();
         Task<bool> UpdateDeviceWifiNetworkCredential(string ssidArg,
             string passwordArg, string authMgntArg = "psk", 
             string peapUsernameArg = null, string peapPasswordArg = null);

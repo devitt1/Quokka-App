@@ -48,5 +48,10 @@
 	<true/>
 	<key>NSLocalNetworkUsageDescription</key>
 	<string>This app needs access to your local network </string>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_bonjour._tcp</string>
+		<string>_lnp._tcp</string>
+	</array>
 </dict>
 </plist>
