@@ -140,21 +140,6 @@ namespace TheQDeviceConnect.iOS.Services.Implementations
             return PermissionStatus.Granted;
         }
 
-        public bool IsConnectedToHotspot()
-        {
-            DebugHelper.Info(this, "iOS: IsConnectedToHotspot() called");
-            if (CurrentConnectedNetworkSSID == "The Q Hotspot")
-            {
-                DebugHelper.Info(this, "Connected to the Q hotspot");
-                return true;
-            }
-            else
-            {
-                DebugHelper.Info(this, "Not connected to the Q hotspot");
-                return false;
-            }
-        }
-
         public void StartConnectionTimer()
         {
             if (ConnectionTimer != null)
@@ -237,6 +222,11 @@ namespace TheQDeviceConnect.iOS.Services.Implementations
         }
 
         public Task<string> GetDeviceName()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> IsConnectedToHotspot()
         {
             throw new NotImplementedException();
         }

@@ -15,6 +15,25 @@ namespace TheQDeviceConnect.UI.Pages
         public ErrorPage()
         {
             InitializeComponent();
+            NavigationPage.SetHasNavigationBar(this, false);
         }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+
+            if (Application.Current.MainPage is NavigationPage navigationPage)
+            {
+                navigationPage.BarTextColor = Color.White;
+                navigationPage.BarBackgroundColor = (Color)Application.Current.Resources["PrimaryColor"];
+            }
+        }
+
+        protected override void OnViewModelSet()
+        {
+            base.OnViewModelSet();
+        }
+        
     }
 }

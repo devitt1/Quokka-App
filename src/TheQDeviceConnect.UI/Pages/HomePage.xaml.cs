@@ -40,5 +40,10 @@ namespace TheQDeviceConnect.UI.Pages
         {
             base.OnViewModelSet();
         }
+
+        void Button_Pressed()
+        {
+            Navigation.PopAsync();
+        }
     }
 }

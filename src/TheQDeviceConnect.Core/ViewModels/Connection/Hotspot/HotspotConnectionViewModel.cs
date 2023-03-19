@@ -11,6 +11,7 @@ using Xamarin.Forms;
 using MvvmCross;
 using TheQDeviceConnect.Core.DataModels;
 using Xamarin.Essentials;
+using TheQDeviceConnect.Core.ViewModels.Error;
 
 namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
 {
@@ -21,6 +22,7 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
         public MvxAsyncCommand GoToWifiConnectionViewModelCommand { get; private set; }
         public IMvxAsyncCommand OpenAppWifiSettingsCommand { get; private set; }
         public MvxCommand ShowHotspotInstructionPageCommand { get; private set; }
+       
 
         public HotspotConnectionViewModel(ILoggerFactory logProvider, IMvxNavigationService navigationService) : base(logProvider, navigationService)
         {
@@ -33,10 +35,19 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
             _deviceConnectionService.OnConnectionTimerElapsed += (async (sender, eventArgs) =>
             {
                 _deviceConnectionService.StopConnectionTimer();
-                preloadNearbyWifiNetworks();
+                var result = await _coreDeviceConnectionService.IsConnectedToHotspot();
+                if (result)
+                {
+                    preloadNearbyWifiNetworks();
+                } else
+                {
+                    await NavigationService.Navigate<ErrorViewModel>();
+                }
+                
             });
             //_deviceConnectionService.OnAndroidNsdResolved += handleAndroidNsdResolved;
             _coreDeviceConnectionService = Mvx.IoCProvider.Resolve<IDeviceConnectionService>();
+
         }
 
         private void handleAndroidNsdResolved(object sender, EventArgs e)
@@ -46,7 +57,6 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
 
         private async void preloadNearbyWifiNetworks()
         {
-            DebugHelper.Info(this, "Preload....");
             WifiConnectionState = WifiNetworkConnectionState.HOTSPOT_CONNECTING;
 
             //var deviceName = await _coreDeviceConnectionService.GetDeviceName();
@@ -78,7 +88,16 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
             return base.Initialize();
         }
 
-
+        private async Task ViewAppearedAsync()
+        {
+            var deviceName = await _coreDeviceConnectionService.GetDeviceName();
+            DebugHelper.Info(this, $"DEVICE NAME: {deviceName}");
+            if (deviceName != null)
+            {
+                DebugHelper.Info(this, "Connected to The Q Hotspot!");
+                preloadNearbyWifiNetworks();
+            }
+        }
        
 
         public override void ViewAppearing()
@@ -88,18 +107,11 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
             Task.Run(async () =>
             {
                 await _deviceConnectionService.ForcePermissionAsync("localhost", 80);
-
             });
 
-            if (_deviceConnectionService.IsConnectedToHotspot())
-            {
-                DebugHelper.Info(this, "Connected to The Q Hotspot!");
-                preloadNearbyWifiNetworks();
-            }
-            else
-            {
-                WifiConnectionState = WifiNetworkConnectionState.DEFAULT;
-            }
+            TaskNotifier = MvxNotifyTask.Create(ViewAppearedAsync);
+
+            WifiConnectionState = WifiNetworkConnectionState.DEFAULT;
         }
 
         public override void ViewDisappeared()
@@ -120,11 +132,6 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
         void handleWifiNetworkChanged(object sender, EventArgs eventArgs)
         {
             DebugHelper.Info(this, "Connection changed!");
-            if (_deviceConnectionService.IsConnectedToHotspot())
-            {
-                DebugHelper.Info(this, "Connected to The Q Hotspot!");
-                WifiConnectionState = WifiNetworkConnectionState.HOTSPOT_CONNECTED;
-            }
         }
 
         private WifiNetworkConnectionState _wifiConnectionState;

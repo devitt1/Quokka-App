@@ -46,15 +46,6 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
         public IMvxCommand ShowWifiNetworkConnectedConfirmPageCommand { get; private set; }
         public IMvxCommand ShowWifiNetworkConnectedPageCommand { get; private set; }
 
-
-        private MvxNotifyTask _taskNotifier;
-        public MvxNotifyTask TaskNotifier
-        {
-            get => _taskNotifier;
-            private set => SetProperty(ref _taskNotifier, value);
-        }
-
-
         private async Task GetNearbyWifiNetworksAsync()
         {
             MvxObservableCollection<WifiNetworkInfo> result = await _coreDeviceConnectionService.GetNearbyWifiNetworksAsync();

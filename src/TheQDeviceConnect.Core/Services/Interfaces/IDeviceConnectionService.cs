@@ -31,7 +31,7 @@ namespace TheQDeviceConnect.Core.Services.Interfaces
          */
         Task ForcePermissionAsync(string ip_address_string, int port);
 
-        bool IsConnectedToHotspot();
+        Task<bool> IsConnectedToHotspot();
 
         void StartConnectionTimer();
         void StopConnectionTimer();

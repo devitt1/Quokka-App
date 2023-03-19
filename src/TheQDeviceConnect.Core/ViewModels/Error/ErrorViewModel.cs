@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using MvvmCross.Commands;
 using MvvmCross.Navigation;
+using TheQDeviceConnect.Core.ViewModels.Connection.Hotspot;
 using ErrorModel = TheQDeviceConnect.Core.DataModels.Error;
 namespace TheQDeviceConnect.Core.ViewModels.Error
 {
@@ -23,7 +26,15 @@ namespace TheQDeviceConnect.Core.ViewModels.Error
 
         public ErrorViewModel(ILoggerFactory logProvider, IMvxNavigationService navigationService) : base(logProvider, navigationService)
         {
+            TryAgainCommand = new MvxAsyncCommand(TryAgainAsync, allowConcurrentExecutions: true);
 
+
+        }
+        public MvxAsyncCommand TryAgainCommand { get; private set; }
+
+        private async Task TryAgainAsync()
+        {
+            await NavigationService.Close(this);
         }
 
         public override void Prepare(ErrorModel error)

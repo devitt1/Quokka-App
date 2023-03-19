@@ -8,6 +8,18 @@ using TheQDeviceConnect.Core.Rest.Interfaces;
 
 namespace TheQDeviceConnect.Core.Rest.Implementations
 {
+
+
+    public class HttpRequestConfig : IHttpRequestConfig
+    {
+        public HttpRequestConfig()
+        {
+
+        }
+
+        public TimeSpan timeout { get ; set ; }
+    }
+
     public class RestClient : IRestClient
     {
         public RestClient()
@@ -31,8 +43,8 @@ namespace TheQDeviceConnect.Core.Rest.Implementations
                     _client = value;
                 }
             }
-
         }
+
         private string _device_local_ip_address = "";
 
         public string BaseEndPoint { get; private set; }
@@ -58,7 +70,11 @@ namespace TheQDeviceConnect.Core.Rest.Implementations
             }
         }
 
-        public async Task<TResult> MakeApiCall<TResult>(string url, HttpMethod method, object data = null, bool useHotspot = true, string resolved_ip_address = null) where TResult : class
+        public async Task<TResult> MakeApiCall<TResult>(string url,
+            HttpMethod method, object data = null, bool useHotspot = true,
+            string resolved_ip_address = null,
+            HttpRequestConfig config = null
+            ) where TResult : class
         {
             if (useHotspot)
             {
@@ -71,7 +87,6 @@ namespace TheQDeviceConnect.Core.Rest.Implementations
                 BaseEndPoint = "http://" + _device_local_ip_address + ":" + PORT + "/";
                 url = BaseEndPoint + url;
             }
-
             DebugHelper.Info(this, $"MakeApi call to {url}");
 
             var request = new HttpRequestMessage { RequestUri = new Uri(url), Method = method };
@@ -86,11 +101,18 @@ namespace TheQDeviceConnect.Core.Rest.Implementations
             HttpResponseMessage response = new HttpResponseMessage();
             try
             {
+
+
+                if (config != null)
+                {
+                    Client.Timeout = config.timeout;
+                }
                 response = await Client.SendAsync(request).ConfigureAwait(true);
             }
             catch (Exception ex)
             {
                 DebugHelper.Error(this, ex);
+                return null;
             }
 
             var stringSerialized = await response.Content.ReadAsStringAsync();

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MvvmCross.ViewModels;
 using TheQDeviceConnect.Core.DataModels;
 using TheQDeviceConnect.Core.Helpers;
+using TheQDeviceConnect.Core.Rest.Implementations;
 using TheQDeviceConnect.Core.Rest.Interfaces;
 using TheQDeviceConnect.Core.Services.Interfaces;
 
@@ -37,14 +38,16 @@ namespace TheQDeviceConnect.Core.Services.Implementations
         {
             try
             {
+                HttpRequestConfig config = new HttpRequestConfig();
+                config.timeout = TimeSpan.FromSeconds(1);
                 var deviceName =
-                await _restClient.MakeApiCall<string>("WifiNetwork/me", HttpMethod.Get);
+                await _restClient.MakeApiCall<string>("WifiNetwork/me", HttpMethod.Get, config: config);
                 return deviceName;
             }
             catch (Exception e)
             {
                 DebugHelper.Error(this, e);
-                throw e;
+                return null;
             }
         }
 
@@ -104,9 +107,9 @@ namespace TheQDeviceConnect.Core.Services.Implementations
             throw new NotImplementedException();
         }
 
-        public bool IsConnectedToHotspot()
+        public async Task<bool> IsConnectedToHotspot()
         {
-            throw new NotImplementedException();
+            return (await GetDeviceName()) != null;
         }
 
         public void OpenWifiSettings()

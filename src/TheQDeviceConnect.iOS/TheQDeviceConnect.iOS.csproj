@@ -122,6 +122,11 @@
     <ImageAsset Include="Resources\Media.xcassets\example_wifi_settings_img.imageset\example_wifi_settings_img-2.png" />
     <Compile Include="Permissions\LocalNetworkAccess.cs" />
     <Compile Include="Permissions\LocalNetworkAuthorization.cs" />
+    <ImageAsset Include="Resources\Media.xcassets\Contents.json" />
+    <ImageAsset Include="Resources\Media.xcassets\error_icon.imageset\error-icon.png" />
+    <ImageAsset Include="Resources\Media.xcassets\error_icon.imageset\error-icon 2.png" />
+    <ImageAsset Include="Resources\Media.xcassets\error_icon.imageset\error-icon 1.png" />
+    <ImageAsset Include="Resources\Media.xcassets\error_icon.imageset\Contents.json" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard">

@@ -8,6 +8,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="TheQDeviceConnect.UI.Pages.ErrorPage"
     Style="{StaticResource TheQConnectDeviceBackgroundStyle}"
+    Title="Device Connection Error"
     >
      <views:MvxContentPage.BackgroundColor>
         <OnPlatform x:TypeArguments="Color">
@@ -17,5 +18,58 @@
             </OnPlatform.Platforms>
         </OnPlatform>
     </views:MvxContentPage.BackgroundColor>
+     <ContentPage.Content>
+        <StackLayout Padding="50, 50, 50, 50">
+             <Image
+                 VerticalOptions="Start"
+                 HorizontalOptions="CenterAndExpand"
+                 Source="error_icon.png"
+                 WidthRequest="50"
+                 HeightRequest="50"
+             >
+             </Image>
+            <Label
+                Text="Error connecting &#10;to Quokka"
+                HorizontalTextAlignment="Center"
+                HorizontalOptions="CenterAndExpand"
+                TextColor="#DA3333"
+                VerticalOptions="Start">
+            </Label>
+
+            <Label
+                Margin="0, 20, 0, 0"
+                Text="Check if The Q Hotspot is available in your area"
+                HorizontalTextAlignment="Center"
+                HorizontalOptions="CenterAndExpand"
+                TextColor="#222225"
+                VerticalOptions="Start">
+            </Label>
+
+             <Button
+                Text="TRY AGAIN"
+                TextColor="White"
+                FontAttributes="Bold"
+                FontSize="16"
+                HeightRequest="50"
+                WidthRequest="200"
+                HorizontalOptions="Center"
+                VerticalOptions="EndAndExpand"
+                Margin="0, 0, 0 ,40"
+                IsEnabled="True"
+                Command="{mvx:MvxBind TryAgainCommand}"
+                >
+                <Button.Background>
+                    <LinearGradientBrush
+                        StartPoint="0,0"
+                        EndPoint="1,1">
+                        <GradientStop Color="#2B2B2B" Offset="0.0" />
+                        <GradientStop Color="#1E2023" Offset="0.5" />
+                        <GradientStop Color="#1F2E4D" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+
+            </Button>
+        </StackLayout>
+    </ContentPage.Content>
 
 </views:MvxContentPage>
