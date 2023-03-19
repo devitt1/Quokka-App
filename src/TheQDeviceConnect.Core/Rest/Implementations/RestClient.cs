@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using TheQDeviceConnect.Core.Helpers;
@@ -19,18 +20,20 @@ namespace TheQDeviceConnect.Core.Rest.Implementations
 
         public TimeSpan timeout { get ; set ; }
     }
-
+    
     public class RestClient : IRestClient
     {
         public RestClient()
         {
-            _device_local_ip_address = DEVICE_LOCAL_GATEWAY_IP_ADDRESS;
-            BaseEndPoint = "http://" + _device_local_ip_address + ":" + PORT + "/";
             Client = new HttpClient();
         }
 
         private static string DEVICE_LOCAL_GATEWAY_IP_ADDRESS = "192.168.4.1";
+        private static string QSIM_API_NGROK_DOMAIN = "au.ngrok.io";
+
         private static string DEVICE_LOCAL_HOSTNAME = "theqbox1.local";
+
+
         private static string PORT = "5001";
         private HttpClient _client;
         public HttpClient Client
@@ -44,9 +47,6 @@ namespace TheQDeviceConnect.Core.Rest.Implementations
                 }
             }
         }
-
-        private string _device_local_ip_address = "";
-
         public string BaseEndPoint { get; private set; }
 
 
@@ -70,9 +70,13 @@ namespace TheQDeviceConnect.Core.Rest.Implementations
             }
         }
 
-        public async Task<TResult> MakeApiCall<TResult>(string url,
-            HttpMethod method, object data = null, bool useHotspot = true,
+        public async Task<TResult> MakeApiCall<TResult>(
+            string url,
+            HttpMethod method,
+            object data = null,
+            bool useHotspot = true,
             string resolved_ip_address = null,
+            string deviceName = null,
             HttpRequestConfig config = null
             ) where TResult : class
         {
@@ -83,8 +87,7 @@ namespace TheQDeviceConnect.Core.Rest.Implementations
             }
             else
             {
-                _device_local_ip_address = resolved_ip_address;
-                BaseEndPoint = "http://" + _device_local_ip_address + ":" + PORT + "/";
+                string baseEndPoint = "http://" + deviceName + "." + QSIM_API_NGROK_DOMAIN + PORT + "/" ;
                 url = BaseEndPoint + url;
             }
             DebugHelper.Info(this, $"MakeApi call to {url}");
@@ -101,13 +104,7 @@ namespace TheQDeviceConnect.Core.Rest.Implementations
             HttpResponseMessage response = new HttpResponseMessage();
             try
             {
-
-
-                if (config != null)
-                {
-                    Client.Timeout = config.timeout;
-                }
-                response = await Client.SendAsync(request).ConfigureAwait(true);
+                response = await Client.SendAsync(request);
             }
             catch (Exception ex)
             {

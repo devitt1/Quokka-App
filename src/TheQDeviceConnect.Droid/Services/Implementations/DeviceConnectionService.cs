@@ -288,6 +288,8 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
             }
         }
 
+        string IDeviceConnectionService.CurrentConnectedDeviceName { get ; set; }
+
         public Task<bool> UpdateDeviceWifiNetworkCredential(string ssidArg, string passwordArg)
         {
             throw new NotImplementedException();
@@ -319,6 +321,16 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
         }
 
         public Task<string> GetDeviceName()
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<bool> IDeviceConnectionService.IsConnectedToHotspot()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> IsInternetReachable(string url)
         {
             throw new NotImplementedException();
         }

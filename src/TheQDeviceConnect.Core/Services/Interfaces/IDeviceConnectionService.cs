@@ -20,6 +20,8 @@ namespace TheQDeviceConnect.Core.Services.Interfaces
         void Initialize();
 
         string CurrentConnectedNetworkSSID { get; set; }
+        string CurrentConnectedDeviceName { get; set; }
+        Task<bool> IsDeviceOnlineAsync();
 
         Task OpenWifiSettings();
 
@@ -31,7 +33,7 @@ namespace TheQDeviceConnect.Core.Services.Interfaces
          */
         Task ForcePermissionAsync(string ip_address_string, int port);
 
-        Task<bool> IsConnectedToHotspot();
+        bool IsConnectedToHotspot();
 
         void StartConnectionTimer();
         void StopConnectionTimer();

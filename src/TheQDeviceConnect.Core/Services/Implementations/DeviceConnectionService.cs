@@ -17,9 +17,9 @@ namespace TheQDeviceConnect.Core.Services.Implementations
         public string DeviceResolvedLocalAddress { get =>
                 throw new NotImplementedException(); set =>
                 throw new NotImplementedException(); }
-        public string CurrentConnectedNetworkSSID { get =>
-                throw new NotImplementedException(); set =>
-                throw new NotImplementedException(); }
+        public string CurrentConnectedNetworkSSID { get; set; }
+        public string CurrentConnectedDeviceName { get; set; }
+
 
 
         public DeviceConnectionService(IRestClient restClient)
@@ -38,10 +38,10 @@ namespace TheQDeviceConnect.Core.Services.Implementations
         {
             try
             {
-                HttpRequestConfig config = new HttpRequestConfig();
-                config.timeout = TimeSpan.FromSeconds(1);
                 var deviceName =
-                await _restClient.MakeApiCall<string>("WifiNetwork/me", HttpMethod.Get, config: config);
+                await _restClient.MakeApiCall<string>("WifiNetwork/me", HttpMethod.Get);
+                CurrentConnectedNetworkSSID = "The Q Hotspot";
+                CurrentConnectedDeviceName = deviceName;
                 return deviceName;
             }
             catch (Exception e)
@@ -68,6 +68,12 @@ namespace TheQDeviceConnect.Core.Services.Implementations
                 DebugHelper.Error(this, e);
                 throw e;
             }
+        }
+
+        public async Task<bool> IsDeviceOnlineAsync()
+        {
+            var pingResponse = await _restClient.MakeApiCall<PingResponse>("qsim/ping", HttpMethod.Get, useHotspot: false);
+            return pingResponse.result;
         }
 
         public async Task<bool> UpdateDeviceWifiNetworkCredential(string ssidArg,
@@ -107,9 +113,9 @@ namespace TheQDeviceConnect.Core.Services.Implementations
             throw new NotImplementedException();
         }
 
-        public async Task<bool> IsConnectedToHotspot()
+        public bool IsConnectedToHotspot()
         {
-            return (await GetDeviceName()) != null;
+            return CurrentConnectedNetworkSSID == "The Q Hotspot";
         }
 
         public void OpenWifiSettings()
@@ -181,5 +187,6 @@ namespace TheQDeviceConnect.Core.Services.Implementations
         {
             throw new NotImplementedException();
         }
+
     }
 }

@@ -10,6 +10,7 @@ namespace TheQDeviceConnect.Core.Rest.Interfaces
         Task<TResult> MakeApiCall<TResult>(string url, HttpMethod method,
             object data = null, bool useHotspot = true,
             string resolved_ip_address = null,
+            string deviceName = null,
             HttpRequestConfig config = null) where TResult : class;
 
         Task<bool> GetInternetReachability(string url);

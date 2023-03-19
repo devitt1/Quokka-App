@@ -9,7 +9,7 @@ using Xamarin.Forms.Xaml;
 namespace TheQDeviceConnect.UI.Pages
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    [MvxContentPagePresentation(WrapInNavigationPage = true)]
+    [MvxContentPagePresentation(WrapInNavigationPage = false)]
     public partial class ErrorPage : MvxContentPage<ErrorViewModel>
     {
         public ErrorPage()

@@ -34,7 +34,7 @@ namespace TheQDeviceConnect.Core.ViewModels.Error
 
         private async Task TryAgainAsync()
         {
-            await NavigationService.Close(this);
+            await NavigationService.Navigate<HotspotConnectionViewModel>();
         }
 
         public override void Prepare(ErrorModel error)

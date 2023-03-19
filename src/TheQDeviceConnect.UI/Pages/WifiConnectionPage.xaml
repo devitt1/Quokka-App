@@ -591,6 +591,25 @@
                 VerticalOptions="Start"
                 HorizontalOptions="CenterAndExpand"/>
 
+             <Label
+                Text="Device name:"
+                HorizontalTextAlignment="Center"
+                TextColor="#42404A"
+                FontSize="16"
+                Margin="0, 0, 0, 20"
+                VerticalOptions="Start"
+                HorizontalOptions="CenterAndExpand"/>
+
+            <Label
+                Text="{Binding WifiConnectedDeviceName}"
+                HorizontalTextAlignment="Center"
+                TextColor="#42404A"
+                FontSize="16"
+                Margin="0, 0, 0, 20"
+                VerticalOptions="Start"
+                HorizontalOptions="CenterAndExpand"/>
+
+
             <customui:CustomButton
                 x:Name="openTheQButton"
                 Text="OPEN THE Q"
@@ -602,6 +621,7 @@
                 WidthRequest="200"
                 HorizontalOptions="Center"
                 VerticalOptions="EndAndExpand"
+                Clicked="OpenTheQ"
                 Margin="0, 0, 0, 20">
                 <Button.Background>
                     <LinearGradientBrush

@@ -41,6 +41,10 @@ namespace TheQDeviceConnect.iOS.Services.Implementations
             }
 
         }
+
+        string CurrentConnectedDeviceName { get; set; }
+        string IDeviceConnectionService.CurrentConnectedDeviceName { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         private readonly string THEQ_SSID = "The Q Hotspot";
         private readonly string THEQ_PASSWORD = "theqpassword";
 
@@ -226,7 +230,12 @@ namespace TheQDeviceConnect.iOS.Services.Implementations
             throw new NotImplementedException();
         }
 
-        public Task<bool> IsConnectedToHotspot()
+        public bool IsConnectedToHotspot()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> IsDeviceOnlineAsync()
         {
             throw new NotImplementedException();
         }

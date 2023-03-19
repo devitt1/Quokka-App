@@ -38,7 +38,7 @@
 
             <Label
                 Margin="0, 20, 0, 0"
-                Text="Check if The Q Hotspot is available in your area"
+                Text="Check if The Q Hotspot is available in your area or reboot the device"
                 HorizontalTextAlignment="Center"
                 HorizontalOptions="CenterAndExpand"
                 TextColor="#222225"

@@ -46,6 +46,7 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
         public IMvxCommand ShowWifiNetworkConnectedConfirmPageCommand { get; private set; }
         public IMvxCommand ShowWifiNetworkConnectedPageCommand { get; private set; }
 
+        public string WifiConnectedDeviceName { get; set; }
         private async Task GetNearbyWifiNetworksAsync()
         {
             MvxObservableCollection<WifiNetworkInfo> result = await _coreDeviceConnectionService.GetNearbyWifiNetworksAsync();
@@ -99,6 +100,7 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
             SelectedWifiNetworkSSID = "";
             SelectedWifiNetworkPassword = "";
             SelectedWifiNetworkAuthMgnt = "psk";
+            WifiConnectedDeviceName = _coreDeviceConnectionService.CurrentConnectedDeviceName;
             return base.Initialize();
         }
 

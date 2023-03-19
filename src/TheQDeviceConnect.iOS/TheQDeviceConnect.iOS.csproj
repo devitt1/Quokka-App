@@ -45,6 +45,7 @@
 
     <CodesignProvision>TheQDeviceConnectorDist</CodesignProvision>
     <CodesignKey>iPhone Distribution: UNIVERSITY OF TECHNOLOGY, SYDNEY (V3887FHUBY)</CodesignKey>
+    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
     <DebugSymbols>true</DebugSymbols>
