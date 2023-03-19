@@ -45,7 +45,7 @@ namespace TheQDeviceConnect.Core.Rest.Implementations
                 var request = new HttpRequestMessage { RequestUri = new Uri(url), Method = HttpMethod.Get };
                 HttpResponseMessage response = new HttpResponseMessage();
                 response = await Client.SendAsync(request).ConfigureAwait(true);
-                return response.StatusCode != System.Net.HttpStatusCode.NotFound;
+                return response.StatusCode == System.Net.HttpStatusCode.OK;
             }
             catch (Exception ex)
             {

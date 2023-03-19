@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using MvvmCross;
 using MvvmCross.Commands;
 using MvvmCross.Navigation;
+using TheQDeviceConnect.Core.DataModels;
 using TheQDeviceConnect.Core.Helpers;
 using TheQDeviceConnect.Core.Services.Interfaces;
 using TheQDeviceConnect.Core.Utils;
@@ -41,7 +42,8 @@ namespace TheQDeviceConnect.Core.ViewModels.Home
             
             if (deviceIsOnline)
             {
-                await NavigationService.Navigate<WifiConnectionViewModel>();
+                var connStatus = new ConnectionStatus(Constants.WifiNetworkConnectionState.WIFI_CONNECTED);
+                await NavigationService.Navigate<WifiConnectionViewModel, ConnectionStatus>(connStatus);
             }
             else
             {
@@ -84,7 +86,7 @@ namespace TheQDeviceConnect.Core.ViewModels.Home
                     if (deviceName != null)
                     {
                         deviceIsOnline = await
-                        _coreDeviceConnectionService.IsInternetReachable($"https://{deviceName}.au.ngrok.io");
+                        _coreDeviceConnectionService.IsInternetReachable($"https://{deviceName}.au.ngrok.io/qsim/ping");
                     }
                 }).Wait();
             }

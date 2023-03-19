@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<views:MvxContentPage
+    x:TypeArguments="viewModels:ErrorViewModel"
+    xmlns:viewModels="clr-namespace:TheQDeviceConnect.Core.ViewModels.Error;assembly=TheQDeviceConnect.Core"
+    xmlns:views="clr-namespace:MvvmCross.Forms.Views;assembly=MvvmCross.Forms"
+    xmlns:mvx="clr-namespace:MvvmCross.Forms.Bindings;assembly=MvvmCross.Forms"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="TheQDeviceConnect.UI.Pages.ErrorPage"
+    Style="{StaticResource TheQConnectDeviceBackgroundStyle}"
+    >
+     <views:MvxContentPage.BackgroundColor>
+        <OnPlatform x:TypeArguments="Color">
+            <OnPlatform.Platforms>
+                <On Platform="iOS" Value="#B3ffffff" />
+                <On Platform="Android" Value="#4Dffffff" />
+            </OnPlatform.Platforms>
+        </OnPlatform>
+    </views:MvxContentPage.BackgroundColor>
+
+</views:MvxContentPage>

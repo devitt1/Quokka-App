@@ -25,6 +25,8 @@
     <None Remove="DataModels\" />
     <None Remove="ViewModels\Converters\" />
     <None Remove="Utils\" />
+    <None Remove="ViewModels\Error\" />
+    <None Remove="ViewModels\Home\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MvvmCross" Version="8.0.2" />
@@ -48,5 +50,7 @@
     <Folder Include="DataModels\" />
     <Folder Include="ViewModels\Converters\" />
     <Folder Include="Utils\" />
+    <Folder Include="ViewModels\Error\" />
+    <Folder Include="ViewModels\Home\" />
   </ItemGroup>
 </Project>

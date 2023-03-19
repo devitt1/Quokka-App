@@ -46,6 +46,7 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection.Hotspot
 
         private async void preloadNearbyWifiNetworks()
         {
+            DebugHelper.Info(this, "Preload....");
             WifiConnectionState = WifiNetworkConnectionState.HOTSPOT_CONNECTING;
 
             //var deviceName = await _coreDeviceConnectionService.GetDeviceName();

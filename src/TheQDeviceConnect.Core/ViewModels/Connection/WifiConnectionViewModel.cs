@@ -18,7 +18,7 @@ using Xamarin.Forms;
 
 namespace TheQDeviceConnect.Core.ViewModels.Connection
 {
-    public class WifiConnectionViewModel: BaseNavigationViewModel
+    public class WifiConnectionViewModel: BaseNavigationViewModel<ConnectionStatus>
     {
         public WifiConnectionViewModel(ILoggerFactory logProvider, IMvxNavigationService navigationService) : base(logProvider, navigationService)
         {
@@ -94,10 +94,17 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
             base.Prepare();
         }
 
+        public override void Prepare(ConnectionStatus status)
+        {
+            base.Prepare();
+            OverrideWifiState = status.DeviceConnectionState;
+        }
+
 
         public override Task Initialize()
         {
             WifiConnectionState = WifiNetworkConnectionState.WIFI_SELECTING;
+            WifiConnectionState = OverrideWifiState;
             SelectedWifiNetworkSSID = "";
             SelectedWifiNetworkPassword = "";
             SelectedWifiNetworkAuthMgnt = "psk";
@@ -272,6 +279,21 @@ namespace TheQDeviceConnect.Core.ViewModels.Connection
                 _wifiConnectionState = value;
                 RaisePropertyChanged(() => WifiConnectionState);
                 RenderStateCondtionally(_wifiConnectionState);
+            }
+        }
+
+        //Code-snippet generated template for public fields
+        private WifiNetworkConnectionState _overrideWifiState;
+        public WifiNetworkConnectionState OverrideWifiState
+        {
+            get
+            {
+                return _overrideWifiState;
+            }
+            set
+            {
+                (_overrideWifiState) = value;
+                RaisePropertyChanged(() => OverrideWifiState);
             }
         }
 

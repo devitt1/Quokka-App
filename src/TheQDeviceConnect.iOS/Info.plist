@@ -7,9 +7,9 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.rapido-dev.theqconnector</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>0.1</string>
 	<key>CFBundleVersion</key>
-	<string>1.0</string>
+	<string>0.4</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MinimumOSVersion</key>
@@ -53,5 +53,19 @@
 		<string>_bonjour._tcp</string>
 		<string>_lnp._tcp</string>
 	</array>
+	<key>NSContactsUsageDescription</key>
+	<string>This app needs access to your contacts</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>This app needs access to your calendar</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This app needs access to your microphone</string>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>This app needs access to your media library</string>
+	<key>NSSiriUsageDescription</key>
+	<string>This app needs access to siri</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>This app needs access to bluetooth</string>
+	<key>Custom Property</key>
+	<string></string>
 </dict>
 </plist>
