@@ -325,12 +325,12 @@ namespace TheQDeviceConnect.Droid.Services.Implementations
             throw new NotImplementedException();
         }
 
-        Task<bool> IDeviceConnectionService.IsConnectedToHotspot()
+        public Task<bool> IsInternetReachable(string url)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> IsInternetReachable(string url)
+        public Task<bool> IsDeviceOnlineAsync()
         {
             throw new NotImplementedException();
         }

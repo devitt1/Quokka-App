@@ -55,6 +55,7 @@ namespace TheQDeviceConnect.Core.ViewModels.Home
 
         public override Task Initialize()
         {
+            //TODO Implement Android NSD https://developer.android.com/reference/android/net/nsd/NsdManager
             //try
             //{
             //    _deviceConnectionService.InitializeAndroidNsd();

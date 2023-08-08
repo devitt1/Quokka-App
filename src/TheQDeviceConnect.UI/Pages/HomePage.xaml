@@ -49,6 +49,18 @@
                 VerticalOptions="Start">
             </Label>
 
+
+            
+            <Label
+                Text="App version: v1.0.6 (0.1,0.7)"
+                TextColor="#222225"
+                FontSize="12"
+                HorizontalTextAlignment="Center"
+                HorizontalOptions="CenterAndExpand"
+                Margin="0, 0, 0, 0"
+                VerticalOptions="Start">
+            </Label>
+
             <Button
                 Text="NEXT"
                 TextColor="White"
@@ -73,50 +85,6 @@
                 </Button.Background>
 
             </Button>
-            <!--<Grid ColumnDefinitions="*"
-                  RowDefinitions="*"
-                  HorizontalOptions="Center"
-                  HeightRequest="50"
-                  WidthRequest="-1"
-                  VerticalOptions="EndAndExpand"
-                  Margin="0, 0, 0, 40">
-                <ImageButton
-                    Grid.Column="0"
-                    Grid.Row="0"
-                    Source="button_bkg"
-                    Command="{mvx:MvxBind GoToHotspotConnectionViewModelCommand}">
-                </ImageButton>
-                <Label
-                    Grid.Column="0"
-                    Grid.Row="0"
-                    Text="NEXT"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center"
-                    TextColor="White"
-                    FontSize="16">
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer
-                            Command="{mvx:MvxBind GoToHotspotConnectionViewModelCommand}">
-                        </TapGestureRecognizer>
-                    </Label.GestureRecognizers>
-                </Label>
-            </Grid>-->
-           
-            <!--<Grid RowDefinitions="*,*,*"
-                  ColumnDefinitions="*">
-               
-                <StackLayout
-                    Grid.Column="0"
-                    Grid.Row="1"
-                    Orientation="Horizontal">
-                    <Label
-                     HorizontalOptions="EndAndExpand"
-                     Text="Turn on ngrok">
-                    </Label>
-                    <Switch/>
-                </StackLayout>
-              
-            </Grid>-->
 
         </StackLayout>
     </ContentPage.Content>

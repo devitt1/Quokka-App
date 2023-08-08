@@ -91,9 +91,6 @@
 
                  </Image>
 
-                   
-                
-
                   <!--<repeaterView:RepeaterView
                         IsVisible="false"
                         x:Name="devicesList"
